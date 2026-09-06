@@ -1,130 +1,140 @@
-// Terminal typewriter simulation
-const terminalLines = [
-  { html: '<span class="dim">[09:31:02]</span> <span class="prompt">wsli></span> scan --universe us_equities --min_volume 2M' },
-  { html: '<span class="dim">[09:31:04]</span> screening... <span class="symbol">847</span> candidates' },
-  { html: '<span class="dim">[09:31:08]</span> <span class="prompt">wsli></span> analyze <span class="symbol">NVDA</span> --depth full' },
-  { html: '  ├─ earnings: beat +12% rev, guidance raised' },
-  { html: '  ├─ sentiment: 0.78 bullish (24h news window)' },
-  { html: '  ├─ technical: above 50/200 SMA, RSI 58' },
-  { html: '  └─ risk score: <span class="action">LOW</span> (2.1/10)' },
-  { html: '<span class="dim">[09:31:15]</span> <span class="prompt">wsli></span> <span class="action">BUY</span> NVDA x50 @ MKT <span class="dim">// tailnet: broker-node</span>' },
-  { html: '<span class="dim">[09:31:16]</span> order routed → <span class="accent" style="color:#00e87b">FILLED</span> @ 892.34' },
-  { html: '<span class="dim">[09:31:17]</span> position logged. audit trail: <span class="dim">session/a7f3...</span>' },
-  { html: '<span class="dim">[09:31:18]</span> <span class="prompt">wsli></span> monitor --positions active' },
-  { html: '  watching 4 positions across 3 sectors...' },
-];
+const LIVE_URL = "data/live.json";
+const STALE_MS = 15 * 60 * 1000;
 
-const terminal = document.getElementById('terminal-output');
-let lineIndex = 0;
+const money = (value, digits = 2) => {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return "—";
+  return n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: digits });
+};
 
-function addLine() {
-  if (lineIndex >= terminalLines.length) {
-    setTimeout(() => {
-      terminal.innerHTML = '';
-      lineIndex = 0;
-      addLine();
-    }, 4000);
+const fmtQty = (value) => {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return "—";
+  return n.toLocaleString("en-US", { maximumFractionDigits: 4 });
+};
+
+const ago = (iso) => {
+  if (!iso) return "unknown time";
+  const then = Date.parse(iso);
+  if (!Number.isFinite(then)) return iso;
+  const sec = Math.max(0, Math.round((Date.now() - then) / 1000));
+  if (sec < 60) return `${sec}s ago`;
+  if (sec < 3600) return `${Math.round(sec / 60)}m ago`;
+  if (sec < 86400) return `${Math.round(sec / 3600)}h ago`;
+  return `${Math.round(sec / 86400)}d ago`;
+};
+
+const clock = (iso) => {
+  if (!iso) return "—";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
+function resolveBot(data) {
+  const bot = data.bot || {};
+  const checked = Date.parse(bot.checkedAt || "");
+  const fresh = Number.isFinite(checked) && Date.now() - checked < STALE_MS;
+  if (bot.state === "awake" && fresh) return "awake";
+  if (bot.state === "asleep" && fresh) return "asleep";
+  if (bot.checkedAt) return "stale";
+  return "unknown";
+}
+
+function setStatus(kind, label) {
+  const dot = document.getElementById("status-dot");
+  const text = document.getElementById("status-label");
+  dot.className = `pulse-dot ${kind}`;
+  text.textContent = label;
+}
+
+function render(data) {
+  const botKind = resolveBot(data);
+  const labels = { awake: "Awake", asleep: "Asleep", stale: "Stale", unknown: "Unknown" };
+  setStatus(botKind, labels[botKind]);
+
+  document.getElementById("updated").textContent = data.updatedAt
+    ? `Snapshot ${ago(data.updatedAt)} · ${data.source || "collector"}`
+    : "No snapshot yet";
+
+  document.getElementById("bot-state").textContent = labels[botKind];
+  document.getElementById("bot-meta").textContent = data.bot?.detail
+    || (data.bot?.checkedAt ? `Last check ${ago(data.bot.checkedAt)}` : "No health check yet");
+
+  const quota = data.quota || {};
+  const remaining = Number(quota.remainingUsd);
+  const total = Number(quota.totalUsd);
+  document.getElementById("quota-value").textContent = Number.isFinite(remaining)
+    ? `${money(remaining)} left`
+    : "—";
+  const used = Number.isFinite(remaining) && Number.isFinite(total) ? Math.max(0, total - remaining) : null;
+  document.getElementById("quota-meta").textContent = [
+    Number.isFinite(used) && Number.isFinite(total) ? `${money(used)} used of ${money(total)}` : null,
+    quota.expiresAt ? `expires ${quota.expiresAt}` : null,
+  ].filter(Boolean).join(" · ") || "OpenAI credit grant";
+  const pct = Number.isFinite(remaining) && total > 0 ? Math.max(0, Math.min(100, (remaining / total) * 100)) : 0;
+  document.getElementById("quota-bar").style.width = `${pct}%`;
+
+  const acct = data.account || {};
+  document.getElementById("account-value").textContent = money(acct.equity, 0);
+  const posCount = (data.positions || []).length;
+  document.getElementById("account-meta").textContent = [
+    acct.cash != null ? `${money(acct.cash, 0)} cash` : null,
+    `${posCount} open position${posCount === 1 ? "" : "s"}`,
+  ].filter(Boolean).join(" · ");
+
+  const feed = data.feed || [];
+  const feedList = document.getElementById("feed-list");
+  document.getElementById("feed-count").textContent = `${feed.length} event${feed.length === 1 ? "" : "s"}`;
+  if (!feed.length) {
+    feedList.innerHTML = '<li class="feed-empty">Nothing in the feed yet.</li>';
+  } else {
+    feedList.innerHTML = feed.map((item) => `
+      <li>
+        <span class="feed-time">${clock(item.at)}</span>
+        <span>${item.text}</span>
+      </li>
+    `).join("");
+  }
+
+  const trades = data.trades || [];
+  document.getElementById("trade-count").textContent = `${trades.length} order${trades.length === 1 ? "" : "s"}`;
+  const body = document.getElementById("trade-body");
+  if (!trades.length) {
+    body.innerHTML = '<tr><td colspan="6" class="empty">No trades yet.</td></tr>';
     return;
   }
-
-  const div = document.createElement('div');
-  div.className = 'line';
-  div.innerHTML = terminalLines[lineIndex].html;
-  div.style.animationDelay = '0s';
-  terminal.appendChild(div);
-  terminal.scrollTop = terminal.scrollHeight;
-  lineIndex++;
-
-  const delay = lineIndex <= 2 ? 400 : lineIndex <= 7 ? 350 : 500;
-  setTimeout(addLine, delay);
+  body.innerHTML = trades.map((t) => `
+    <tr>
+      <td class="mono">${clock(t.at)}</td>
+      <td class="side-${t.side || ""}">${(t.side || "—").toUpperCase()}</td>
+      <td>${t.symbol || "—"}</td>
+      <td class="mono">${fmtQty(t.qty)}</td>
+      <td class="mono">${t.price ? money(t.price) : "—"}</td>
+      <td class="status-${t.status || ""}">${t.status || "—"}</td>
+    </tr>
+  `).join("");
 }
 
-addLine();
-
-// Mini sparkline chart
-const canvas = document.getElementById('chart');
-if (canvas) {
-  const ctx = canvas.getContext('2d');
-  const dpr = window.devicePixelRatio || 1;
-  canvas.width = 200 * dpr;
-  canvas.height = 80 * dpr;
-  ctx.scale(dpr, dpr);
-
-  const points = [];
-  let y = 40;
-  for (let i = 0; i < 60; i++) {
-    y += (Math.random() - 0.45) * 4;
-    y = Math.max(10, Math.min(70, y));
-    points.push(y);
-  }
-
-  function drawChart(offset = 0) {
-    ctx.clearRect(0, 0, 200, 80);
-
-    // Gradient fill
-    const grad = ctx.createLinearGradient(0, 0, 0, 80);
-    grad.addColorStop(0, 'rgba(0, 232, 123, 0.15)');
-    grad.addColorStop(1, 'rgba(0, 232, 123, 0)');
-
-    ctx.beginPath();
-    points.forEach((p, i) => {
-      const x = (i / (points.length - 1)) * 200;
-      const py = p + Math.sin((i + offset) * 0.1) * 2;
-      i === 0 ? ctx.moveTo(x, py) : ctx.lineTo(x, py);
-    });
-    ctx.lineTo(200, 80);
-    ctx.lineTo(0, 80);
-    ctx.closePath();
-    ctx.fillStyle = grad;
-    ctx.fill();
-
-    // Line
-    ctx.beginPath();
-    points.forEach((p, i) => {
-      const x = (i / (points.length - 1)) * 200;
-      const py = p + Math.sin((i + offset) * 0.1) * 2;
-      i === 0 ? ctx.moveTo(x, py) : ctx.lineTo(x, py);
-    });
-    ctx.strokeStyle = '#00e87b';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-  }
-
-  let frame = 0;
-  function animate() {
-    drawChart(frame * 0.05);
-    frame++;
-    requestAnimationFrame(animate);
-  }
-  animate();
+async function refresh() {
+  const res = await fetch(`${LIVE_URL}?t=${Date.now()}`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`live.json ${res.status}`);
+  render(await res.json());
 }
 
-// Ticker strip
-const tickers = [
-  { sym: 'AAPL', price: '227.84', change: '+1.24', dir: 'up' },
-  { sym: 'MSFT', price: '428.15', change: '+0.87', dir: 'up' },
-  { sym: 'GOOGL', price: '178.62', change: '-0.34', dir: 'down' },
-  { sym: 'AMZN', price: '198.41', change: '+2.11', dir: 'up' },
-  { sym: 'NVDA', price: '892.34', change: '+3.45', dir: 'up' },
-  { sym: 'TSLA', price: '245.18', change: '-1.02', dir: 'down' },
-  { sym: 'META', price: '562.77', change: '+0.56', dir: 'up' },
-  { sym: 'JPM', price: '198.93', change: '+0.12', dir: 'up' },
-  { sym: 'V', price: '287.44', change: '-0.08', dir: 'down' },
-  { sym: 'UNH', price: '512.30', change: '+1.67', dir: 'up' },
-];
-
-const tickerEl = document.getElementById('ticker');
-if (tickerEl) {
-  const items = tickers.map(t =>
-    `<span class="ticker-item"><span class="sym">${t.sym}</span>${t.price} <span class="${t.dir}">${t.change}%</span></span>`
-  ).join('');
-  tickerEl.innerHTML = items + items;
+async function loop() {
+  try {
+    await refresh();
+  } catch (err) {
+    setStatus("unknown", "Offline");
+    document.getElementById("updated").textContent = `Feed error: ${err.message}`;
+  }
 }
 
-// Nav scroll effect
-const nav = document.querySelector('.nav');
-window.addEventListener('scroll', () => {
-  nav.style.background = window.scrollY > 50
-    ? 'rgba(8, 12, 16, 0.92)'
-    : 'linear-gradient(to bottom, var(--bg) 60%, transparent)';
-});
+loop();
+setInterval(loop, 20000);

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="WSLI — Autonomous agentic trading intelligence for US equities, secured on your private Tailscale mesh.">
-  <title>WSLI — Agentic Trading Intelligence</title>
+  <meta name="description" content="WSLI live desk — bot status, quota, and trades.">
+  <title>WSLI — Live Desk</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
@@ -20,214 +20,82 @@
       <span class="logo-text">WSLI</span>
     </a>
     <div class="nav-links">
-      <a href="#architecture">Architecture</a>
-      <a href="#capabilities">Capabilities</a>
-      <a href="#security">Security</a>
-      <a href="#markets">Markets</a>
+      <a href="#feed">Feed</a>
+      <a href="#trades">Trades</a>
     </div>
-    <div class="nav-status">
-      <span class="pulse-dot"></span>
-      <span class="mono">Agent Online</span>
+    <div class="nav-right">
+      <div class="nav-status" id="nav-status">
+        <span class="pulse-dot unknown" id="status-dot"></span>
+        <span class="mono" id="status-label">Checking</span>
+      </div>
+      <a class="btn btn-ghost" id="talk-link" href="https://hawkspc.tail2bfb3b.ts.net/chat/main">Talk</a>
     </div>
   </nav>
 
-  <header class="hero">
-    <div class="hero-content">
-      <p class="eyebrow mono">Autonomous · US Equities · Private Mesh</p>
-      <h1>
-        Trading intelligence<br>
-        that <em>thinks</em>, not just executes.
-      </h1>
-      <p class="hero-desc">
-        WSLI is an agentic AI system that researches, reasons, and trades US stocks —
-        running entirely on your infrastructure, reachable only through Tailscale.
-      </p>
-      <div class="hero-actions">
-        <a href="#architecture" class="btn btn-primary">See how it works</a>
-        <a href="#security" class="btn btn-ghost">Private by design</a>
-      </div>
-      <dl class="hero-stats">
-        <div>
-          <dt class="mono">Markets</dt>
-          <dd>NYSE · NASDAQ · AMEX</dd>
-        </div>
-        <div>
-          <dt class="mono">Network</dt>
-          <dd>Tailscale Mesh</dd>
-        </div>
-        <div>
-          <dt class="mono">Mode</dt>
-          <dd>Agentic</dd>
-        </div>
-      </dl>
-    </div>
+  <main class="desk">
+    <header class="desk-head">
+      <p class="eyebrow mono">Live desk</p>
+      <h1>What the bot is doing.</h1>
+      <p class="updated mono" id="updated">Loading live.json…</p>
+    </header>
 
-    <div class="hero-visual">
-      <div class="terminal">
-        <div class="terminal-bar">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
-          <span class="terminal-title mono">wsli-agent · session</span>
-        </div>
-        <div class="terminal-body mono" id="terminal-output"></div>
-      </div>
-      <canvas id="chart" aria-hidden="true"></canvas>
-    </div>
-  </header>
-
-  <section id="architecture" class="section">
-    <div class="section-label mono">01 — Architecture</div>
-    <h2>Agents on your network.<br>Markets on the wire.</h2>
-    <p class="section-intro">
-      WSLI separates reasoning from execution. AI agents analyze fundamentals, sentiment,
-      and price action — then route orders through broker APIs, all within a zero-trust
-      Tailscale network you control.
-    </p>
-
-    <div class="arch-flow">
-      <div class="arch-node">
-        <div class="arch-icon">🧠</div>
-        <h3>Reasoning Layer</h3>
-        <p>Multi-step agent loops: research, hypothesis, risk check, decision.</p>
-      </div>
-      <div class="arch-connector"></div>
-      <div class="arch-node">
-        <div class="arch-icon">🔗</div>
-        <h3>Tailscale Mesh</h3>
-        <p>Private connectivity between your agent host, dashboards, and ops nodes.</p>
-      </div>
-      <div class="arch-connector"></div>
-      <div class="arch-node">
-        <div class="arch-icon">📈</div>
-        <h3>Execution Layer</h3>
-        <p>US equity orders via broker integration with guardrails and audit logs.</p>
-      </div>
-    </div>
-
-    <div class="arch-diagram">
-      <pre class="mono diagram-code"><code>┌─────────────────────────────────────────────────────────┐
-│  <span class="accent">Your Tailscale Network</span>                                │
-│                                                         │
-│   ┌──────────┐    wireguard    ┌──────────┐            │
-│   │  WSLI    │◄──────────────►│ Dashboard │            │
-│   │  Agent   │                 │  (you)    │            │
-│   └────┬─────┘                 └──────────┘            │
-│        │                                                │
-│        │  broker API (outbound only)                    │
-└────────┼────────────────────────────────────────────────┘
-         ▼
-    ┌─────────────┐
-    │  US Markets │
-    │ NYSE/NASDAQ │
-    └─────────────┘</code></pre>
-    </div>
-  </section>
-
-  <section id="capabilities" class="section section-alt">
-    <div class="section-label mono">02 — Capabilities</div>
-    <h2>What the agent actually does</h2>
-
-    <div class="cap-grid">
-      <article class="cap-card">
-        <span class="cap-num mono">001</span>
-        <h3>Autonomous Research</h3>
-        <p>Ingests filings, news, earnings transcripts, and technical signals. Builds a thesis before every trade.</p>
+    <section class="cards" aria-label="Status">
+      <article class="card" id="card-bot">
+        <p class="card-kicker mono">Bot</p>
+        <h2 id="bot-state">—</h2>
+        <p class="card-meta" id="bot-meta">Checking hawkspc…</p>
       </article>
-      <article class="cap-card">
-        <span class="cap-num mono">002</span>
-        <h3>Risk-Aware Execution</h3>
-        <p>Position sizing, stop-loss logic, and exposure limits enforced at the agent layer — not as an afterthought.</p>
+      <article class="card" id="card-quota">
+        <p class="card-kicker mono">Quota</p>
+        <h2 id="quota-value">—</h2>
+        <div class="meter" aria-hidden="true"><span id="quota-bar"></span></div>
+        <p class="card-meta" id="quota-meta">OpenAI credit grant</p>
       </article>
-      <article class="cap-card">
-        <span class="cap-num mono">003</span>
-        <h3>Multi-Agent Coordination</h3>
-        <p>Specialist agents for screening, valuation, and timing collaborate through structured handoffs.</p>
+      <article class="card" id="card-account">
+        <p class="card-kicker mono">Account</p>
+        <h2 id="account-value">—</h2>
+        <p class="card-meta" id="account-meta">Alpaca paper</p>
       </article>
-      <article class="cap-card">
-        <span class="cap-num mono">004</span>
-        <h3>Full Audit Trail</h3>
-        <p>Every decision logged with reasoning chains. Replay any session. No black boxes.</p>
-      </article>
-      <article class="cap-card">
-        <span class="cap-num mono">005</span>
-        <h3>Market Hours Awareness</h3>
-        <p>Pre-market, regular session, and after-hours logic built in. Respects US market calendars.</p>
-      </article>
-      <article class="cap-card">
-        <span class="cap-num mono">006</span>
-        <h3>Human-in-the-Loop</h3>
-        <p>Configure autonomy levels. Approve trades, set caps, or run fully autonomous within your guardrails.</p>
-      </article>
-    </div>
-  </section>
+    </section>
 
-  <section id="security" class="section">
-    <div class="section-label mono">03 — Security</div>
-    <h2>Your keys. Your network.<br>Your rules.</h2>
-    <p class="section-intro">
-      WSLI never exposes trading infrastructure to the public internet.
-      Tailscale provides encrypted peer-to-peer connectivity — only devices
-      on your tailnet can reach the agent.
-    </p>
-
-    <div class="security-grid">
-      <div class="sec-item">
-        <h3 class="mono">Zero Public Exposure</h3>
-        <p>Agent APIs and dashboards served via <code>tailscale serve</code> — no open ports, no reverse proxy headaches.</p>
+    <section id="feed" class="panel">
+      <div class="panel-head">
+        <h2>Feed</h2>
+        <p class="mono muted" id="feed-count">0 events</p>
       </div>
-      <div class="sec-item">
-        <h3 class="mono">WireGuard Encryption</h3>
-        <p>All traffic between nodes encrypted end-to-end through Tailscale's mesh.</p>
-      </div>
-      <div class="sec-item">
-        <h3 class="mono">ACL Policies</h3>
-        <p>Granular tailnet ACLs control which devices can talk to the trading agent.</p>
-      </div>
-      <div class="sec-item">
-        <h3 class="mono">Self-Hosted</h3>
-        <p>Runs on hardware you own. No SaaS middleman holding your strategies or credentials.</p>
-      </div>
-    </div>
-  </section>
+      <ol class="feed" id="feed-list">
+        <li class="feed-empty">Waiting for the first live snapshot.</li>
+      </ol>
+    </section>
 
-  <section id="markets" class="section section-alt">
-    <div class="section-label mono">04 — Markets</div>
-    <h2>US equities, full spectrum</h2>
-
-    <div class="markets-row">
-      <div class="market-tag">Large Cap</div>
-      <div class="market-tag">Mid Cap</div>
-      <div class="market-tag">Small Cap</div>
-      <div class="market-tag">ETFs</div>
-      <div class="market-tag">Sector Rotation</div>
-      <div class="market-tag">Momentum</div>
-      <div class="market-tag">Value</div>
-      <div class="market-tag">Event-Driven</div>
-    </div>
-
-    <div class="ticker-strip" aria-hidden="true">
-      <div class="ticker-track" id="ticker"></div>
-    </div>
-  </section>
-
-  <section class="section cta-section">
-    <div class="cta-box">
-      <h2>WSLI is building the future of<br>private, agentic trading.</h2>
-      <p>Autonomous intelligence. US stocks. Secured on Tailscale.</p>
-      <div class="cta-meta mono">
-        <span>◈ wsli</span>
-        <span>·</span>
-        <span>agentic trading ai</span>
-        <span>·</span>
-        <span>2026</span>
+    <section id="trades" class="panel">
+      <div class="panel-head">
+        <h2>Trades</h2>
+        <p class="mono muted" id="trade-count">0 fills</p>
       </div>
-    </div>
-  </section>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Side</th>
+              <th>Symbol</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="trade-body">
+            <tr><td colspan="6" class="empty">No trades yet.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
 
   <footer class="footer">
-    <span class="logo-mark">◈</span> WSLI
-    <span class="footer-note mono">Not financial advice. Trading involves risk.</span>
+    <span><span class="logo-mark">◈</span> WSLI</span>
+    <span class="footer-note mono">Paper trading. Not financial advice.</span>
   </footer>
 
   <script src="js/main.js"></script>

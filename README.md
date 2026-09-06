@@ -1,6 +1,6 @@
-# WSLI — Agentic Trading Intelligence
+# WSLI — Live Desk
 
-Presentation website for WSLI, an autonomous agentic trading AI for US equities, secured on a private Tailscale mesh.
+Ops page for the Alpaca paper bot: awake/asleep, OpenAI quota, and trades.
 
 ## Live site
 
@@ -8,26 +8,35 @@ Presentation website for WSLI, an autonomous agentic trading AI for US equities,
 - **https://www.wslitrade.com**
 - **https://hawkeeeman.github.io/wslitrade/**
 
-Hosted on GitHub Pages. Push to `main` to deploy automatically.
+The page reads `data/live.json`. Talk link goes to OpenClaw on Tailscale.
+
+## Refresh the snapshot
+
+From a machine on the tailnet (so hawkspc health is reachable):
+
+```bash
+python3 scripts/collect_live.py
+```
+
+GitHub Actions runs the same collector every 10 minutes for Alpaca and quota. It cannot see Tailscale, so it does not overwrite bot status. Bot status goes stale after 15 minutes unless this command is run on the tailnet.
+
+Required GitHub secrets:
+
+- `APCA_API_KEY_ID`
+- `APCA_API_SECRET_KEY`
+- `OPENAI_REMAINING_USD` (optional)
+- `OPENAI_TOTAL_USD` (optional)
+- `OPENAI_EXPIRES_AT` (optional)
 
 ## Local preview
 
 ```bash
+python3 scripts/collect_live.py
 python3 -m http.server 8080
 ```
 
 Open [http://localhost:8080](http://localhost:8080).
 
-## Structure
-
-```
-wslitrade/
-├── index.html      # Landing page
-├── css/styles.css  # Styles
-├── js/main.js      # Terminal animation, chart, ticker
-└── README.md
-```
-
 ## Disclaimer
 
-This site presents WSLI as a product concept. It is not financial advice. Trading US stocks involves substantial risk of loss.
+Paper trading only. Not financial advice. Trading US stocks involves substantial risk of loss.

@@ -1,18 +1,11 @@
 {
-  "updatedAt": "2026-09-06T15:49:26+00:00",
-  "source": "github-actions",
+  "updatedAt": "2026-09-06T15:51:28+00:00",
+  "source": "tailnet-collector",
   "bot": {
     "state": "awake",
-    "checkedAt": "2026-09-06T15:48:28+00:00",
+    "checkedAt": "2026-09-06T15:51:28+00:00",
     "host": "hawkspc",
     "detail": "OpenClaw health live"
-  },
-  "quota": {
-    "usedUsd": 0.04,
-    "remainingUsd": 9.96,
-    "totalUsd": 10.0,
-    "expiresAt": "Sep 30, 2027",
-    "source": "env"
   },
   "account": {
     "equity": "100000",
@@ -25,19 +18,15 @@
   "trades": [],
   "feed": [
     {
-      "at": "2026-09-06T15:48:28+00:00",
+      "at": "2026-09-06T15:51:28+00:00",
       "text": "Bot awake: OpenClaw health live"
     },
     {
-      "at": "2026-09-06T15:49:26+00:00",
+      "at": "2026-09-06T15:51:28+00:00",
       "text": "Alpaca paper equity 100000 \u00b7 0 recent orders"
     },
     {
-      "at": "2026-09-06T15:49:26+00:00",
-      "text": "OpenAI quota $9.96 left of $10.0"
-    },
-    {
-      "at": "2026-09-06T15:49:26+00:00",
+      "at": "2026-09-06T15:51:28+00:00",
       "text": "No Alpaca orders on the current paper account yet."
     }
   ]

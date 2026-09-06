@@ -1,6 +1,6 @@
 # WSLI — Live Desk
 
-Ops page for the Alpaca paper bot: awake/asleep, OpenAI quota, and trades.
+Ops page for the Alpaca paper bot: awake/asleep, account, and trades.
 
 ## Live site
 
@@ -18,15 +18,12 @@ From a machine on the tailnet (so hawkspc health is reachable):
 python3 scripts/collect_live.py
 ```
 
-GitHub Actions runs the same collector every 10 minutes for Alpaca and quota. It cannot see Tailscale, so it does not overwrite bot status. Bot status goes stale after 15 minutes unless this command is run on the tailnet.
+GitHub Actions runs the same collector every 10 minutes for Alpaca. It cannot see Tailscale, so it does not overwrite bot status. Bot status goes stale after 15 minutes unless this command is run on the tailnet.
 
 Required GitHub secrets:
 
 - `APCA_API_KEY_ID`
 - `APCA_API_SECRET_KEY`
-- `OPENAI_REMAINING_USD` (optional)
-- `OPENAI_TOTAL_USD` (optional)
-- `OPENAI_EXPIRES_AT` (optional)
 
 ## Local preview
 

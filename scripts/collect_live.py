@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Write data/live.json from Alpaca, OpenClaw health, and known quota."""
+"""Write data/live.json from Alpaca and OpenClaw health."""
 
 from __future__ import annotations
 
@@ -108,7 +108,7 @@ def collect_account() -> tuple[dict, list, list]:
     return safe_account, safe_positions, trades
 
 
-def build_feed(bot: dict, account: dict, trades: list, quota: dict, error: str | None) -> list:
+def build_feed(bot: dict, account: dict, trades: list, error: str | None) -> list:
     items = []
     if error:
         items.append({"at": now_iso(), "text": error})
@@ -117,11 +117,6 @@ def build_feed(bot: dict, account: dict, trades: list, quota: dict, error: str |
         "at": now_iso(),
         "text": f"Alpaca paper equity {account.get('equity')} · {len(trades)} recent orders",
     })
-    if quota.get("remainingUsd") is not None:
-        items.append({
-            "at": now_iso(),
-            "text": f"OpenAI quota ${quota['remainingUsd']} left of ${quota.get('totalUsd')}",
-        })
     if not trades:
         items.append({"at": now_iso(), "text": "No Alpaca orders on the current paper account yet."})
     return items[:12]
@@ -153,35 +148,16 @@ def main() -> None:
     else:
         bot = check_bot()
 
-    quota = previous.get("quota") or {
-        "usedUsd": 0.04,
-        "remainingUsd": 9.96,
-        "totalUsd": 10.0,
-        "expiresAt": "Sep 30, 2027",
-        "source": "openai-credit-grants",
-    }
-    remaining = os.environ.get("OPENAI_REMAINING_USD")
-    total = os.environ.get("OPENAI_TOTAL_USD")
-    if remaining and total:
-        quota = {
-            "usedUsd": round(float(total) - float(remaining), 2),
-            "remainingUsd": float(remaining),
-            "totalUsd": float(total),
-            "expiresAt": os.environ.get("OPENAI_EXPIRES_AT", quota.get("expiresAt")),
-            "source": "env",
-        }
-
     payload = {
         "updatedAt": now_iso(),
         "source": "github-actions" if args.skip_bot else "tailnet-collector",
         "bot": bot,
-        "quota": quota,
         "account": account,
         "positions": positions,
         "trades": trades,
-        "feed": build_feed(bot, account, trades, quota, error),
+        "feed": build_feed(bot, account, trades, error),
     }
-    stable = {key: payload[key] for key in ("bot", "quota", "account", "positions", "trades")}
+    stable = {key: payload[key] for key in ("bot", "account", "positions", "trades")}
     prev_stable = {key: previous.get(key) for key in stable}
     if args.skip_bot and stable == prev_stable and OUT.exists():
         print(f"No live change ({OUT})")

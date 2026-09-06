@@ -183,7 +183,7 @@ body {
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
@@ -213,21 +213,6 @@ body {
   margin-top: 0.55rem;
   color: var(--text-muted);
   font-size: 0.9rem;
-}
-
-.meter {
-  margin-top: 0.85rem;
-  height: 4px;
-  background: var(--surface-alt);
-  border-radius: 99px;
-  overflow: hidden;
-}
-
-.meter span {
-  display: block;
-  height: 100%;
-  width: 0;
-  background: var(--accent);
 }
 
 .panel {

@@ -66,20 +66,6 @@ function render(data) {
   document.getElementById("bot-meta").textContent = data.bot?.detail
     || (data.bot?.checkedAt ? `Last check ${ago(data.bot.checkedAt)}` : "No health check yet");
 
-  const quota = data.quota || {};
-  const remaining = Number(quota.remainingUsd);
-  const total = Number(quota.totalUsd);
-  document.getElementById("quota-value").textContent = Number.isFinite(remaining)
-    ? `${money(remaining)} left`
-    : "—";
-  const used = Number.isFinite(remaining) && Number.isFinite(total) ? Math.max(0, total - remaining) : null;
-  document.getElementById("quota-meta").textContent = [
-    Number.isFinite(used) && Number.isFinite(total) ? `${money(used)} used of ${money(total)}` : null,
-    quota.expiresAt ? `expires ${quota.expiresAt}` : null,
-  ].filter(Boolean).join(" · ") || "OpenAI credit grant";
-  const pct = Number.isFinite(remaining) && total > 0 ? Math.max(0, Math.min(100, (remaining / total) * 100)) : 0;
-  document.getElementById("quota-bar").style.width = `${pct}%`;
-
   const acct = data.account || {};
   document.getElementById("account-value").textContent = money(acct.equity, 0);
   const posCount = (data.positions || []).length;

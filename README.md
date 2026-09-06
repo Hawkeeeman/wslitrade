@@ -1,14 +1,11 @@
-# WSLI — Live Desk
+# WSLI
 
-Ops page for the Alpaca paper bot: awake/asleep, account, and trades.
+Site for the Alpaca paper bot.
 
-## Live site
+- **Home:** https://wslitrade.com
+- **Agents:** https://wslitrade.com/agents.html
 
-- **https://wslitrade.com**
-- **https://www.wslitrade.com**
-- **https://hawkeeeman.github.io/wslitrade/**
-
-The page reads `data/live.json`.
+The Agents page reads `data/live.json`.
 
 ## Refresh the snapshot
 

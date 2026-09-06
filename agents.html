@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="WSLI agents — live bot status and trades.">
+  <title>WSLI — Agents</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <canvas id="stage" aria-hidden="true"></canvas>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <nav class="nav">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">◈</span>
+      WSLI
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="page-link">Home</a>
+      <a href="agents.html" class="page-link active">Agents</a>
+      <a href="#positions" class="jump">Positions</a>
+      <a href="#feed" class="jump">Feed</a>
+      <a href="#trades" class="jump">Trades</a>
+    </div>
+    <div class="nav-pills">
+      <div class="status-pill" id="nav-status">
+        <span class="pulse-dot unknown" id="status-dot"></span>
+        <span class="mono" id="status-label">Checking</span>
+      </div>
+      <div class="status-pill" id="market-pill">
+        <span class="pulse-dot unknown" id="market-dot"></span>
+        <span class="mono" id="market-label">Market</span>
+      </div>
+    </div>
+  </nav>
+
+  <main class="desk">
+    <header class="desk-head">
+      <p class="eyebrow mono">Agents</p>
+      <h1>The floor.</h1>
+      <p class="updated mono" id="updated">Loading snapshot…</p>
+    </header>
+
+    <section class="cards" aria-label="Status">
+      <article class="card" id="card-bot">
+        <p class="card-kicker mono">Bot</p>
+        <h2 id="bot-state">—</h2>
+        <p class="card-meta" id="bot-meta">Checking hawkspc…</p>
+      </article>
+      <article class="card" id="card-market">
+        <p class="card-kicker mono">Market</p>
+        <h2 id="market-state">—</h2>
+        <p class="card-meta" id="market-meta">US equities session</p>
+      </article>
+      <article class="card" id="card-account">
+        <p class="card-kicker mono">Equity</p>
+        <h2 id="account-value">—</h2>
+        <p class="card-meta" id="account-meta">Alpaca paper</p>
+      </article>
+      <article class="card" id="card-power">
+        <p class="card-kicker mono">Buying power</p>
+        <h2 id="power-value">—</h2>
+        <p class="card-meta" id="power-meta">Day P/L pending</p>
+      </article>
+    </section>
+
+    <section id="positions" class="panel">
+      <div class="panel-head">
+        <h2>Positions</h2>
+        <p class="mono muted" id="position-count">0 open</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Qty</th>
+              <th>Entry</th>
+              <th>Last</th>
+              <th>Value</th>
+              <th>P/L</th>
+            </tr>
+          </thead>
+          <tbody id="position-body">
+            <tr><td colspan="6" class="empty">No open positions.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="feed" class="panel">
+      <div class="panel-head">
+        <h2>Feed</h2>
+        <p class="mono muted" id="feed-count">0 events</p>
+      </div>
+      <ol class="feed" id="feed-list">
+        <li class="feed-empty">Waiting for the first live snapshot.</li>
+      </ol>
+    </section>
+
+    <section id="trades" class="panel">
+      <div class="panel-head">
+        <h2>Trades</h2>
+        <p class="mono muted" id="trade-count">0 orders</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Side</th>
+              <th>Symbol</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="trade-body">
+            <tr><td colspan="6" class="empty">No trades yet.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>WSLI</span>
+    <span class="footer-note mono">Paper trading. Not financial advice.</span>
+  </footer>
+
+  <script src="js/stage.js"></script>
+  <script src="js/desk.js"></script>
+</body>
+</html>

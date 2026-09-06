@@ -69,17 +69,32 @@ def check_bot() -> dict:
         }
 
 
-def collect_account() -> tuple[dict, list, list]:
+def collect_market() -> dict:
+    clock_data = alpaca_get("/v2/clock")
+    if not isinstance(clock_data, dict):
+        return {}
+    return {
+        "open": bool(clock_data.get("is_open")),
+        "nextOpen": clock_data.get("next_open"),
+        "nextClose": clock_data.get("next_close"),
+    }
+
+
+def collect_account() -> tuple[dict, list, list, dict]:
     account = alpaca_get("/v2/account")
     positions = alpaca_get("/v2/positions")
     orders = alpaca_get("/v2/orders?status=all&limit=50&direction=desc")
+    market = collect_market()
     if not isinstance(account, dict) or not isinstance(positions, list) or not isinstance(orders, list):
         raise SystemExit("Unexpected Alpaca payload")
+    equity = float(account.get("equity") or 0)
+    last_equity = float(account.get("last_equity") or equity)
     safe_account = {
         "equity": account.get("equity"),
         "cash": account.get("cash"),
         "buyingPower": account.get("buying_power"),
         "status": account.get("status"),
+        "dayPl": round(equity - last_equity, 2),
         "paper": True,
     }
     safe_positions = [
@@ -105,17 +120,18 @@ def collect_account() -> tuple[dict, list, list]:
         }
         for o in orders
     ]
-    return safe_account, safe_positions, trades
+    return safe_account, safe_positions, trades, market
 
 
-def build_feed(bot: dict, account: dict, trades: list, error: str | None) -> list:
+def build_feed(bot: dict, account: dict, trades: list, market: dict, error: str | None) -> list:
     items = []
     if error:
         items.append({"at": now_iso(), "text": error})
     items.append({"at": bot.get("checkedAt") or now_iso(), "text": f"Bot {bot.get('state')}: {bot.get('detail')}"})
+    session = "open" if market.get("open") else "closed"
     items.append({
         "at": now_iso(),
-        "text": f"Alpaca paper equity {account.get('equity')} · {len(trades)} recent orders",
+        "text": f"US market {session} · equity {account.get('equity')} · {len(trades)} recent orders",
     })
     if not trades:
         items.append({"at": now_iso(), "text": "No Alpaca orders on the current paper account yet."})
@@ -129,14 +145,15 @@ def main() -> None:
 
     previous = load_json(OUT)
     error = None
-    account, positions, trades = {}, [], []
+    account, positions, trades, market = {}, [], [], {}
     try:
-        account, positions, trades = collect_account()
+        account, positions, trades, market = collect_account()
     except Exception as exc:  # keep a snapshot even if Alpaca fails
         error = f"Alpaca error: {exc}"
         account = previous.get("account") or {}
         positions = previous.get("positions") or []
         trades = previous.get("trades") or []
+        market = previous.get("market") or {}
 
     if args.skip_bot:
         bot = previous.get("bot") or {
@@ -153,11 +170,12 @@ def main() -> None:
         "source": "github-actions" if args.skip_bot else "tailnet-collector",
         "bot": bot,
         "account": account,
+        "market": market,
         "positions": positions,
         "trades": trades,
-        "feed": build_feed(bot, account, trades, error),
+        "feed": build_feed(bot, account, trades, market, error),
     }
-    stable = {key: payload[key] for key in ("bot", "account", "positions", "trades")}
+    stable = {key: payload[key] for key in ("bot", "account", "market", "positions", "trades")}
     prev_stable = {key: previous.get(key) for key in stable}
     if args.skip_bot and stable == prev_stable and OUT.exists():
         print(f"No live change ({OUT})")

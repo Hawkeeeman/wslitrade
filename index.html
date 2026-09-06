@@ -11,7 +11,8 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <div class="glow" aria-hidden="true"></div>
+  <canvas id="stage" aria-hidden="true"></canvas>
+  <div class="vignette" aria-hidden="true"></div>
 
   <nav class="nav">
     <a href="#" class="logo">
@@ -19,12 +20,19 @@
       WSLI
     </a>
     <div class="nav-links">
+      <a href="#positions">Positions</a>
       <a href="#feed">Feed</a>
       <a href="#trades">Trades</a>
     </div>
-    <div class="status-pill" id="nav-status">
-      <span class="pulse-dot unknown" id="status-dot"></span>
-      <span class="mono" id="status-label">Checking</span>
+    <div class="nav-pills">
+      <div class="status-pill" id="nav-status">
+        <span class="pulse-dot unknown" id="status-dot"></span>
+        <span class="mono" id="status-label">Checking</span>
+      </div>
+      <div class="status-pill" id="market-pill">
+        <span class="pulse-dot unknown" id="market-dot"></span>
+        <span class="mono" id="market-label">Market</span>
+      </div>
     </div>
   </nav>
 
@@ -41,11 +49,45 @@
         <h2 id="bot-state">—</h2>
         <p class="card-meta" id="bot-meta">Checking hawkspc…</p>
       </article>
+      <article class="card" id="card-market">
+        <p class="card-kicker mono">Market</p>
+        <h2 id="market-state">—</h2>
+        <p class="card-meta" id="market-meta">US equities session</p>
+      </article>
       <article class="card" id="card-account">
-        <p class="card-kicker mono">Account</p>
+        <p class="card-kicker mono">Equity</p>
         <h2 id="account-value">—</h2>
         <p class="card-meta" id="account-meta">Alpaca paper</p>
       </article>
+      <article class="card" id="card-power">
+        <p class="card-kicker mono">Buying power</p>
+        <h2 id="power-value">—</h2>
+        <p class="card-meta" id="power-meta">Day P/L pending</p>
+      </article>
+    </section>
+
+    <section id="positions" class="panel">
+      <div class="panel-head">
+        <h2>Positions</h2>
+        <p class="mono muted" id="position-count">0 open</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Qty</th>
+              <th>Entry</th>
+              <th>Last</th>
+              <th>Value</th>
+              <th>P/L</th>
+            </tr>
+          </thead>
+          <tbody id="position-body">
+            <tr><td colspan="6" class="empty">No open positions.</td></tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <section id="feed" class="panel">

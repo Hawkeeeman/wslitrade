@@ -18,19 +18,14 @@ function setPill(dotId, labelId, kind, label) {
 
 function renderHome(data) {
   const botKind = resolveBot(data);
-  const labels = { awake: "Awake", asleep: "Asleep", stale: "Stale", unknown: "Unknown" };
+  const labels = { awake: "Live", asleep: "Idle", stale: "Stale", unknown: "Unknown" };
   window.stageState.bot = botKind;
   setPill("status-dot", "status-label", botKind, labels[botKind]);
 
   const market = data.market || {};
   const marketKind = market.open ? "open" : market.open === false ? "closed" : "unknown";
   window.stageState.market = marketKind;
-  setPill("market-dot", "market-label", marketKind, market.open ? "Market open" : market.open === false ? "Market closed" : "Market");
-
-  const equity = Number(data.account?.equity);
-  document.getElementById("home-line").textContent = Number.isFinite(equity)
-    ? `Paper desk · ${equity.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 })}`
-    : "Paper desk";
+  setPill("market-dot", "market-label", marketKind, market.open ? "Session open" : market.open === false ? "Session closed" : "Market");
 }
 
 async function loop() {
@@ -45,4 +40,4 @@ async function loop() {
 
 loop();
 setInterval(loop, 20000);
-startStage();
+startField();

@@ -3,8 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="WSLI — live agentic trading desk.">
+  <meta name="description" content="WSLI — an autonomous quantitative trading system.">
+  <meta name="theme-color" content="#04080a">
+  <meta property="og:title" content="WSLI">
+  <meta property="og:description" content="An autonomous quantitative trading system.">
+  <meta property="og:url" content="https://wslitrade.com">
+  <meta property="og:type" content="website">
   <title>WSLI</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
@@ -13,6 +19,8 @@
 <body class="home">
   <canvas id="stage" aria-hidden="true"></canvas>
   <div class="vignette" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="brand-wash" aria-hidden="true">WSLI</div>
 
   <nav class="nav">
     <a href="index.html" class="logo">
@@ -35,14 +43,24 @@
     </div>
   </nav>
 
-  <main class="hero">
-    <p class="eyebrow mono">WSLI</p>
-    <h1>The floor<br>is live.</h1>
-    <p class="hero-line" id="home-line">Paper desk</p>
-    <a class="btn-primary" href="agents.html">Agents</a>
+  <main>
+    <section class="hero">
+      <p class="brand-lockup">
+        <span class="logo-mark">◈</span>
+        WSLI
+      </p>
+      <h1>The machine<br><em>takes the trade.</em></h1>
+      <p class="hero-line">A quantitative system that hunts edge, sizes risk, and executes without a hand on the book. Built to stay in. Built to win.</p>
+      <a class="btn-primary" href="agents.html">Watch it work</a>
+    </section>
   </main>
 
-  <script src="js/stage.js"></script>
+  <footer class="footer">
+    <span>WSLI</span>
+    <span class="footer-note mono">Paper trading. Not financial advice.</span>
+  </footer>
+
+  <script src="js/field.js"></script>
   <script src="js/home.js"></script>
 </body>
 </html>

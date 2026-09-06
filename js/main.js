@@ -63,6 +63,7 @@ function render(data) {
     : "No snapshot yet";
 
   document.getElementById("bot-state").textContent = labels[botKind];
+  document.getElementById("card-bot").dataset.state = botKind;
   document.getElementById("bot-meta").textContent = data.bot?.detail
     || (data.bot?.checkedAt ? `Last check ${ago(data.bot.checkedAt)}` : "No health check yet");
 

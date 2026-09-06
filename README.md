@@ -8,7 +8,7 @@ Ops page for the Alpaca paper bot: awake/asleep, account, and trades.
 - **https://www.wslitrade.com**
 - **https://hawkeeeman.github.io/wslitrade/**
 
-The page reads `data/live.json`. Talk link goes to OpenClaw on Tailscale.
+The page reads `data/live.json`.
 
 ## Refresh the snapshot
 

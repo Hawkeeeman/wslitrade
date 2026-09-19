@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-18T22:28:39+00:00",
+  "updatedAt": "2026-09-19T00:31:52+00:00",
   "source": "github-actions",
   "bot": {
     "state": "awake",
@@ -8,11 +8,11 @@
     "detail": "OpenClaw health live"
   },
   "account": {
-    "equity": "94061.27",
+    "equity": "94598.49",
     "cash": "-220000",
     "buyingPower": "0",
     "status": "ACTIVE",
-    "dayPl": 3972.59,
+    "dayPl": 4509.81,
     "paper": true
   },
   "market": {
@@ -26,9 +26,9 @@
       "qty": "1413.735200565",
       "side": "long",
       "avgEntry": "226.350727",
-      "price": "222.15",
-      "marketValue": "314061.274806",
-      "unrealizedPl": "-5938.715627"
+      "price": "222.53",
+      "marketValue": "314598.494182",
+      "unrealizedPl": "-5401.496251"
     }
   ],
   "trades": [
@@ -47,8 +47,8 @@
       "text": "Bot awake: OpenClaw health live"
     },
     {
-      "at": "2026-09-18T22:28:39+00:00",
-      "text": "US market closed \u00b7 equity 94061.27 \u00b7 1 recent orders"
+      "at": "2026-09-19T00:31:52+00:00",
+      "text": "US market closed \u00b7 equity 94598.49 \u00b7 1 recent orders"
     }
   ]
 }

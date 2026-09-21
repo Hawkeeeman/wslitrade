@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-09-21T15:43:10.545323+00:00",
+  "checkedAt": "2026-09-21T21:29:42.536361+00:00",
   "publication": {"automatic": false},
   "heartbeat": {
     "enabled": true,
@@ -11,13 +11,20 @@
     "nextRunAt": "2026-09-21T16:12:48.655000+00:00"
   },
   "collector": {
-    "state": "running",
+    "state": "completed",
     "session": "2026-09-21",
     "feed": "iex",
     "mode": "observation",
     "ordersEnabled": false,
-    "lastObservationAt": "2026-09-21T15:41:00.388941+00:00",
-    "batchCount": 3802
+    "lastObservationAt": "2026-09-21T19:59:58.145504+00:00",
+    "batchCount": 11659,
+    "quoteQuality": {
+      "totalObservations": 58295,
+      "validObservations": 46566,
+      "rejectedObservations": 11729,
+      "rejectionsByReason": {"stale_or_future_quote": 11729},
+      "rejectionRate": 0.2012007890899734
+    }
   },
   "observationSchedule": {
     "from": "2026-09-22",
@@ -27,8 +34,8 @@
   "watchdog": {
     "configured": true,
     "intervalSeconds": 60,
-    "checkedAt": "2026-09-21T15:41:00.905353+00:00",
-    "state": "recording"
+    "checkedAt": "2026-09-21T21:29:42.536361+00:00",
+    "state": "completed"
   },
   "reviews": [
     {
@@ -40,8 +47,9 @@
     {
       "slot": "end_of_day",
       "scheduledAt": "2026-09-21T20:05:00Z",
-      "lastOutcome": null,
-      "citationsVerified": false
+      "lastOutcome": "ok",
+      "citationsVerified": false,
+      "deterministicAuditVerified": true
     }
   ]
 }

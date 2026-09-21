@@ -53,6 +53,9 @@
     return "unverified";
   }
   function review(review, now = Date.now()) {
+    if (review?.lastOutcome === "ok" && review.deterministicAuditVerified === true) {
+      return "Completed · deterministic audit";
+    }
     if (review?.lastOutcome === "ok") return review.citationsVerified === true
       ? "Completed · citations checked" : "Run completed · review unverified";
     if (review?.lastOutcome === "error") return "Run failed";

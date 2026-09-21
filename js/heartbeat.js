@@ -27,10 +27,18 @@
     el("heartbeat-next").textContent = `Next attempt at the time of the check: ${stamp(h.nextRunAt)}. No assumption that it ran.`;
     const c = data.collector || {};
     const recent = WSLIStatus.fresh(data.checkedAt) && WSLIStatus.fresh(c.lastObservationAt);
-    el("collector-state").textContent = recent && ["running", "observations_received"].includes(c.state) ? "Last seen recording" : "Recording unverified";
+    el("collector-state").textContent = c.state === "completed" ? "Session completed" :
+      recent && ["running", "observations_received"].includes(c.state) ? "Last seen recording" : "Recording unverified";
+    const quality = c.quoteQuality || {};
+    const qualityDetail = Number.isInteger(quality.totalObservations) &&
+      Number.isInteger(quality.validObservations) && Number.isInteger(quality.rejectedObservations) &&
+      quality.validObservations + quality.rejectedObservations === quality.totalObservations &&
+      Number.isFinite(quality.rejectionRate) && quality.rejectionRate >= 0 && quality.rejectionRate <= 1
+      ? ` ${quality.validObservations.toLocaleString("en-US")} valid and ${quality.rejectedObservations.toLocaleString("en-US")} rejected of ${quality.totalObservations.toLocaleString("en-US")} stored observations (${(quality.rejectionRate * 100).toFixed(2)}% rejected).`
+      : "";
     el("collector-detail").textContent = `Last recorded batch: ${stamp(c.lastObservationAt)}. ` +
       `${Number.isInteger(c.batchCount) ? c.batchCount.toLocaleString("en-US") : "Unknown"} batches at check time. ` +
-      `${c.feed === "iex" ? "IEX only—not consolidated market data." : "Feed unverified."}`;
+      `${c.feed === "iex" ? "IEX only—not consolidated market data." : "Feed unverified."}${qualityDetail}`;
     const schedule = data.observationSchedule;
     const planned = schedule && /^\d{4}-\d{2}-\d{2}$/.test(schedule.through) &&
       /^\d{4}-\d{2}-\d{2}$/.test(schedule.from);

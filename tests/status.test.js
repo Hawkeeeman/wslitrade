@@ -86,3 +86,7 @@ test('scheduler success alone does not claim review citation validation', () => 
   assert.equal(review({lastOutcome:'ok'},now),'Run completed · review unverified');
   assert.equal(review({lastOutcome:'ok',citationsVerified:true},now),'Completed · citations checked');
 });
+test('deterministic close audit is distinct from citation validation', () => {
+  assert.equal(review({lastOutcome:'ok',citationsVerified:false,deterministicAuditVerified:true},now),
+    'Completed · deterministic audit');
+});

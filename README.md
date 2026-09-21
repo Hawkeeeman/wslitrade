@@ -34,6 +34,12 @@ does not call a model, does not restart anything, and does not send notification
 Automatic publication of that health report remains blocked on the host-to-repo
 connection. Public snapshots include only minimal health metadata, not journals.
 
+Closing reviews now generate a deterministic audit directly from the append-only
+journal before the AI summarizes it. The stored counters must satisfy valid plus
+rejected equals total. The September 21 correction records 58,295 observations:
+46,566 valid and 11,729 rejected, with zero orders. The original inaccurate AI
+summary remains preserved privately rather than being silently rewritten.
+
 `scripts/collect_heartbeat.py` is a tested read-only exporter, ready for a separately
 authorized host publisher. It takes explicit runtime/code/session and job IDs
 (see `--help`), writes only allowlisted health metadata to `--output`, and does not

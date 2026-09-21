@@ -7,6 +7,33 @@ Site for the Alpaca paper bot.
 
 The Agents page reads `data/live.json`.
 
+## Gem heartbeat and observer status
+
+The Agents page also independently reads `data/heartbeat.json`. It distinguishes
+general heartbeat attempts, recorded quote batches, and the two bounded AI reviews.
+The current file is a **manually verified snapshot**, not a streaming connection.
+After 15 minutes it becomes unverified; an elapsed next-run time never implies
+that a job succeeded. A skipped empty heartbeat is not an outage or an AI review.
+
+Automatic host-to-site publication is **not connected**. The user authorized a
+repository-only connection, but the available GitHub account has push permission,
+not repository admin permission. The repo owner must arrange that connection;
+do not copy a personal GitHub credential from another machine or expose the gateway.
+The verified observer/review schedule covers September 21 only, not an indefinite
+daily schedule. No new observer, review, or publishing timer is installed here.
+
+`scripts/collect_heartbeat.py` is a tested read-only exporter, ready for a separately
+authorized host publisher. It takes explicit runtime/code/session and job IDs
+(see `--help`), writes only allowlisted health metadata to `--output`, and does not
+publish, schedule, call a model, or place orders. It has not been installed on the
+host. Keep `publication.automatic` false until a recurring publisher is actually
+installed and its end-to-end update verified. The existing Alpaca workflow does
+not update or redate this separate file.
+
+Only check times, outcomes, intervals, batch counts, feed, session and citation
+validation booleans belong in the public heartbeat. Never add raw prompts, model
+responses, account identifiers, credentials, private host paths, or journal payloads.
+
 ## Refresh the snapshot
 
 From a machine on the tailnet (so hawkspc health is reachable):

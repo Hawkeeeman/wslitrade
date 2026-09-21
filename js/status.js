@@ -38,7 +38,29 @@
     }
     return {kind: "unknown", scheduled: false, checkedAt};
   }
-  const api = {fresh, bot, market};
+  function heartbeat(data, now = Date.now()) {
+    if (!data || data.schemaVersion !== 1 || !fresh(data.checkedAt, now)) return "unverified";
+    const h = data.heartbeat || {};
+    if (h.enabled === false) return "disabled";
+    if (h.enabled !== true) return "unverified";
+    if (!Number.isFinite(parse(h.lastRunAt)) || parse(h.lastRunAt) > now) return "unverified";
+    // A passed due time without a newer observation is missing evidence, not
+    // proof of a failed run. Never advance nextRunAt in the browser.
+    if (parse(h.nextRunAt) <= now) return "unverified";
+    if (h.lastOutcome === "skipped") return "skipped";
+    if (h.lastOutcome === "error") return "error";
+    if (h.lastOutcome === "ok") return "checked";
+    return "unverified";
+  }
+  function review(review, now = Date.now()) {
+    if (review?.lastOutcome === "ok") return review.citationsVerified === true
+      ? "Completed · citations checked" : "Run completed · review unverified";
+    if (review?.lastOutcome === "error") return "Run failed";
+    if (parse(review?.scheduledAt) <= now) return "Result not yet published";
+    if (Number.isFinite(parse(review?.scheduledAt))) return "Scheduled";
+    return "Unverified";
+  }
+  const api = {fresh, bot, market, heartbeat, review};
   root.WSLIStatus = api;
   if (typeof module !== "undefined") module.exports = api;
 })(typeof window !== "undefined" ? window : globalThis);

@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=20260921-2">
 </head>
 <body>
   <canvas id="stage" aria-hidden="true"></canvas>
@@ -23,6 +23,7 @@
     <div class="nav-links">
       <a href="index.html" class="page-link">Home</a>
       <a href="agents.html" class="page-link active">Agents</a>
+      <a href="#heartbeat" class="jump">Heartbeat</a>
       <a href="#positions" class="jump">Positions</a>
       <a href="#feed" class="jump">Feed</a>
       <a href="#trades" class="jump">Trades</a>
@@ -68,6 +69,34 @@
         <h2 id="power-value">—</h2>
         <p class="card-meta" id="power-meta">Day P/L pending</p>
       </article>
+    </section>
+
+    <section id="heartbeat" class="panel" aria-labelledby="heartbeat-heading">
+      <div class="panel-head">
+        <h2 id="heartbeat-heading">Gem heartbeat &amp; research</h2>
+        <p class="mono muted" id="heartbeat-publication">Checking publication…</p>
+      </div>
+      <p class="card-meta" id="heartbeat-checked">No current heartbeat evidence loaded.</p>
+      <div class="heartbeat-grid">
+        <article>
+          <p class="card-kicker mono">General heartbeat</p>
+          <h3 id="heartbeat-state">Unverified</h3>
+          <p class="card-meta" id="heartbeat-detail">A gateway connection does not confirm an agent run.</p>
+          <p class="card-meta" id="heartbeat-next"></p>
+        </article>
+        <article>
+          <p class="card-kicker mono">Observation collector</p>
+          <h3 id="collector-state">Unverified</h3>
+          <p class="card-meta" id="collector-detail">No observation timestamp loaded.</p>
+          <p class="card-meta" id="collector-schedule"></p>
+        </article>
+        <article>
+          <p class="card-kicker mono">Bounded AI reviews</p>
+          <ul class="review-list" id="review-list"><li>No review evidence loaded.</li></ul>
+          <p class="card-meta">Citation checks verify copied numbers, not reasoning or profitability. Reviews do not authorize orders.</p>
+        </article>
+      </div>
+      <p class="heartbeat-notice">Observation only—not a paper execution engine. No pilot orders or simulated fills. Existing account positions below are separate.</p>
     </section>
 
     <section id="positions" class="panel">
@@ -135,7 +164,8 @@
   </footer>
 
   <script src="js/stage.js"></script>
-  <script src="js/status.js?v=20260921-1"></script>
-  <script src="js/desk.js?v=20260921-1"></script>
+  <script src="js/status.js?v=20260921-2"></script>
+  <script src="js/desk.js?v=20260921-2"></script>
+  <script src="js/heartbeat.js?v=20260921-2"></script>
 </body>
 </html>

@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-09-21T14:32:45+00:00",
-  "source": "github-actions",
+  "updatedAt": "2026-09-21T15:08:22+00:00",
+  "source": "tailnet-collector",
   "errors": {},
   "bot": {
     "state": "awake",
-    "checkedAt": "2026-09-21T14:29:53+00:00",
+    "checkedAt": "2026-09-21T15:08:22+00:00",
     "host": "hawkspc",
     "detail": "OpenClaw gateway reachable"
   },
@@ -77,7 +77,7 @@
   ],
   "feed": [
     {
-      "at": "2026-09-21T14:29:53+00:00",
+      "at": "2026-09-21T15:08:22+00:00",
       "text": "Bot awake: OpenClaw gateway reachable"
     },
     {

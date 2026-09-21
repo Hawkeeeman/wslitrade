@@ -136,6 +136,17 @@ body {
 .pulse-dot.stale { background: var(--warn); }
 .pulse-dot.unknown { background: var(--text-muted); }
 
+.heartbeat-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; margin: 1.5rem 0; }
+#heartbeat { scroll-margin-top: 90px; }
+#heartbeat .panel-head { flex-wrap: wrap; gap: .6rem; }
+#heartbeat-publication { font-size: .7rem; }
+.heartbeat-grid h3 { font-size: 1.15rem; margin: .5rem 0; }
+.heartbeat-grid .card-meta { overflow-wrap: anywhere; }
+.review-list { list-style: none; padding: 0; margin: .5rem 0; }
+.review-list li + li { margin-top: 1rem; }
+.heartbeat-notice { border-top: 1px solid var(--border); padding-top: 1rem; color: var(--warn); font-size: .85rem; }
+@media (max-width: 720px) { .heartbeat-grid { grid-template-columns: 1fr; } }
+
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.45; }

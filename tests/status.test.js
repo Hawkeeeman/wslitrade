@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const {market, bot, fresh} = require('../js/status.js');
+const {market, bot, fresh, heartbeat, review} = require('../js/status.js');
 const at = s => Date.parse(s);
 const now = at('2026-09-21T14:21:00Z');
 const legacy = {updatedAt:'2026-09-21T10:51:09Z', market:{open:false,
@@ -55,4 +55,34 @@ test('old heartbeat means unverified, not offline', () => {
 test('future and missing timestamps are not fresh', () => {
   assert.equal(fresh('2026-09-22T12:00:00Z',now),false);
   assert.equal(fresh(undefined,now),false);
+});
+
+const hb = {schemaVersion:1, checkedAt:'2026-09-21T14:20:00Z',
+  heartbeat:{enabled:true, lastOutcome:'skipped', lastRunAt:'2026-09-21T14:16:00Z',
+    nextRunAt:'2026-09-21T14:46:00Z'}};
+test('skipped heartbeat is not successful review or outage', () => {
+  assert.equal(heartbeat(hb,now),'skipped');
+});
+test('stale, future, missing or unsupported heartbeat is unverified', () => {
+  assert.equal(heartbeat(hb,at('2026-09-21T15:00:00Z')),'unverified');
+  assert.equal(heartbeat({...hb,checkedAt:'2026-09-22T14:20:00Z'},now),'unverified');
+  assert.equal(heartbeat(null,now),'unverified');
+  assert.equal(heartbeat({...hb,schemaVersion:2},now),'unverified');
+});
+test('elapsed next run is not assumed to have run', () => {
+  assert.equal(heartbeat({...hb,heartbeat:{...hb.heartbeat,nextRunAt:'2026-09-21T14:20:00Z'}},now),'unverified');
+});
+test('enabled, disabled, failed and successful heartbeat are distinct', () => {
+  assert.equal(heartbeat({...hb,heartbeat:{...hb.heartbeat,enabled:false}},now),'disabled');
+  assert.equal(heartbeat({...hb,heartbeat:{...hb.heartbeat,lastOutcome:'error'}},now),'error');
+  assert.equal(heartbeat({...hb,heartbeat:{...hb.heartbeat,lastOutcome:'ok'}},now),'checked');
+  assert.equal(heartbeat({...hb,heartbeat:{...hb.heartbeat,lastRunAt:'2026-09-22T14:20:00Z'}},now),'unverified');
+});
+test('scheduled review past its due time awaits evidence, not a fabricated result', () => {
+  assert.equal(review({scheduledAt:'2026-09-21T13:38:00Z'},now),'Result not yet published');
+  assert.equal(review({scheduledAt:'2026-09-21T20:05:00Z'},now),'Scheduled');
+});
+test('scheduler success alone does not claim review citation validation', () => {
+  assert.equal(review({lastOutcome:'ok'},now),'Run completed · review unverified');
+  assert.equal(review({lastOutcome:'ok',citationsVerified:true},now),'Completed · citations checked');
 });

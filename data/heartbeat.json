@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-21T15:08:10.475971+00:00",
+  "publication": {"automatic": false},
+  "heartbeat": {
+    "enabled": true,
+    "intervalSeconds": 1800,
+    "lastRunAt": "2026-09-21T14:42:48.616000+00:00",
+    "lastOutcome": "skipped",
+    "skipReason": "empty_task_file",
+    "nextRunAt": "2026-09-21T15:12:48.616000+00:00"
+  },
+  "collector": {
+    "state": "running",
+    "session": "2026-09-21",
+    "feed": "iex",
+    "mode": "observation",
+    "ordersEnabled": false,
+    "lastObservationAt": "2026-09-21T15:08:09.008086+00:00",
+    "batchCount": 2803
+  },
+  "reviews": [
+    {
+      "slot": "morning",
+      "scheduledAt": "2026-09-21T13:38:00Z",
+      "lastOutcome": "ok",
+      "citationsVerified": true
+    },
+    {
+      "slot": "end_of_day",
+      "scheduledAt": "2026-09-21T20:05:00Z",
+      "lastOutcome": null,
+      "citationsVerified": false
+    }
+  ]
+}

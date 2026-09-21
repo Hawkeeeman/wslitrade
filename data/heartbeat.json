@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-09-21T15:08:10.475971+00:00",
+  "checkedAt": "2026-09-21T15:43:10.545323+00:00",
   "publication": {"automatic": false},
   "heartbeat": {
     "enabled": true,
     "intervalSeconds": 1800,
-    "lastRunAt": "2026-09-21T14:42:48.616000+00:00",
+    "lastRunAt": "2026-09-21T15:42:48.655000+00:00",
     "lastOutcome": "skipped",
     "skipReason": "empty_task_file",
-    "nextRunAt": "2026-09-21T15:12:48.616000+00:00"
+    "nextRunAt": "2026-09-21T16:12:48.655000+00:00"
   },
   "collector": {
     "state": "running",
@@ -16,8 +16,19 @@
     "feed": "iex",
     "mode": "observation",
     "ordersEnabled": false,
-    "lastObservationAt": "2026-09-21T15:08:09.008086+00:00",
-    "batchCount": 2803
+    "lastObservationAt": "2026-09-21T15:41:00.388941+00:00",
+    "batchCount": 3802
+  },
+  "observationSchedule": {
+    "from": "2026-09-22",
+    "through": "2026-09-25",
+    "timezone": "America/New_York"
+  },
+  "watchdog": {
+    "configured": true,
+    "intervalSeconds": 60,
+    "checkedAt": "2026-09-21T15:41:00.905353+00:00",
+    "state": "recording"
   },
   "reviews": [
     {

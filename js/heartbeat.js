@@ -31,8 +31,23 @@
     el("collector-detail").textContent = `Last recorded batch: ${stamp(c.lastObservationAt)}. ` +
       `${Number.isInteger(c.batchCount) ? c.batchCount.toLocaleString("en-US") : "Unknown"} batches at check time. ` +
       `${c.feed === "iex" ? "IEX only—not consolidated market data." : "Feed unverified."}`;
-    el("collector-schedule").textContent = `Verified session: ${/^\d{4}-\d{2}-\d{2}$/.test(c.session) ? c.session : "unknown"}. ` +
-      "One-session setup; subsequent sessions are not confirmed scheduled.";
+    const schedule = data.observationSchedule;
+    const planned = schedule && /^\d{4}-\d{2}-\d{2}$/.test(schedule.through) &&
+      /^\d{4}-\d{2}-\d{2}$/.test(schedule.from);
+    el("collector-schedule").textContent = planned
+      ? `Additional sessions ${schedule.from}–${schedule.through} (Eastern): prepare 7:45 a.m.; record 9:36 a.m.–close; AI reviews 9:38 a.m. / 4:05 p.m. No sessions configured after this period. A schedule is not proof of a completed run.`
+      : `Verified session: ${/^\d{4}-\d{2}-\d{2}$/.test(c.session) ? c.session : "unknown"}. Subsequent sessions are not confirmed scheduled.`;
+    const w = data.watchdog || {};
+    const watchdogLabels = {recording: "recording", awaiting_preparation: "waiting for preparation",
+      preparation_missing: "preparation missing", awaiting_observation: "waiting for session",
+      starting: "starting", observations_missing: "no observations received",
+      observations_stalled: "observations stalled", clock_mismatch: "clock mismatch",
+      finishing: "finishing", completed: "session completed", completion_missing: "completion missing",
+      halted: "operator halt", watchdog_read_failed: "watchdog could not read the journal"};
+    const watchdogState = WSLIStatus.fresh(w.checkedAt) ? watchdogLabels[w.state] || "unverified" : "current state unverified";
+    el("watchdog-detail").textContent = w.configured === true
+      ? `Non-AI watchdog configured every minute during the bounded daytime schedule. Last published check: ${stamp(w.checkedAt)}; ${watchdogState}. Records local status changes; no automatic messages.`
+      : "Watchdog configuration unverified.";
     const list = el("review-list");
     list.replaceChildren();
     for (const r of Array.isArray(data.reviews) ? data.reviews.slice(0, 2) : []) {

@@ -19,8 +19,20 @@ Automatic host-to-site publication is **not connected**. The user authorized a
 repository-only connection, but the available GitHub account has push permission,
 not repository admin permission. The repo owner must arrange that connection;
 do not copy a personal GitHub credential from another machine or expose the gateway.
-The verified observer/review schedule covers September 21 only, not an indefinite
-daily schedule. No new observer, review, or publishing timer is installed here.
+The verified observer/review schedule now covers September 21–25 only, not an
+indefinite daily schedule. On hawkspc, four additional preparation timers run at
+07:45 ET on September 22–25, with observation at 09:36 ET, morning review at
+09:38 ET and end-of-day review at 16:05 ET. Each review has a 180-second limit.
+The existing Monday observer is unchanged. Timers do not catch up missed runs
+and cannot wake Windows; keep hawkspc/WSL awake. Future successful execution is
+not established merely by installing a timer.
+
+A separate, non-AI watchdog runs every minute from 09:00–16:59 ET on September
+21–25. It reads the private journal, checks session completion and stale/missing
+observations, and records local state transitions. It has no broker credentials,
+does not call a model, does not restart anything, and does not send notifications.
+Automatic publication of that health report remains blocked on the host-to-repo
+connection. Public snapshots include only minimal health metadata, not journals.
 
 `scripts/collect_heartbeat.py` is a tested read-only exporter, ready for a separately
 authorized host publisher. It takes explicit runtime/code/session and job IDs

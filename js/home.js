@@ -1,15 +1,4 @@
 const LIVE_URL = "data/live.json";
-const STALE_MS = 15 * 60 * 1000;
-
-function resolveBot(data) {
-  const bot = data.bot || {};
-  const checked = Date.parse(bot.checkedAt || "");
-  const fresh = Number.isFinite(checked) && Date.now() - checked < STALE_MS;
-  if (bot.state === "awake" && fresh) return "awake";
-  if (bot.state === "asleep" && fresh) return "asleep";
-  if (bot.checkedAt) return "stale";
-  return "unknown";
-}
 
 function setPill(dotId, labelId, kind, label) {
   document.getElementById(dotId).className = `pulse-dot ${kind}`;
@@ -17,15 +6,19 @@ function setPill(dotId, labelId, kind, label) {
 }
 
 function renderHome(data) {
-  const botKind = resolveBot(data);
-  const labels = { awake: "Live", asleep: "Idle", stale: "Stale", unknown: "Unknown" };
+  const botKind = WSLIStatus.bot(data);
+  const labels = { awake: "Gateway online", asleep: "Gateway unreachable", stale: "Health check stale", unknown: "Health unverified" };
   window.stageState.bot = botKind;
   setPill("status-dot", "status-label", botKind, labels[botKind]);
 
-  const market = data.market || {};
-  const marketKind = market.open ? "open" : market.open === false ? "closed" : "unknown";
+  const market = WSLIStatus.market(data);
+  const marketKind = market.kind;
   window.stageState.market = marketKind;
-  setPill("market-dot", "market-label", marketKind, market.open ? "Session open" : market.open === false ? "Session closed" : "Market");
+  setPill("market-dot", "market-label", marketKind, marketKind === "unknown" ? "Market unverified" :
+    `Session ${marketKind}${market.scheduled ? " · scheduled" : ""}`);
+  document.getElementById("market-pill").title = market.scheduled
+    ? "Exchange schedule, not a current broker check. Does not confirm trading activity."
+    : "Regular US equities session; separate from bot health and order execution.";
 }
 
 async function loop() {
@@ -34,7 +27,9 @@ async function loop() {
     if (!res.ok) throw new Error(`live.json ${res.status}`);
     renderHome(await res.json());
   } catch {
-    setPill("status-dot", "status-label", "unknown", "Offline");
+    setPill("status-dot", "status-label", "unknown", "Feed unavailable");
+    setPill("market-dot", "market-label", "unknown", "Market unverified");
+    window.stageState.bot = window.stageState.market = "unknown";
   }
 }
 

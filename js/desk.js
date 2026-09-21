@@ -1,5 +1,4 @@
 const LIVE_URL = "data/live.json";
-const STALE_MS = 15 * 60 * 1000;
 
 const money = (value, digits = 2) => {
   const n = Number(value);
@@ -48,15 +47,6 @@ const until = (iso) => {
   return `${mins}m`;
 };
 
-function resolveBot(data) {
-  const bot = data.bot || {};
-  const checked = Date.parse(bot.checkedAt || "");
-  const fresh = Number.isFinite(checked) && Date.now() - checked < STALE_MS;
-  if (bot.state === "awake" && fresh) return "awake";
-  if (bot.state === "asleep" && fresh) return "asleep";
-  if (bot.checkedAt) return "stale";
-  return "unknown";
-}
 
 function setPill(dotId, labelId, kind, label) {
   document.getElementById(dotId).className = `pulse-dot ${kind}`;
@@ -71,33 +61,35 @@ function signedMoney(value) {
 }
 
 function render(data) {
-  const botKind = resolveBot(data);
-  const labels = { awake: "Awake", asleep: "Asleep", stale: "Stale", unknown: "Unknown" };
+  const botKind = WSLIStatus.bot(data);
+  const labels = { awake: "Online", asleep: "Unreachable", stale: "Unverified", unknown: "Unknown" };
   window.stageState.bot = botKind;
   setPill("status-dot", "status-label", botKind, labels[botKind]);
 
-  document.getElementById("updated").textContent = data.updatedAt
-    ? `Snapshot ${ago(data.updatedAt)}`
-    : "No snapshot yet";
+  const accountAt = data.account?.checkedAt || (!data.errors ? data.updatedAt : null);
+  document.getElementById("updated").textContent =
+    `Account snapshot ${ago(accountAt)}${WSLIStatus.fresh(accountAt) ? "" : " · STALE — not current balances"}`;
 
   document.getElementById("bot-state").textContent = labels[botKind];
   document.getElementById("card-bot").dataset.state = botKind;
-  document.getElementById("bot-meta").textContent = data.bot?.detail
-    || (data.bot?.checkedAt ? `Last check ${ago(data.bot.checkedAt)}` : "No health check yet");
+  document.getElementById("bot-meta").textContent = botKind === "stale"
+    ? `Last health check ${ago(data.bot.checkedAt)}. Stale does not mean offline; no current check published.`
+    : `${data.bot?.detail || "No health check yet"} · checked ${ago(data.bot?.checkedAt)}. Gateway health is not proof of trading.`;
 
-  const market = data.market || {};
-  const marketKind = market.open ? "open" : market.open === false ? "closed" : "unknown";
+  const market = WSLIStatus.market(data);
+  const marketKind = market.kind;
   window.stageState.market = marketKind;
-  setPill("market-dot", "market-label", marketKind, market.open ? "Market open" : market.open === false ? "Market closed" : "Market");
+  setPill("market-dot", "market-label", marketKind, marketKind === "unknown" ? "Market unverified" : `Market ${marketKind}${market.scheduled ? " · scheduled" : ""}`);
   document.getElementById("card-market").dataset.state = marketKind;
-  document.getElementById("market-state").textContent = market.open ? "Open" : market.open === false ? "Closed" : "—";
+  document.getElementById("market-state").textContent = marketKind === "unknown" ? "Unverified" : `${marketKind === "open" ? "Open" : "Closed"}${market.scheduled ? " (schedule)" : ""}`;
   const nextOpenMs = Date.parse(market.nextOpen || "");
   const longWait = Number.isFinite(nextOpenMs) && nextOpenMs - Date.now() > 36 * 3600 * 1000;
-  document.getElementById("market-meta").textContent = market.open
+  const timing = marketKind === "open"
     ? `Closes in ${until(market.nextClose)}`
     : market.nextOpen
       ? (longWait ? `Opens ${clock(market.nextOpen)}` : `Opens in ${until(market.nextOpen)}`)
-      : "US equities session";
+      : "Current market clock unavailable";
+  document.getElementById("market-meta").textContent = `${timing}. ${market.scheduled ? "Exchange schedule; live broker status is stale." : marketKind === "unknown" ? "Refresh required; an old closed flag is not current evidence." : `Broker checked ${ago(market.checkedAt)}.`}`;
 
   const acct = data.account || {};
   document.getElementById("account-value").textContent = money(acct.equity, 0);
@@ -177,7 +169,11 @@ async function loop() {
   try {
     await refresh();
   } catch (err) {
-    setPill("status-dot", "status-label", "unknown", "Offline");
+    setPill("status-dot", "status-label", "unknown", "Feed unavailable");
+    setPill("market-dot", "market-label", "unknown", "Market unverified");
+    window.stageState.bot = window.stageState.market = "unknown";
+    document.getElementById("market-state").textContent = "Unverified";
+    document.getElementById("market-meta").textContent = "Feed could not be refreshed. Last displayed numbers may be outdated.";
     document.getElementById("updated").textContent = `Feed error: ${err.message}`;
   }
 }

@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-30T02:26:44+00:00",
+  "updatedAt": "2026-09-30T08:50:43+00:00",
   "source": "github-actions",
   "errors": {},
   "bot": {
@@ -9,28 +9,24 @@
     "detail": "OpenClaw gateway reachable"
   },
   "account": {
-    "equity": "102048.88",
+    "equity": "103377.79",
     "cash": "-220000",
     "buyingPower": "0",
     "status": "ACTIVE",
-    "dayPl": -1498.56,
+    "dayPl": 2163.02,
     "paper": true,
-    "checkedAt": "2026-09-30T02:26:43+00:00"
+    "checkedAt": "2026-09-30T08:50:43+00:00"
   },
   "market": {
     "open": false,
     "nextOpen": "2026-09-30T09:30:00-04:00",
     "nextClose": "2026-09-30T16:00:00-04:00",
-    "checkedAt": "2026-09-30T02:26:44+00:00",
+    "checkedAt": "2026-09-30T08:50:43+00:00",
     "calendar": {
-      "checkedAt": "2026-09-30T02:26:44+00:00",
-      "from": "2026-09-29T00:00:00-04:00",
-      "through": "2026-10-07T00:00:00-04:00",
+      "checkedAt": "2026-09-30T08:50:43+00:00",
+      "from": "2026-09-30T00:00:00-04:00",
+      "through": "2026-10-08T00:00:00-04:00",
       "sessions": [
-        {
-          "open": "2026-09-29T09:30:00-04:00",
-          "close": "2026-09-29T16:00:00-04:00"
-        },
         {
           "open": "2026-09-30T09:30:00-04:00",
           "close": "2026-09-30T16:00:00-04:00"
@@ -50,6 +46,10 @@
         {
           "open": "2026-10-06T09:30:00-04:00",
           "close": "2026-10-06T16:00:00-04:00"
+        },
+        {
+          "open": "2026-10-07T09:30:00-04:00",
+          "close": "2026-10-07T16:00:00-04:00"
         }
       ]
     }
@@ -60,9 +60,9 @@
       "qty": "1413.735200565",
       "side": "long",
       "avgEntry": "226.350727",
-      "price": "227.8",
-      "marketValue": "322048.878689",
-      "unrealizedPl": "2048.888256"
+      "price": "228.74",
+      "marketValue": "323377.789777",
+      "unrealizedPl": "3377.799344"
     }
   ],
   "trades": [
@@ -81,7 +81,7 @@
       "text": "Bot awake: OpenClaw gateway reachable"
     },
     {
-      "at": "2026-09-30T02:26:44+00:00",
+      "at": "2026-09-30T08:50:43+00:00",
       "text": "Last broker check: market closed. Historical check, not current session status."
     }
   ]

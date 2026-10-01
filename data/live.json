@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-01T16:29:41+00:00",
+  "updatedAt": "2026-10-01T21:12:02+00:00",
   "source": "github-actions",
   "errors": {},
   "bot": {
@@ -9,21 +9,21 @@
     "detail": "OpenClaw gateway reachable"
   },
   "account": {
-    "equity": "105703.38",
+    "equity": "106700.07",
     "cash": "-220000",
     "buyingPower": "0",
     "status": "ACTIVE",
-    "dayPl": 2834.53,
+    "dayPl": 3831.22,
     "paper": true,
-    "checkedAt": "2026-10-01T16:29:41+00:00"
+    "checkedAt": "2026-10-01T21:12:02+00:00"
   },
   "market": {
-    "open": true,
+    "open": false,
     "nextOpen": "2026-10-02T09:30:00-04:00",
-    "nextClose": "2026-10-01T16:00:00-04:00",
-    "checkedAt": "2026-10-01T16:29:41+00:00",
+    "nextClose": "2026-10-02T16:00:00-04:00",
+    "checkedAt": "2026-10-01T21:12:02+00:00",
     "calendar": {
-      "checkedAt": "2026-10-01T16:29:41+00:00",
+      "checkedAt": "2026-10-01T21:12:02+00:00",
       "from": "2026-10-01T00:00:00-04:00",
       "through": "2026-10-09T00:00:00-04:00",
       "sessions": [
@@ -60,9 +60,9 @@
       "qty": "1413.735200565",
       "side": "long",
       "avgEntry": "226.350727",
-      "price": "230.385",
-      "marketValue": "325703.384182",
-      "unrealizedPl": "5703.393749"
+      "price": "231.09",
+      "marketValue": "326700.067499",
+      "unrealizedPl": "6700.077066"
     }
   ],
   "trades": [
@@ -81,8 +81,8 @@
       "text": "Bot awake: OpenClaw gateway reachable"
     },
     {
-      "at": "2026-10-01T16:29:41+00:00",
-      "text": "Last broker check: market open. Historical check, not current session status."
+      "at": "2026-10-01T21:12:02+00:00",
+      "text": "Last broker check: market closed. Historical check, not current session status."
     }
   ]
 }

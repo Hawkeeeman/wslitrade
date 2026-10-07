@@ -132,3 +132,10 @@ test('a running process cannot verify missing or another session’s execution s
 test('missing ledger counts cannot imply a completed daily attempt',()=>{
   assert.notEqual(paper({...pilot,progress:{...pilot.progress,entriesToday:null}},paperNow).label,'Daily entry used');
 });
+
+test('three-entry policy distinguishes remaining slots, cooldown, and consumed cap',()=>{
+  const base={...pilot,progress:{...pilot.progress,maxEntries:3,entriesToday:1}};
+  assert.equal(paper(base,paperNow).label,'Watching signals');
+  assert.equal(paper({...base,progress:{...base.progress,executorState:'EXIT_COOLDOWN'}},paperNow).label,'Exit cooldown');
+  assert.equal(paper({...base,progress:{...base.progress,entriesToday:3}},paperNow).label,'Daily entry limit used');
+});

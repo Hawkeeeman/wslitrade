@@ -8,12 +8,33 @@ from pathlib import Path
 from types import SimpleNamespace as Obj
 
 sys.path.insert(0,str(Path(__file__).parents[1]/'scripts'))
-from collect_paper import amount,stamp,build_snapshot,ledger_summary,snapshot_packet,public_orders
+from collect_paper import amount,stamp,build_snapshot,ledger_summary,snapshot_packet,public_orders,public_decisions,public_policy_change
 from install_publisher import HOST_KEY,HOST_FINGERPRINT,units
 import base64,hashlib,sqlite3
 
 
 class PaperExportTests(unittest.TestCase):
+    def test_decision_evidence_is_allowlisted_not_a_model_thought(self):
+        decisions=public_decisions([dict(at='2026-10-07T13:36:18+00:00',plan=dict(symbol='NCLH',
+            qty=65,limit_price='15.26',stop_price='15.20',nominal_risk='3.90',max_notional='991.90',
+            account='PRIVATE_ID',thoughts='PRIVATE_THOUGHTS',decision_evidence={'quote_at':None,'private':'PRIVATE_KEY'}))],
+            dict(asof='2026-10-07T13:36:09+00:00',cards=[dict(symbol='NCLH',atr='.51',relative_volume='2',range={'high':'15.20'})]))
+        self.assertNotIn('PRIVATE',json.dumps(decisions))
+        self.assertFalse(decisions[0]['quoteRecorded'])
+        self.assertEqual(decisions[0]['candidateRank'],1)
+        self.assertEqual(decisions[0]['stopPrice'],'15.20')
+
+    def test_later_scan_is_not_retroactive_admission_evidence(self):
+        d=public_decisions([dict(at='2026-10-07T13:36:18+00:00',plan={'symbol':'NCLH'})],
+            dict(asof='2026-10-07T14:00:00+00:00',cards=[{'symbol':'NCLH','atr':9}]))[0]
+        self.assertIsNone(d['candidateRank']);self.assertIsNone(d['atr'])
+
+    def test_policy_receipt_redacts_hash_and_requires_exact_approval(self):
+        value=dict(effective_session='2026-10-08',max_entries=3,exit_cooldown_seconds=900,
+            no_repeat_symbols=True,config_hash='PRIVATE_HASH',scheduled_at='2026-10-07T20:10:00+00:00')
+        self.assertEqual(public_policy_change(value)['state'],'scheduled')
+        self.assertNotIn('PRIVATE',json.dumps(public_policy_change(value)))
+        self.assertIsNone(public_policy_change({**value,'max_entries':4}))
     def order(self,cid,legs=None):
         return Obj(client_order_id=cid,filled_at=None,submitted_at=datetime(2026,10,7,13,36,tzinfo=timezone.utc),
             created_at=None,side='buy',symbol='NCLH',qty='65',filled_qty='65',filled_avg_price='15.26',

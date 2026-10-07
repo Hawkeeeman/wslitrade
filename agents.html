@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20261007-1">
+  <link rel="stylesheet" href="css/styles.css?v=20261007-2">
 </head>
 <body>
   <canvas id="stage" aria-hidden="true"></canvas>
@@ -24,6 +24,7 @@
       <a href="index.html" class="page-link">Home</a>
       <a href="agents.html" class="page-link active">Agents</a>
       <a href="#heartbeat" class="jump">Progress</a>
+      <a href="#decisions" class="jump">Decisions</a>
       <a href="#positions" class="jump">Positions</a>
       <a href="#feed" class="jump">Feed</a>
       <a href="#trades" class="jump">Trades</a>
@@ -95,7 +96,7 @@
         <article>
           <p class="card-kicker mono">03 · Paper execution</p>
           <h3 id="entry-state">—</h3>
-          <p class="card-meta" id="entry-detail">At most one entry attempt per session.</p>
+          <p class="card-meta" id="entry-detail">Checking the verified session entry limit.</p>
         </article>
         <article>
           <p class="card-kicker mono">04 · Safety &amp; close</p>
@@ -107,8 +108,16 @@
         <p id="collector-detail">Quote observations not yet loaded.</p>
         <p id="collector-schedule">Schedule not yet loaded.</p>
         <p id="risk-detail">Fixed cash-sized limits. Nominal stop risk is not a guaranteed maximum loss.</p>
+        <p id="policy-change">Entry-policy change not yet verified.</p>
       </div>
       <p class="heartbeat-notice">No signal means no trade. A daily entry used is not a sleeping bot. If hawkspc stops publishing, timestamps go stale; the site will not invent new activity.</p>
+    </section>
+
+    <section id="decisions" class="panel" aria-labelledby="decisions-heading">
+      <div class="panel-head"><h2 id="decisions-heading">What was bought &amp; why</h2><p class="mono muted">Broker fills + recorded rules</p></div>
+      <div id="trade-summary" class="trade-summary-grid"><p class="card-meta">Waiting for verified fills.</p></div>
+      <div id="decision-list" class="decision-list"><p class="card-meta">No decision evidence loaded.</p></div>
+      <p class="heartbeat-notice">The fixed opening-range strategy chooses entries; Gem reviews them afterward. This is an evidence-backed decision summary—not Gem’s hidden thoughts or a claim that the stock will rise. A rejected attempt still uses an entry slot.</p>
     </section>
 
     <section id="reviews" class="panel" aria-labelledby="reviews-heading">
@@ -174,6 +183,16 @@
         </table>
       </div>
     </section>
+
+    <section class="panel" aria-labelledby="research-heading">
+      <div class="panel-head"><h2 id="research-heading">Research priorities</h2><p class="mono muted">Weekdays · 4:30 p.m. Eastern</p></div>
+      <ul class="research-list">
+        <li><strong>Stop width versus noise.</strong> The current stop is 0.1 × daily ATR. Test alternatives on held-out observations with the same dollar risk; one quick stop-out is not enough evidence to change the strategy.</li>
+        <li><strong>Feed and fill mismatch.</strong> Signals use one exchange (IEX); paper fills use NBBO. Check whether a breakout exists on comparable market data. <a href="https://docs.alpaca.markets/us/docs/paper-trading" target="_blank" rel="noopener noreferrer">Alpaca’s simulation rules</a> · <a href="https://docs.alpaca.markets/us/docs/market-data-faq" target="_blank" rel="noopener noreferrer">IEX versus SIP</a></li>
+        <li><strong>Measure execution, not just win rate.</strong> Track stop slippage, holding time, rejected signals and net results after realistic costs. Paper simulation omits important live-trading frictions.</li>
+      </ul>
+      <p class="card-meta">Research proposes tests. It cannot place orders or automatically rewrite the strategy. Useful new findings are reported; repetitive findings stay quiet.</p>
+    </section>
   </main>
 
   <footer class="footer">
@@ -182,8 +201,9 @@
   </footer>
 
   <script src="js/stage.js"></script>
-  <script src="js/status.js?v=20261007-1"></script>
+  <script src="js/status.js?v=20261007-2"></script>
   <script src="js/paper-feed.js?v=20261007-1"></script>
-  <script src="js/paper.js?v=20261007-1"></script>
+  <script src="js/trade-details.js?v=20261007-2"></script>
+  <script src="js/paper.js?v=20261007-2"></script>
 </body>
 </html>

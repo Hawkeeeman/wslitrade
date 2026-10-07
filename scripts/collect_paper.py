@@ -21,7 +21,7 @@ from zoneinfo import ZoneInfo
 ET = ZoneInfo('America/New_York')
 STATES = {'FLAT','ARMED_SCHEDULED','TRIAL_FINISHED','EXCHANGE_CLOSED',
     'WAITING_FOR_PREPARE_OR_SCAN','WAITING_FOR_SIGNAL','CLOCK_SKEW_REFUSED',
-    'ENTRY_SUBMITTED','ENTRY_CONSUMED_OR_PENDING','POSITION_PROTECTED',
+    'ENTRY_SUBMITTED','ENTRY_CONSUMED_OR_PENDING','EXIT_COOLDOWN','POSITION_PROTECTED',
     'ORDER_OUTCOME_UNKNOWN','CANCELING_FOR_EXIT','EXIT_PENDING','EXIT_SUBMITTED',
     'EXIT_WAITING_FOR_MARKET','UNEXPECTED_POSITION_REQUIRES_OPERATOR',
     'EXIT_RETRY_LIMIT_REQUIRES_OPERATOR','EXPOSURE_REQUIRES_OPERATOR','ERROR_RECOVERY_PENDING'}
@@ -31,7 +31,8 @@ REASONS = {'daily_loss_cutoff','pilot_drawdown_cutoff','broker_account_entry_blo
     'previous_session_order','unexpected_or_carried_position','partial_or_unfilled_entry',
     'protective_stop_missing','order_outcome_unknown_on_recovery','outside_entry_window',
     'stale_or_future_quote','spread_too_wide','no_breakout','zero_size','invalid_market_data',
-    'one_entry_per_session','halted','wrong_session','invalid_stop','clock_skew'}
+    'one_entry_per_session','daily_entry_limit','exit_cooldown','symbol_already_attempted',
+    'position_or_order_pending','halted','wrong_session','invalid_stop','clock_skew'}
 
 
 def amount(value):
@@ -76,9 +77,10 @@ def snapshot_packet(root,day,kind):
 
 def ledger_summary(root,day):
     path=root/'execution.sqlite'
-    if not path.exists(): return dict(entryCount=None,quoteBatches=None,lastQuoteAt=None,activity=[],intentRoles={})
+    if not path.exists(): return dict(entryCount=None,quoteBatches=None,lastQuoteAt=None,activity=[],intentRoles={},entryPlans=[])
     with sqlite3.connect(path.as_uri()+'?mode=ro',uri=True) as db:
         intents=db.execute('SELECT cid,role FROM intents WHERE day=?',(day,)).fetchall()
+        plans=db.execute("SELECT created,payload FROM intents WHERE day=? AND role='entry' ORDER BY created",(day,)).fetchall()
         count,last=db.execute("SELECT count(*),max(at) FROM events WHERE kind='quotes' AND substr(at,1,10)=?",(day,)).fetchone()
         rows=db.execute("SELECT at,kind,payload FROM events WHERE kind IN ('intent_reserved','broker_response','order_reconciled','halt','session_finished') AND substr(at,1,10)=? ORDER BY id DESC LIMIT 24",(day,)).fetchall()
     activity=[]
@@ -89,7 +91,42 @@ def ledger_summary(root,day):
             qty=amount(p.get('filled_qty',p.get('qty'))),price=amount(p.get('filled_avg_price')),
             reason=enum(p.get('reason'),REASONS)))
     return dict(entryCount=sum(role=='entry' for _,role in intents),quoteBatches=count,
-                lastQuoteAt=stamp(last),activity=activity,intentRoles=dict(intents))
+                lastQuoteAt=stamp(last),activity=activity,intentRoles=dict(intents),
+                entryPlans=[dict(at=at,plan=json.loads(raw)) for at,raw in plans])
+
+
+def public_decisions(plans,scan):
+    """Recorded admission evidence, not a model's private reasoning."""
+    result=[]
+    for entry in plans:
+        p=entry['plan']; s=symbol(p.get('symbol'))
+        if not s: continue
+        evidence=p.get('decision_evidence',{})
+        card=None; rank=None
+        if scan and stamp(scan.get('asof')) and stamp(entry['at']) and datetime.fromisoformat(stamp(scan['asof']))<=datetime.fromisoformat(stamp(entry['at'])):
+            for i,c in enumerate(scan.get('cards',[])):
+                if c.get('symbol')==s: card=c; rank=i+1; break
+        result.append(dict(symbol=s,at=stamp(entry['at']),authority='deterministic_rules',
+            qty=amount(p.get('qty')),limitPrice=amount(p.get('limit_price')),
+            stopPrice=amount(p.get('stop_price')),nominalRisk=amount(p.get('nominal_risk')),
+            maxNotional=amount(p.get('max_notional')),candidateRank=rank,
+            relativeVolume=amount(card.get('relative_volume')) if card else None,
+            openingRangeHigh=amount(evidence.get('opening_range_high',card.get('range',{}).get('high') if card else None)),
+            atr=amount(evidence.get('atr',card.get('atr') if card else None)),
+            quoteAt=stamp(evidence.get('quote_at')),bid=amount(evidence.get('bid')),
+            ask=amount(evidence.get('ask')),spreadFraction=amount(evidence.get('spread_fraction')),
+            quoteRecorded=bool(stamp(evidence.get('quote_at'))),
+            stopAtrMultiple='0.1'))
+    return result
+
+
+def public_policy_change(value):
+    if not isinstance(value,dict) or value.get('effective_session')!='2026-10-08' or value.get('max_entries')!=3 or value.get('exit_cooldown_seconds')!=900 or value.get('no_repeat_symbols') is not True:
+        return None
+    installed=stamp(value.get('installed_at'))
+    return dict(state='installed' if installed else 'scheduled',effectiveSession='2026-10-08',
+        maxEntries=3,cooldownSeconds=900,noRepeatSymbols=True,installedAt=installed,
+        scheduledAt=stamp(value.get('scheduled_at')))
 
 
 def public_orders(orders,intent_roles):
@@ -134,7 +171,7 @@ def read_reviews(root,day,jobs,account_number):
 
 
 def build_snapshot(*,now,account,positions,orders,clock,calendar,status,service,ledger,
-                   prepared,scan,reviews,config,halted,automatic=False):
+                   prepared,scan,reviews,config,halted,automatic=False,policy_change=None):
     checked=stamp(now)
     if not checked: raise ValueError('timezone_required')
     day=now.astimezone(ET).date().isoformat()
@@ -152,7 +189,11 @@ def build_snapshot(*,now,account,positions,orders,clock,calendar,status,service,
         halted=bool(halted),executorState=enum(status.get('executor_state'),STATES),
         supervisorAt=stamp(status.get('checked_at')),supervisorSession=status.get('session') if re.fullmatch(r'\d{4}-\d{2}-\d{2}',str(status.get('session',''))) else None,
         process=enum(service,{'active','inactive','failed','activating','deactivating'}),
-        entriesToday=ledger['entryCount'],maxEntries=1,openOrderCount=status.get('open_order_count'),
+        entriesToday=ledger['entryCount'],
+        maxEntries=3 if config.get('max_entries_per_session')==3 and config.get('entry_policy_effective_session')=='2026-10-08' and day>='2026-10-08' else 1,
+        cooldownSeconds=900 if config.get('max_entries_per_session')==3 and day>='2026-10-08' else 0,
+        nextEntryAfter=stamp(status.get('next_entry_after')),noRepeatSymbols=True,
+        openOrderCount=status.get('open_order_count'),
         universeCount=len(prepared['universe']) if prepared else None,
         preparedAt=stamp(prepared.get('prepared_at')) if prepared else None,
         candidateCount=len(scan['cards']) if scan else None,
@@ -170,7 +211,9 @@ def build_snapshot(*,now,account,positions,orders,clock,calendar,status,service,
         market=dict(open=clock.is_open,checkedAt=stamp(clock.timestamp),nextOpen=stamp(clock.next_open),
             nextClose=stamp(clock.next_close),calendar=calendar),
         progress=progress,positions=safe_positions,trades=safe_orders,
-        activity=ledger['activity'],reviews=reviews)
+        activity=ledger['activity'],reviews=reviews,
+        decisions=public_decisions(ledger.get('entryPlans',[]),scan),
+        policyChange=public_policy_change(policy_change))
 
 
 def collect(code,root,automatic=False):
@@ -198,11 +241,16 @@ def collect(code,root,automatic=False):
     status['open_order_count']=len(open_orders)
     service=subprocess.run(['systemctl','--user','show','wsli-paper-supervise.service','-p','ActiveState','--value'],text=True,capture_output=True,check=True,timeout=15).stdout.strip()
     jobs=json.loads(subprocess.run(['openclaw','cron','list','--all','--json'],text=True,capture_output=True,check=True,timeout=30).stdout)['jobs']
+    policy_change=None
+    for name in ('entry-policy-upgrade.json','entry-policy-pending.json'):
+        if (root/name).is_file():
+            policy_change=json.loads((root/name).read_text()); break
     return build_snapshot(now=datetime.now(timezone.utc),account=account,positions=positions,orders=orders,clock=clock,
         calendar=calendar,status=status,service=service,ledger=ledger_summary(root,day),
         prepared=snapshot_packet(root,day,'prepared'),scan=snapshot_packet(root,day,'scan'),
         reviews=read_reviews(root,day,jobs,account.account_number),config=c,
-        halted=(root/'HALT').exists() or (root/('HALT-'+day)).exists(),automatic=automatic)
+        halted=(root/'HALT').exists() or (root/('HALT-'+day)).exists(),automatic=automatic,
+        policy_change=policy_change)
 
 
 def main():

@@ -42,14 +42,37 @@
     text('scan-state',p.candidateCount===null ? 'Awaiting scan' : `${count(p.candidateCount)} candidates`);
     text('scan-detail',p.candidateCount===null ? 'No verified scan published for this session.' :
       `Frozen ${stamp(p.scanAt)}. ${p.candidates.length ? p.candidates.join(', ')+'.' : 'No qualifying candidates.'} Candidates are not orders.`);
-    text('entry-state',p.entriesToday===null ? 'Entry count unverified' : `${count(p.entriesToday)} / ${count(p.maxEntries)} entry used`);
-    text('entry-detail',p.entriesToday===null ? 'The execution ledger is unavailable. No zero-entry or completed-day claim is made.' : p.entriesToday>=p.maxEntries ? 'The daily attempt is consumed. No second buy today, even if the position has closed.' :
+    text('entry-state',p.entriesToday===null ? 'Entry count unverified' : `${count(p.entriesToday)} / ${count(p.maxEntries)} entries used`);
+    text('entry-detail',p.entriesToday===null ? 'The execution ledger is unavailable. No zero-entry or completed-day claim is made.' : p.entriesToday>=p.maxEntries ? 'The daily attempt limit is consumed. No further buys today; safety monitoring continues.' : p.executorState==='EXIT_COOLDOWN' ? `15-minute exit cooldown · next eligible after ${stamp(p.nextEntryAfter)}. A new valid signal is still required.` :
       'Entries only 9:36–11:00 a.m. Eastern, with fresh quotes and fixed risk checks. No forced trade.');
     text('safety-state',p.halted ? 'Halt requested' : data.positions.length ? 'Position monitored' : p.openOrderCount ? 'Working orders' : 'Account flat');
     text('safety-detail',`${count(p.openOrderCount)} open orders at check. ${p.halted ? 'Verify actual liquidation; a halt marker alone is not a fill.' : 'Liquidation starts five minutes before the exchange close. hawkspc must remain awake.'}`);
     text('collector-detail',`${count(p.quoteBatches)} quote batches recorded today · last ${stamp(p.lastQuoteAt)}. Quote collection may stop at 11 a.m.; safety monitoring continues.`);
     text('collector-schedule',`Trial ${t.firstSession}–${t.lastSession} · prepare 7:45 a.m. · monitor 9:30 a.m. · Gem 10:05 a.m. / 4:05 p.m. Eastern.`);
-    text('risk-detail',`One entry/day · max ${money(t.maxPosition)} position · nominal ${money(t.nominalRisk)} stop risk · ${money(t.dailyLoss)} daily-loss entry cutoff. Gaps/outages can exceed nominal risk.`);
+    text('risk-detail',`Up to ${count(p.maxEntries)} entry attempts/day · one position at a time · no repeat stock buys${p.cooldownSeconds===900 ? ' · 15-minute exit cooldown' : ''} · max ${money(t.maxPosition)} position · nominal ${money(t.nominalRisk)} stop risk · ${money(t.dailyLoss)} daily-loss entry cutoff. Gaps/outages can exceed nominal risk.`);
+    const change=data.policyChange;
+    text('policy-change',change ? `3-entry safeguards ${change.state==='installed' ? 'installed' : 'scheduled for installation'} · effective ${change.effectiveSession}. ${change.state==='installed' ? 'Existing losses and ledger preserved.' : 'Activation requires a closed market, flat account and stopped supervisor. Today’s limit stays unchanged.'}` : 'No verified entry-policy upgrade receipt published.');
+    const summaries=el('trade-summary'); summaries.replaceChildren();
+    for (const book of WSLITradeDetails.books(data.trades)) {
+      const article=document.createElement('article'),title=document.createElement('h3'),buy=document.createElement('p'),exit=document.createElement('p'),pl=document.createElement('p');
+      title.textContent=book.symbol; buy.className=exit.className='card-meta';
+      buy.textContent=book.shares ? `Bought ${qty(book.shares)} shares at ${money(book.entryPrice)} average · ${money(book.cost)} spent.` : 'Entry attempt recorded; no verified filled shares.';
+      exit.textContent=book.sold ? `Sold ${qty(book.sold)} shares at ${money(book.exitPrice)} average · ${book.exitReason}.${book.heldSeconds!==null ? ' Held '+book.heldSeconds.toFixed(1)+' seconds.' : ''}` : 'No exit fill published.';
+      pl.textContent=book.closed ? `Realized P/L ${money(book.realizedPl)} (before costs not simulated by the broker).` : 'Closed-trade P/L not yet verified.';
+      pl.className=book.closed && book.realizedPl<0 ? 'down' : 'card-meta';
+      article.append(title,buy,exit,pl); summaries.append(article);
+    }
+    if(!summaries.childElementCount) summaries.textContent='No strategy entry orders published for this session.';
+    const decisions=el('decision-list'); decisions.replaceChildren();
+    for (const d of data.decisions || []) {
+      const article=document.createElement('article'),title=document.createElement('h3'),rules=document.createElement('p'),plan=document.createElement('p'),quote=document.createElement('p');
+      title.textContent=`${d.symbol} · rule-based entry at ${stamp(d.at)}`;
+      rules.textContent=`Documented entry rule: an eligible opening-range candidate, fresh bid above the first five-minute high, spread ≤ 0.2%, and cash/risk checks.${d.candidateRank ? ' Frozen scan rank '+d.candidateRank+' (relative-volume order).' : ''} Range high ${money(d.openingRangeHigh)} · daily ATR ${money(d.atr)}${d.relativeVolume!==null ? ' · relative volume '+qty(d.relativeVolume)+'×' : ''}.`;
+      plan.textContent=`Reserved plan: ${qty(d.qty)} shares · buy limit ${money(d.limitPrice)} · stop ${money(d.stopPrice)} (0.1 × ATR, rounded) · maximum allocation ${money(d.maxNotional)} · nominal stop-distance risk ${money(d.nominalRisk)}. These are planned prices, not fills.`;
+      quote.textContent=d.quoteRecorded ? `Decision quote ${stamp(d.quoteAt)} · bid ${money(d.bid)} / ask ${money(d.ask)}.` : 'This older entry did not store the exact admission quote inside its plan. No quote or Gem pre-buy rationale has been reconstructed.';
+      rules.className=plan.className=quote.className='card-meta';article.append(title,rules,plan,quote);decisions.append(article);
+    }
+    if(!decisions.childElementCount) decisions.textContent='No allowlisted entry-plan evidence published. Order fills alone do not reveal a decision rationale.';
     const reviews=el('review-list'); reviews.replaceChildren();
     for (const r of data.reviews) {
       const li=document.createElement('li'),title=document.createElement('strong'),detail=document.createElement('p');

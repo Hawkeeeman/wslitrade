@@ -88,7 +88,8 @@
     }
     if (Number.isInteger(p.entriesToday) && Number.isInteger(p.maxEntries) &&
         p.entriesToday>=p.maxEntries && !(data.positions||[]).length && p.openOrderCount===0)
-      return {kind:'awake',label:'Daily entry used',detail:'Today’s entry attempt is complete and the account is flat. No second entry; safety monitoring continues.'};
+      return {kind:'awake',label:p.maxEntries===1 ? 'Daily entry used' : 'Daily entry limit used',detail:'Today’s entry attempt limit is consumed and the account is flat. No further buys; safety monitoring continues.'};
+    if(p.executorState==='EXIT_COOLDOWN') return {kind:'awake',label:'Exit cooldown',detail:'The account is flat. A 15-minute cooldown must finish before another valid entry.'};
     if ((data.positions||[]).length) return {kind:'awake',label:p.executorState==='POSITION_PROTECTED' ? 'Position protected' : 'Managing position',
       detail:'A paper position is open. The deterministic supervisor handles protection and exits.'};
     return {kind:'awake',label:p.executorState==='WAITING_FOR_PREPARE_OR_SCAN' ? 'Waiting for scan' : 'Watching signals',

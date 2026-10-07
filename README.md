@@ -37,12 +37,30 @@ Until that succeeds, the snapshot is explicitly labelled manual. The timer is
 not an AI heartbeat and cannot wake Windows. Keep hawkspc and WSL awake.
 
 The paper executor prepares at 07:45, starts monitoring at 09:30, and permits
-entries only 09:36–11:00 Eastern. It allows one entry attempt per day, at most
+entries only 09:36–11:00 Eastern. October 7 retains one entry attempt. The approved
+October 8 policy permits up to three attempts, one position at a time, no repeat
+symbols, and a durable 15-minute cooldown after a verified flat exit. Attempts
+are reserved before network transmission; timeouts and rejections consume slots.
+Dollar limits remain at most
 $1,000 exposure and $10 nominal stop risk, with a $100 daily-loss entry cutoff.
 Gaps, slippage and outages can exceed nominal risk. It starts liquidation five
 minutes before the actual exchange close. Gem reviews at 10:05 and 16:05; it
-does not submit broker orders. A closed position after the daily attempt is used
-is a valid monitored state, not permission to buy again.
+does not submit broker orders. A no-trade day or consumed attempt limit is a valid
+monitored state, not a sleeping bot.
+
+The private host upgrade is staged and scheduled for October 7 at 16:10 Eastern,
+after the close review. It refuses an open market, running supervisor, nonflat
+account, halt, unexpected config or arm hash. Existing source/arm backups and
+the execution ledger are preserved; no balance reset, direct order or restart.
+Its installation receipt must be checked before claiming the new policy is live.
+The host must remain awake; the one-time timer has no missed-run catch-up.
+
+The Agents page separates actual fills (shares, average price, notional, realized
+round trip P/L and duration) from planned limits/stops and recorded admission
+evidence. The old entry lacks an embedded decision quote; it is not reconstructed.
+Gem's later review is not presented as a pre-buy decision or hidden thoughts.
+Weekday research is scheduled at 16:30 Eastern in this Codex chat, not as another
+trading loop. It proposes evidence-backed tests; it cannot change the strategy.
 
 Website tests: `node --test tests/*.test.js` and
 `python3 -m unittest discover -s tests -v`.

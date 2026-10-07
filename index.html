@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="WSLI trains and operates an autonomous trading bot that reads US equities and executes with discipline.">
+  <meta name="description" content="Follow WSLI’s evidence-based paper trading pilot, fixed rules, risk checks and actual order results.">
   <meta name="theme-color" content="#04080a">
   <meta property="og:title" content="WSLI">
-  <meta property="og:description" content="We train the machine that takes the trade.">
+  <meta property="og:description" content="Research first. Follow the agents, not claims of guaranteed profit.">
   <meta property="og:url" content="https://wslitrade.com">
   <meta property="og:type" content="website">
   <title>WSLI</title>
@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=20261007-1">
 </head>
 <body class="home">
   <canvas id="stage" aria-hidden="true"></canvas>
@@ -52,10 +52,15 @@
         WSLI
       </p>
       <h1>Research first.<br><em>Evidence before trades.</em></h1>
-      <p class="hero-line">WSLI is testing a rules-based US stock strategy. The current pilot records market data and reviews signals. It does not place orders, and profitability is not established.</p>
+      <p class="hero-line">WSLI is paper-testing a fixed US stock strategy in a separate $10,000 simulated account. Follow the scans, risk checks, Gem’s reviews and actual broker results. No live money; profitability is not established.</p>
       <div class="hero-actions">
-        <a class="btn-primary" href="agents.html">Watch it work</a>
-        <a class="btn-ghost" href="agents.html#heartbeat">Gem heartbeat</a>
+        <a class="btn-primary" href="agents.html">Agents</a>
+        <a class="btn-ghost" href="agents.html#reviews">Gem’s reviews</a>
+      </div>
+      <div class="home-progress" aria-live="polite">
+        <p class="card-kicker mono">Latest published paper check</p>
+        <p id="home-paper-state">Loading verified progress…</p>
+        <p id="home-paper-detail" class="card-meta">No activity is inferred before a snapshot arrives.</p>
       </div>
     </section>
 
@@ -64,12 +69,12 @@
         <p class="eyebrow mono">About us</p>
         <h2>We test the process.</h2>
         <p class="lead">WSLI is a small team researching systematic trading in US equities. We combine fixed rules, recorded market data, and bounded AI reviews.</p>
-        <p class="band-copy">Gem reviews saved evidence using an existing AI model. Saving context is not the same as training model weights. The current experiment observes opening-range setups; execution and performance validation remain separate work.</p>
+        <p class="band-copy">Gem reviews saved evidence using an existing AI model. Saving context is not training model weights. Deterministic code—not an unchecked AI answer—controls the small paper-trading experiment. Execution testing is not proof of alpha.</p>
         <div class="pillars">
           <article class="pillar">
             <p class="card-kicker mono">01</p>
             <h3>Built in-house</h3>
-            <p>We build the research rules and observation tools. A trading execution engine is not part of the current pilot.</p>
+            <p>We build fixed research rules, observation tools and a bounded paper executor. The new account is separate from earlier experiments.</p>
           </article>
           <article class="pillar">
             <p class="card-kicker mono">02</p>
@@ -79,7 +84,7 @@
           <article class="pillar">
             <p class="card-kicker mono">03</p>
             <h3>Risk first</h3>
-            <p>The pilot has no order-submission method. Missing or stale data are rejected, and observations are not reported as fills.</p>
+            <p>Cash-sized limits, a daily entry cap and broker protective orders constrain the pilot. Missing or stale data are refused; gaps and outages can still exceed nominal risk.</p>
           </article>
         </div>
       </div>
@@ -89,7 +94,7 @@
       <div class="home-band-inner">
         <p class="eyebrow mono">How it works</p>
         <h2>From scan to evidence.</h2>
-        <p class="lead">Today’s pilot separates data collection from AI review. Gateway health, heartbeat attempts, observations, and broker activity are different signals.</p>
+        <p class="lead">The agents separate data collection, AI oversight and deterministic execution. A running monitor, a candidate and a filled order are different things.</p>
         <ol class="steps">
           <li>
             <span class="step-num mono">01</span>
@@ -115,8 +120,8 @@
           <li>
             <span class="step-num mono">04</span>
             <div>
-              <h3>Tests before execution</h3>
-              <p>Historical evaluation, realistic costs, and tested execution safeguards must come before a new paper-trading trial. Existing account holdings are not pilot results.</p>
+              <h3>Records real paper outcomes</h3>
+              <p>The execution journal and broker responses distinguish attempts, partial fills, stops and closed positions. Small paper results are not live returns or proof of long-term profitability.</p>
             </div>
           </li>
         </ol>
@@ -131,7 +136,8 @@
   </footer>
 
   <script src="js/field.js"></script>
-  <script src="js/status.js?v=20260921-2"></script>
-  <script src="js/home.js?v=20260921-1"></script>
+  <script src="js/status.js?v=20261007-1"></script>
+  <script src="js/paper-feed.js?v=20261007-1"></script>
+  <script src="js/home.js?v=20261007-1"></script>
 </body>
 </html>

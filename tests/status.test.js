@@ -90,3 +90,45 @@ test('deterministic close audit is distinct from citation validation', () => {
   assert.equal(review({lastOutcome:'ok',citationsVerified:false,deterministicAuditVerified:true},now),
     'Completed · deterministic audit');
 });
+
+const {paper,paperReview}=require('../js/status.js');
+const paperNow=at('2026-10-07T14:50:00Z');
+const pilot={schemaVersion:2,scope:'wsli_paper_pilot',updatedAt:'2026-10-07T14:49:00Z',
+  account:{paper:true},market:{open:true,checkedAt:'2026-10-07T14:49:00Z',nextClose:'2026-10-07T20:00:00Z'},
+  progress:{session:'2026-10-07',supervisorSession:'2026-10-07',checkedAt:'2026-10-07T14:49:00Z',supervisorAt:'2026-10-07T14:48:58Z',
+    process:'active',armed:true,entriesToday:1,maxEntries:1,openOrderCount:0,executorState:'ENTRY_CONSUMED_OR_PENDING'},positions:[]};
+test('daily attempt consumed and flat means monitoring, not offline',()=>{
+  assert.equal(paper(pilot,paperNow).label,'Daily entry used');
+  assert.equal(paper(pilot,paperNow).kind,'awake');
+});
+test('publication latency does not falsely call a fresh host checkpoint stalled',()=>{
+  assert.equal(paper(pilot,at('2026-10-07T14:55:00Z')).kind,'awake');
+});
+test('no new snapshot after fifteen minutes is delayed, not live or offline',()=>{
+  assert.equal(paper(pilot,at('2026-10-07T15:05:00Z')).kind,'stale');
+});
+test('future, unsupported and legacy feeds cannot masquerade as paper progress',()=>{
+  assert.equal(paper({...pilot,updatedAt:'2026-10-08T14:50:00Z'},paperNow).kind,'stale');
+  assert.equal(paper(legacy,paperNow).kind,'unknown');
+  assert.equal(paper({...pilot,account:{paper:false}},paperNow).kind,'unknown');
+});
+test('real stopped or stalled process while market open is attention-worthy',()=>{
+  assert.equal(paper({...pilot,progress:{...pilot.progress,process:'inactive'}},paperNow).label,'Monitor not running');
+  assert.equal(paper({...pilot,progress:{...pilot.progress,supervisorAt:'2026-10-07T14:40:00Z'}},paperNow).label,'Monitor delayed');
+});
+test('halt and uncertain submission never look healthy',()=>{
+  assert.equal(paper({...pilot,progress:{...pilot.progress,halted:true}},paperNow).kind,'asleep');
+  assert.equal(paper({...pilot,progress:{...pilot.progress,executorState:'ORDER_OUTCOME_UNKNOWN'}},paperNow).label,'Needs attention');
+});
+test('review success distinguishes saved report from missing report',()=>{
+  assert.equal(paperReview({lastOutcome:'ok',reportAvailable:true},paperNow),'Completed · report saved');
+  assert.equal(paperReview({lastOutcome:'ok'},paperNow),'Run completed · report missing');
+  assert.equal(paperReview({scheduledAt:'2026-10-07T14:05:00Z'},paperNow),'Awaiting published result');
+});
+test('a running process cannot verify missing or another session’s execution state',()=>{
+  assert.equal(paper({...pilot,progress:{...pilot.progress,executorState:null}},paperNow).kind,'unknown');
+  assert.equal(paper({...pilot,progress:{...pilot.progress,supervisorSession:'2026-10-06'}},paperNow).kind,'unknown');
+});
+test('missing ledger counts cannot imply a completed daily attempt',()=>{
+  assert.notEqual(paper({...pilot,progress:{...pilot.progress,entriesToday:null}},paperNow).label,'Daily entry used');
+});

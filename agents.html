@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="WSLI agents — live bot status and trades.">
+  <meta name="description" content="WSLI Agents — timestamped progress, Gem reviews, positions and actual order results.">
   <title>WSLI — Agents</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260921-2">
+  <link rel="stylesheet" href="css/styles.css?v=20261007-1">
 </head>
 <body>
   <canvas id="stage" aria-hidden="true"></canvas>
@@ -23,7 +23,7 @@
     <div class="nav-links">
       <a href="index.html" class="page-link">Home</a>
       <a href="agents.html" class="page-link active">Agents</a>
-      <a href="#heartbeat" class="jump">Heartbeat</a>
+      <a href="#heartbeat" class="jump">Progress</a>
       <a href="#positions" class="jump">Positions</a>
       <a href="#feed" class="jump">Feed</a>
       <a href="#trades" class="jump">Trades</a>
@@ -40,19 +40,23 @@
     </div>
   </nav>
 
-  <main class="desk">
+  <main class="desk paper-desk">
     <header class="desk-head">
-      <p class="eyebrow mono">Agents</p>
-      <h1>The floor.</h1>
+      <p class="eyebrow mono">WSLI · paper only · Eastern time</p>
+      <h1>Agents.</h1>
       <p class="updated mono" id="updated">Loading snapshot…</p>
-      <p class="updated">Status dashboard only. Gateway health, market hours and trading activity are separate. The new ORB pilot observes only; existing paper-account positions are not its results.</p>
+      <p class="updated" id="trial-summary">The new $10,000 experiment—not the legacy NVDA account. No live money. A signal is not a fill, and paper results do not establish profitability.</p>
+      <div class="progress-banner" id="progress-banner" role="status" aria-live="polite">
+        <strong id="progress-label">Loading agent progress…</strong>
+        <span id="progress-detail">Reading the latest host-published snapshot.</span>
+      </div>
     </header>
 
     <section class="cards" aria-label="Status">
       <article class="card" id="card-bot">
-        <p class="card-kicker mono">Gateway health</p>
+        <p class="card-kicker mono">Agent monitor</p>
         <h2 id="bot-state">—</h2>
-        <p class="card-meta" id="bot-meta">Checking hawkspc…</p>
+        <p class="card-meta" id="bot-meta">Supervisor status—not gateway connectivity.</p>
       </article>
       <article class="card" id="card-market">
         <p class="card-kicker mono">Market</p>
@@ -65,45 +69,58 @@
         <p class="card-meta" id="account-meta">Alpaca paper</p>
       </article>
       <article class="card" id="card-power">
-        <p class="card-kicker mono">Buying power</p>
+        <p class="card-kicker mono">Trial P/L</p>
         <h2 id="power-value">—</h2>
-        <p class="card-meta" id="power-meta">Day P/L pending</p>
+        <p class="card-meta" id="power-meta">Compared with the $10,000 starting balance.</p>
       </article>
     </section>
 
     <section id="heartbeat" class="panel" aria-labelledby="heartbeat-heading">
       <div class="panel-head">
-        <h2 id="heartbeat-heading">Gem heartbeat &amp; research</h2>
+        <h2 id="heartbeat-heading">Today’s progress</h2>
         <p class="mono muted" id="heartbeat-publication">Checking publication…</p>
       </div>
-      <p class="card-meta" id="heartbeat-checked">No current heartbeat evidence loaded.</p>
-      <div class="heartbeat-grid">
+      <p class="card-meta" id="heartbeat-checked">No current monitoring evidence loaded.</p>
+      <div class="pilot-progress-grid">
         <article>
-          <p class="card-kicker mono">General heartbeat</p>
-          <h3 id="heartbeat-state">Unverified</h3>
-          <p class="card-meta" id="heartbeat-detail">A gateway connection does not confirm an agent run.</p>
-          <p class="card-meta" id="heartbeat-next"></p>
+          <p class="card-kicker mono">01 · Prepare</p>
+          <h3 id="prepare-state">—</h3>
+          <p class="card-meta" id="prepare-detail">Only stocks with verified history enter the universe.</p>
         </article>
         <article>
-          <p class="card-kicker mono">Observation collector</p>
-          <h3 id="collector-state">Unverified</h3>
-          <p class="card-meta" id="collector-detail">No observation timestamp loaded.</p>
-          <p class="card-meta" id="collector-schedule"></p>
-          <p class="card-meta" id="watchdog-detail">Watchdog state unverified.</p>
+          <p class="card-kicker mono">02 · Opening scan</p>
+          <h3 id="scan-state">—</h3>
+          <p class="card-meta" id="scan-detail">The first five-minute range is checked after 9:36 a.m.</p>
         </article>
         <article>
-          <p class="card-kicker mono">Bounded AI reviews</p>
-          <ul class="review-list" id="review-list"><li>No review evidence loaded.</li></ul>
-          <p class="card-meta">Citation checks verify copied numbers, not reasoning or profitability. Reviews do not authorize orders.</p>
+          <p class="card-kicker mono">03 · Paper execution</p>
+          <h3 id="entry-state">—</h3>
+          <p class="card-meta" id="entry-detail">At most one entry attempt per session.</p>
+        </article>
+        <article>
+          <p class="card-kicker mono">04 · Safety &amp; close</p>
+          <h3 id="safety-state">—</h3>
+          <p class="card-meta" id="safety-detail">Code manages protective orders and closing reconciliation.</p>
         </article>
       </div>
-      <p class="heartbeat-notice">Observation only—not a paper execution engine. No pilot orders or simulated fills. Existing account positions below are separate.</p>
+      <div class="pilot-schedule">
+        <p id="collector-detail">Quote observations not yet loaded.</p>
+        <p id="collector-schedule">Schedule not yet loaded.</p>
+        <p id="risk-detail">Fixed cash-sized limits. Nominal stop risk is not a guaranteed maximum loss.</p>
+      </div>
+      <p class="heartbeat-notice">No signal means no trade. A daily entry used is not a sleeping bot. If hawkspc stops publishing, timestamps go stale; the site will not invent new activity.</p>
+    </section>
+
+    <section id="reviews" class="panel" aria-labelledby="reviews-heading">
+      <div class="panel-head"><h2 id="reviews-heading">Gem’s oversight</h2><p class="mono muted">Two bounded reviews · not always-on AI</p></div>
+      <ul class="review-list pilot-review-list" id="review-list"><li>No review evidence loaded.</li></ul>
+      <p class="card-meta">Gem reviews recorded evidence and can request a halt. Deterministic code sizes and sends orders. A saved report is not proof of correct reasoning.</p>
     </section>
 
     <section id="positions" class="panel">
       <div class="panel-head">
         <h2>Positions</h2>
-        <p class="mono muted" id="position-count">0 open</p>
+        <p class="mono muted" id="position-count">Checking</p>
       </div>
       <div class="table-wrap">
         <table>
@@ -118,7 +135,7 @@
             </tr>
           </thead>
           <tbody id="position-body">
-            <tr><td colspan="6" class="empty">No open positions.</td></tr>
+            <tr><td colspan="6" class="empty">Waiting for verified paper-account positions.</td></tr>
           </tbody>
         </table>
       </div>
@@ -126,18 +143,18 @@
 
     <section id="feed" class="panel">
       <div class="panel-head">
-        <h2>Feed</h2>
-        <p class="mono muted" id="feed-count">0 events</p>
+        <h2>Activity journal</h2>
+        <p class="mono muted" id="feed-count">Checking</p>
       </div>
       <ol class="feed" id="feed-list">
-        <li class="feed-empty">Waiting for the first live snapshot.</li>
+        <li class="feed-empty">Waiting for published execution evidence.</li>
       </ol>
     </section>
 
     <section id="trades" class="panel">
       <div class="panel-head">
-        <h2>Trades</h2>
-        <p class="mono muted" id="trade-count">0 orders</p>
+        <h2>Orders &amp; fills</h2>
+        <p class="mono muted" id="trade-count">Checking</p>
       </div>
       <div class="table-wrap">
         <table>
@@ -146,13 +163,13 @@
               <th>Time</th>
               <th>Side</th>
               <th>Symbol</th>
-              <th>Qty</th>
+              <th>Filled / ordered</th>
               <th>Price</th>
               <th>Status</th>
             </tr>
           </thead>
           <tbody id="trade-body">
-            <tr><td colspan="6" class="empty">No trades yet.</td></tr>
+            <tr><td colspan="6" class="empty">Waiting for verified order history. Canceled setup tests are excluded.</td></tr>
           </tbody>
         </table>
       </div>
@@ -165,8 +182,8 @@
   </footer>
 
   <script src="js/stage.js"></script>
-  <script src="js/status.js?v=20260921-2"></script>
-  <script src="js/desk.js?v=20260921-2"></script>
-  <script src="js/heartbeat.js?v=20260921-4"></script>
+  <script src="js/status.js?v=20261007-1"></script>
+  <script src="js/paper-feed.js?v=20261007-1"></script>
+  <script src="js/paper.js?v=20261007-1"></script>
 </body>
 </html>

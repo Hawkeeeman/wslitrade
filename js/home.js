@@ -1,15 +1,16 @@
-const LIVE_URL = "data/live.json";
-
 function setPill(dotId, labelId, kind, label) {
   document.getElementById(dotId).className = `pulse-dot ${kind}`;
   document.getElementById(labelId).textContent = label;
 }
 
 function renderHome(data) {
-  const botKind = WSLIStatus.bot(data);
-  const labels = { awake: "Gateway online", asleep: "Gateway unreachable", stale: "Health check stale", unknown: "Health unverified" };
+  const paper = WSLIStatus.paper(data);
+  const botKind = paper.kind;
   window.stageState.bot = botKind;
-  setPill("status-dot", "status-label", botKind, labels[botKind]);
+  setPill("status-dot", "status-label", botKind, paper.label);
+  document.getElementById('home-paper-state').textContent=paper.label;
+  const stamp=new Date(data.updatedAt).toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'});
+  document.getElementById('home-paper-detail').textContent=`${paper.detail} Host checked ${stamp}. Open the dashboard for account figures and actual order history.`;
 
   const market = WSLIStatus.market(data);
   const marketKind = market.kind;
@@ -23,13 +24,13 @@ function renderHome(data) {
 
 async function loop() {
   try {
-    const res = await fetch(`${LIVE_URL}?t=${Date.now()}`, { cache: "no-store" });
-    if (!res.ok) throw new Error(`live.json ${res.status}`);
-    renderHome(await res.json());
+    renderHome(await WSLIPaperFeed.load());
   } catch {
     setPill("status-dot", "status-label", "unknown", "Feed unavailable");
     setPill("market-dot", "market-label", "unknown", "Market unverified");
     window.stageState.bot = window.stageState.market = "unknown";
+    document.getElementById('home-paper-state').textContent='Agent progress unavailable';
+    document.getElementById('home-paper-detail').textContent='No current host snapshot could be loaded. No trade, profit or offline state is implied.';
   }
 }
 

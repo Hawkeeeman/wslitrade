@@ -145,6 +145,27 @@ body {
 .review-list { list-style: none; padding: 0; margin: .5rem 0; }
 .review-list li + li { margin-top: 1rem; }
 .heartbeat-notice { border-top: 1px solid var(--border); padding-top: 1rem; color: var(--warn); font-size: .85rem; }
+.desk.paper-desk { max-width: 1200px; }
+.paper-desk .cards { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.paper-desk .card, .paper-desk .panel { background: rgba(6,16,13,.94); }
+.paper-desk .card { padding: 1.3rem; }
+.paper-desk .card h2 { font-size: clamp(1.45rem,2.4vw,2rem); }
+.progress-banner { display: flex; flex-direction: column; gap: .45rem; margin-top: 1.5rem; padding: 1.2rem 1.4rem; border: 1px solid var(--border); border-left: 3px solid var(--accent); background: var(--surface); border-radius: 12px; }
+.progress-banner strong { font-size: 1.15rem; }
+.progress-banner span { color: var(--text-muted); font-size: .94rem; }
+.progress-banner[data-state="stale"] { border-left-color: var(--warn); }
+.progress-banner[data-state="asleep"] { border-left-color: var(--red); }
+.pilot-progress-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 1.4rem; margin: 1.5rem 0; }
+.pilot-progress-grid h3 { font-size: 1.2rem; letter-spacing: -.03em; }
+.pilot-progress-grid article { min-width: 0; }
+.pilot-schedule { border-top: 1px solid var(--border); padding: .9rem 0; color: var(--text-muted); font-size: .85rem; }
+.pilot-schedule p + p { margin-top: .5rem; }
+.pilot-review-list { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; }
+.pilot-review-list li + li { margin-top: 0; }
+.paper-desk .panel-head { flex-wrap: wrap; gap: .6rem; }
+.paper-desk .panel-head .mono { font-size: .7rem; }
+@media (max-width: 850px) { .paper-desk .cards, .pilot-progress-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media (max-width: 540px) { .paper-desk .cards, .pilot-progress-grid, .pilot-review-list { grid-template-columns: 1fr; } .paper-desk { padding: 2.5rem 1rem; } }
 @media (max-width: 720px) { .heartbeat-grid { grid-template-columns: 1fr; } }
 
 @keyframes pulse {
@@ -271,6 +292,9 @@ body {
   align-items: center;
   gap: 0.85rem;
 }
+.home-progress { max-width: 34rem; margin-top: 1.5rem; padding: 1.15rem 1.35rem; border: 1px solid var(--border); border-radius: 14px; background: rgba(6,16,13,.88); }
+.home-progress #home-paper-state { font-weight: 800; font-size: 1.12rem; }
+.home-progress .card-meta { font-size: .85rem; }
 
 .btn-primary,
 .btn-ghost {

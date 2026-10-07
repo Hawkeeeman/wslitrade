@@ -5,11 +5,57 @@ Site for the Alpaca paper bot.
 - **Home:** https://wslitrade.com
 - **Agents:** https://wslitrade.com/agents.html
 
-The Agents page reads `data/live.json`.
+## Current paper pilot: October 7–20, 2026
 
-## Gem heartbeat and observer status
+The Home and Agents pages read **`data/paper.json`**, not the legacy account's
+`data/live.json`. The new experiment starts with $10,000 paper equity. The page
+shows preparation, opening-range candidates, recorded quote batches, the actual
+supervisor checkpoint, entry usage, broker positions and fills, and Gem's two
+bounded review outcomes. An order intent is not a fill; a saved AI report is not
+proof of correct reasoning. There is no website button that places an order.
 
-The Agents page also independently reads `data/heartbeat.json`. It distinguishes
+`scripts/collect_paper.py` runs read-only on hawkspc against the installed,
+account-pinned paper executor. Its public allowlist excludes credentials,
+account identifiers, client-order IDs, private paths, prompts and raw reports.
+Unrelated orders and the canceled setup test are excluded. Publication failures
+preserve previous timestamps. A missing source is never treated as completion.
+
+The browser checks the public repository's snapshot every 20 seconds, falling
+back to the packaged snapshot if unavailable. This avoids waiting for a complete
+site rebuild for each data update. **This is delayed monitoring, not a real-time
+trading console.** After 15 minutes the page says updates are delayed, not that
+the host is necessarily offline. Market status uses verified broker time or an
+explicitly labelled exchange calendar, not a guessed weekday clock.
+
+The separate non-AI publisher is prepared on hawkspc. The repo owner must add its
+public deploy key with write access to **Hawkeeeman/wslitrade only**. The private
+key stays on hawkspc. Repo write access is not path-level isolation; the publisher
+itself stages only `data/paper.json`. No personal GitHub credential is copied.
+`scripts/install_publisher.py --apply` first verifies a real push, then installs
+the finite ten-minute weekday timer, 07:00–17:50 Eastern, October 7–20 only.
+Until that succeeds, the snapshot is explicitly labelled manual. The timer is
+not an AI heartbeat and cannot wake Windows. Keep hawkspc and WSL awake.
+
+The paper executor prepares at 07:45, starts monitoring at 09:30, and permits
+entries only 09:36–11:00 Eastern. It allows one entry attempt per day, at most
+$1,000 exposure and $10 nominal stop risk, with a $100 daily-loss entry cutoff.
+Gaps, slippage and outages can exceed nominal risk. It starts liquidation five
+minutes before the actual exchange close. Gem reviews at 10:05 and 16:05; it
+does not submit broker orders. A closed position after the daily attempt is used
+is a valid monitored state, not permission to buy again.
+
+Website tests: `node --test tests/*.test.js` and
+`python3 -m unittest discover -s tests -v`.
+
+## Historical observer and legacy account (not the current dashboard)
+
+The files and workflow below are preserved historical integrations. The current
+pages do not consume their balances or heartbeat files. The legacy GitHub Action
+can continue refreshing `data/live.json` without overwriting the new pilot.
+
+### September Gem heartbeat and observer status
+
+The previous Agents page independently read `data/heartbeat.json`. It distinguished
 general heartbeat attempts, recorded quote batches, and the two bounded AI reviews.
 The current file is a **manually verified snapshot**, not a streaming connection.
 After 15 minutes it becomes unverified; an elapsed next-run time never implies
@@ -52,7 +98,7 @@ Only check times, outcomes, intervals, batch counts, feed, session and citation
 validation booleans belong in the public heartbeat. Never add raw prompts, model
 responses, account identifiers, credentials, private host paths, or journal payloads.
 
-## Refresh the snapshot
+### Refresh the legacy snapshot
 
 From a machine on the tailnet (so hawkspc health is reachable):
 
@@ -88,7 +134,7 @@ here and its results must not be confused with existing paper-account positions.
 Tests: `node --test tests/status.test.js` and
 `python3 -m unittest discover -s tests -v`.
 
-Required GitHub secrets:
+Required GitHub secrets for the legacy workflow only:
 
 - `APCA_API_KEY_ID`
 - `APCA_API_SECRET_KEY`
@@ -96,8 +142,7 @@ Required GitHub secrets:
 ## Local preview
 
 ```bash
-python3 scripts/collect_live.py
-python3 -m http.server 8080
+python3 -m http.server 8080 --bind 127.0.0.1
 ```
 
 Open [http://localhost:8080](http://localhost:8080).

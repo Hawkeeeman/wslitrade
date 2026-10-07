@@ -62,6 +62,13 @@ Gem's later review is not presented as a pre-buy decision or hidden thoughts.
 Weekday research is scheduled at 16:30 Eastern in this Codex chat, not as another
 trading loop. It proposes evidence-backed tests; it cannot change the strategy.
 
+Research baseline: the [ORB paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4729284)
+also uses a 10%-of-ATR stop. A quick stop-out does not establish a code bug.
+Its broader long/short book is not replicated by this small, long-only,
+one-position experiment; the paper's reported returns cannot be inherited.
+Alpaca documents IEX-only paper data access but NBBO simulated fills, another
+signal/execution mismatch to investigate before claiming a market edge.
+
 Website tests: `node --test tests/*.test.js` and
 `python3 -m unittest discover -s tests -v`.
 

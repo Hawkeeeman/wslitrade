@@ -187,9 +187,10 @@
     <section class="panel" aria-labelledby="research-heading">
       <div class="panel-head"><h2 id="research-heading">Research priorities</h2><p class="mono muted">Weekdays · 4:30 p.m. Eastern</p></div>
       <ul class="research-list">
-        <li><strong>Stop width versus noise.</strong> The current stop is 0.1 × daily ATR. Test alternatives on held-out observations with the same dollar risk; one quick stop-out is not enough evidence to change the strategy.</li>
+        <li><strong>Stop width versus noise.</strong> The current 0.1 × daily ATR stop also appears in the <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4729284" target="_blank" rel="noopener noreferrer">published ORB study</a>; it is not automatically a coding error. Test alternatives on held-out observations with the same dollar risk. One quick stop-out is not enough evidence to change the strategy.</li>
         <li><strong>Feed and fill mismatch.</strong> Signals use one exchange (IEX); paper fills use NBBO. Check whether a breakout exists on comparable market data. <a href="https://docs.alpaca.markets/us/docs/paper-trading" target="_blank" rel="noopener noreferrer">Alpaca’s simulation rules</a> · <a href="https://docs.alpaca.markets/us/docs/market-data-faq" target="_blank" rel="noopener noreferrer">IEX versus SIP</a></li>
         <li><strong>Measure execution, not just win rate.</strong> Track stop slippage, holding time, rejected signals and net results after realistic costs. Paper simulation omits important live-trading frictions.</li>
+        <li><strong>Do not inherit a paper’s claimed returns.</strong> The study tests a broad universe and both long and short trades. WSLI currently uses a much smaller verified universe, long-only trades and one position at a time. This is a different experiment; its performance must be measured independently.</li>
       </ul>
       <p class="card-meta">Research proposes tests. It cannot place orders or automatically rewrite the strategy. Useful new findings are reported; repetitive findings stay quiet.</p>
     </section>

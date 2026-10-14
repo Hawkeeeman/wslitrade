@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self'; connect-src 'self' https://raw.githubusercontent.com; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+  <meta name="description" content="Why WSLI’s paper results are not proof of profitability, how a fixed-rule system should be evaluated, and the limits of simulated fills and AI reviews.">
+  <title>Risk &amp; performance — WSLI</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css?v=20261014-privacy">
+</head>
+<body>
+  <nav class="nav" aria-label="Main navigation"><a class="logo" href="index.html"><span class="logo-mark">▮</span> WSLI</a><div class="nav-links"><a href="index.html">Home</a><a href="agents.html">Agents</a></div></nav>
+  <main class="policy-main">
+    <p class="mono muted">Evidence before claims</p>
+    <h1>Risk &amp; performance</h1>
+    <p class="policy-date mono">Methodology reviewed October 14, 2026</p>
+    <p class="policy-lead">Profitability is not established. WSLI is validating a simulated trading system; a successful test order or a positive week would not prove a durable market edge.</p>
+    <nav class="policy-nav" aria-label="Related policies"><a href="agents.html">Actual paper progress</a><a href="privacy.html">Privacy</a><a href="cookies.html">Cookies</a><a href="terms.html">Terms</a></nav>
+
+    <h2>Where the experiment stands</h2>
+    <p>The scheduled October 7–20, 2026 experiment began with $10,000 in a separate paper account. The October 14 review had only three completed entry trades, including two exits triggered by execution safeguards rather than a normal strategy outcome. That sample is too small and operationally disrupted to establish profitability. All of those losses remain in the account result.</p>
+    <p>The October 20 endpoint is an operational checkpoint, not a profitability deadline. Further sessions require a separately approved schedule. The website does not extend the test, change risk limits or turn on live trading.</p>
+
+    <h2>What would count as useful evidence?</h2>
+    <ol>
+      <li><strong>Reliable execution first.</strong> Reconcile every filled order, protective stop and exit against the broker. Record outages, rejected entries, forced exits and missing observations. Do not label an incomplete session successful.</li>
+      <li><strong>Fixed, versioned rules and a fresh test.</strong> Specify the universe, entry/exit rules, risk limits, evaluation dates and pass/fail checks before observing outcomes. Changes start a separately labelled test. Do not optimize on the same observations and call them independent confirmation.</li>
+      <li><strong>Net results, not only wins.</strong> Report trade count, average gain and loss, realized and unrealized P/L, drawdown, exposure and net expectancy after estimated fees, spread/slippage and relevant running costs. Distinguish broker-simulated P/L from a separately calculated, cost-adjusted estimate.</li>
+      <li><strong>Uncertainty and market conditions.</strong> Assess results across independent trading sessions and different conditions, with a risk-appropriate benchmark. Same-day trades may be correlated; treating every trade as independent can overstate confidence. Report uncertainty, not just a single return or win rate.</li>
+      <li><strong>Preserve the complete record.</strong> Show strategy outcomes and operational failures separately while retaining both in total system performance. Include no-trade sessions, specify missing data, and keep the untouched out-of-sample test distinct from development results.</li>
+    </ol>
+    <p>Several weeks or months of clean observations may still be inconclusive. There is no universal number of trades that proves an edge. A cost-adjusted positive result with credible uncertainty bounds would be encouraging evidence, not a guarantee that future or live results will be positive.</p>
+    <p>This is an evaluation plan, not a claim that confidence intervals, a net-cost model or a complete multi-session performance report have already been computed. Repeatedly testing variants increases the risk of finding a result by chance; see Bailey and co-authors’ <a href="https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf" rel="noopener noreferrer">primary research on backtest overfitting</a>.</p>
+
+    <h2>Paper results are hypothetical</h2>
+    <p>Paper orders do not reach a live exchange. Alpaca’s simulator omits important effects, including market impact, latency-related slippage, queue position and regulatory fees. Signals here use sampled IEX data from one exchange, while simulated fills use consolidated best bid/offer information. This difference can make apparent signals or fills unlike those available in live trading. See <a href="https://docs.alpaca.markets/us/docs/paper-trading" rel="noopener noreferrer">Alpaca’s paper-trading documentation</a>.</p>
+    <p>The dollar P/L shown on the dashboard is the paper broker’s result. It is not a fully cost-adjusted live return, a prediction, or a guarantee. Do not annualize a few days of results or import returns reported in another strategy’s research paper.</p>
+
+    <h2>Trading and AI risks</h2>
+    <p>Real trading can lose money. Gaps, spreads, slippage, partial fills, stale data and outages can cause losses beyond a planned stop distance or daily entry cutoff. A halt marker is not confirmation that an account has been liquidated. A sleeping host cannot supervise positions.</p>
+    <p>Gem can misread evidence or produce incorrect explanations. Its reviews are bounded summaries, not verified forecasts or a record of hidden thoughts. The current deterministic executor applies rules and sends paper orders; the language model does not directly submit them. Neither role establishes skill or profitability.</p>
+    <p>No live-money decision should be based on this dashboard alone. The project does not offer personalized investment advice, guaranteed returns or account management for visitors.</p>
+  </main>
+  <footer class="footer"><span>WSLI</span><nav class="footer-links" aria-label="Policies"><a href="privacy.html">Privacy</a><a href="cookies.html">Cookies</a><a href="terms.html">Terms</a><a href="risk.html" aria-current="page">Risk &amp; performance</a></nav><span class="footer-note mono">Paper trading. Not financial advice.</span></footer>
+</body>
+</html>

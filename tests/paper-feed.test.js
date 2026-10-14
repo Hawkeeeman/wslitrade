@@ -28,6 +28,8 @@ test('public feed falls back without redating evidence or sending credentials',a
   assert.ok(calls[0].url.startsWith('https://raw.githubusercontent.com/Hawkeeeman/wslitrade/main/data/paper.json?'));
   assert.equal(calls[1].options.credentials,'omit');
   assert.equal(calls[1].options.cache,'no-store');
+  assert.equal(calls[0].options.referrerPolicy,'no-referrer');
+  assert.equal(calls[1].options.referrerPolicy,'no-referrer');
 });
 test('local preview never requests the production source',async()=>{
   const calls=[];

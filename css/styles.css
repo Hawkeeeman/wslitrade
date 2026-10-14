@@ -1,3 +1,19 @@
+/* Self-hosted, unmodified Latin fonts; licenses in assets/fonts. No Google request. */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("../assets/fonts/bricolage-grotesque-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fragment Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/fragment-mono-latin.woff2") format("woff2");
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -609,6 +625,22 @@ tr:last-child td { border-bottom: 0; }
 }
 
 .footer-note { font-size: 0.72rem; }
+.footer { flex-wrap: wrap; gap: 1rem; }
+.footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: .65rem 1rem; }
+.footer-links a, .card-meta a, .steps a { color: var(--accent); text-underline-offset: .2em; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 2px; }
+.policy-main { position: relative; z-index: 2; max-width: 880px; margin: 0 auto; padding: 3.5rem 1.5rem 5rem; }
+.policy-main h1 { font-size: clamp(2rem, 6vw, 3.5rem); line-height: 1.12; letter-spacing: -.04em; margin: .75rem 0 1rem; }
+.policy-main h2 { font-size: 1.35rem; margin: 2rem 0 .65rem; }
+.policy-main p, .policy-main li { color: #bacdc2; line-height: 1.75; }
+.policy-main p + p { margin-top: .85rem; }
+.policy-main ul, .policy-main ol { margin: .75rem 0 .75rem 1.35rem; }
+.policy-main li + li { margin-top: .55rem; }
+.policy-main a { color: var(--accent); text-underline-offset: .2em; overflow-wrap: anywhere; }
+.policy-main .policy-lead { font-size: 1.1rem; color: var(--text); }
+.policy-note { border: 1px solid var(--border); border-left: 3px solid var(--warn); border-radius: 10px; padding: 1rem 1.2rem; margin: 1.5rem 0; background: var(--surface); }
+.policy-main .policy-date { font-size: .75rem; color: var(--text-muted); }
+.policy-nav { display: flex; flex-wrap: wrap; gap: .7rem 1rem; margin: 1.5rem 0 2rem; }
 
 @media (max-width: 900px) {
   .hero { padding: 6.5rem 1.4rem 4rem; }

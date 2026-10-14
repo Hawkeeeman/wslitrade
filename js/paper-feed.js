@@ -16,7 +16,7 @@
       const controller=new AbortController();
       const timer=setTimeout(()=>controller.abort(),6000);
       try {
-        const res=await fetch(`${path}?t=${Date.now()}`,{cache:'no-store',credentials:'omit',signal:controller.signal});
+        const res=await fetch(`${path}?t=${Date.now()}`,{cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer',signal:controller.signal});
         if (!res.ok) throw new Error('unavailable');
         const data=await res.json();
         if (!valid(data)) throw new Error('Wrong or incomplete feed');

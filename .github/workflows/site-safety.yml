@@ -1,0 +1,30 @@
+name: Public site safety
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-safety-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # verified v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Check public source and selected public history
+        run: node scripts/audit_public.js --history HEAD
+      - name: Test website and public-data export boundaries
+        run: |
+          node --test tests/*.test.js
+          python3 -m unittest discover -s tests -v

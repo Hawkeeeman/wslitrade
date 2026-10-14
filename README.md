@@ -72,6 +72,53 @@ signal/execution mismatch to investigate before claiming a market edge.
 Website tests: `node --test tests/*.test.js` and
 `python3 -m unittest discover -s tests -v`.
 
+## Privacy, public credentials and performance disclosures
+
+Every site page links to `privacy.html`, `cookies.html`, `terms.html` and
+`risk.html`. Operator legal identity, jurisdiction and a designated private
+privacy contact still need confirmation; these factual notices are not a
+lawyer's jurisdiction-specific review or protection from all claims.
+
+No optional analytics, ads, embedded widgets, first-party cookies or persistent
+visitor IDs are used. The two fonts are now self-hosted, with their SIL licenses
+under `assets/fonts`; visiting no longer requests Google Fonts. GitHub Pages
+and the public raw snapshot endpoint receive ordinary connection information.
+The privacy notice links to GitHub's processing and security-log disclosures.
+Do not claim that hosting receives no personal data. No consent banner is added
+for nonexistent tracking. Any future optional tracking requires a fresh inventory
+and appropriate consent controls before it loads.
+
+The browser has no broker/model credentials and cannot call the gateway or
+submit an order. CSP meta tags restrict scripts/assets to the site and status
+requests to the site/GitHub raw host; referrers are suppressed. GitHub Pages does
+not allow this repo to set arbitrary HTTP response headers. In particular,
+anti-framing `frame-ancestors`, HSTS and server-side Permissions-Policy must not
+be claimed as configured by a meta tag. A separate hosting/header review would
+be required for those controls.
+
+Before publishing, run `node scripts/audit_public.js --history origin/main` plus
+the full tests. The scanner reports paths/rule names, never secret values. It
+checks tracked files and the selected public commit history for private artifacts,
+recognizable credentials and forbidden public JSON fields. It is heuristic and
+does not prove that every possible secret format is absent. Scan the actual
+public branch, not unrelated private local snapshot commits.
+
+Never stage the private `pilot/`, `tmp/`, `output/` or editor directories. Do not
+place credentials in source, public snapshots or build output. If a real secret
+is exposed, stop publication, have its owner revoke/rotate it, and plan any
+history cleanup separately; removing a current file alone is not remediation.
+The site security checks must pass without access to any trading secrets.
+The read-only `Public site safety` GitHub workflow repeats the audit and tests
+after pushes and on pull requests. It is a regression check, not a pre-push
+secret blocker or a promise that a parallel Pages deployment is gated by it;
+the pre-publication local audit still matters.
+
+The dashboard explicitly states profitability is unestablished. The October 20
+trial endpoint is an operational review, not an alpha claim or authorization
+to extend the schedule. `risk.html` separates simulated P/L from cost-adjusted
+estimates and describes the evaluation evidence still needed. No confidence
+interval, performance guarantee, or live return is fabricated.
+
 ## Historical observer and legacy account (not the current dashboard)
 
 The files and workflow below are preserved historical integrations. The current

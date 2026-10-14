@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self'; connect-src 'self' https://raw.githubusercontent.com; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+  <meta name="description" content="What the WSLI research dashboard collects, what GitHub hosting receives, and how private trading credentials are kept out of the public site.">
+  <title>Privacy — WSLI</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css?v=20261014-privacy">
+</head>
+<body>
+  <nav class="nav" aria-label="Main navigation"><a class="logo" href="index.html"><span class="logo-mark">▮</span> WSLI</a><div class="nav-links"><a href="index.html">Home</a><a href="agents.html">Agents</a></div></nav>
+  <main class="policy-main">
+    <p class="mono muted">Public research dashboard</p>
+    <h1>Privacy notice</h1>
+    <p class="policy-date mono">Site practices reviewed October 14, 2026</p>
+    <p class="policy-lead">You can read WSLI without a site account. We do not ask visitors for broker credentials, payments or personal trading information.</p>
+    <nav class="policy-nav" aria-label="Related policies"><a href="cookies.html">Cookies</a><a href="terms.html">Terms</a><a href="risk.html">Risk &amp; performance</a></nav>
+    <aside class="policy-note" aria-label="Operator details pending"><p>The operator’s legal name, location and dedicated private privacy contact are awaiting confirmation. This notice describes the current technical practices; it is not a claim that all jurisdiction-specific legal requirements have been met.</p></aside>
+
+    <h2>What happens when you visit</h2>
+    <p>The current site has no sign-up, contact form, advertising, analytics SDK, tracking pixel or visitor profiling. Its own code does not write cookies, local storage or session storage. Fonts and other visual assets are served with the site, without a request to Google Fonts.</p>
+    <p>The Home and Agents pages request an already-public paper-account snapshot from <code>raw.githubusercontent.com</code>, normally every 20 seconds while the page is open. If that request fails, they use the snapshot hosted with this site. Requests omit browser credentials; the pages do not connect to Alpaca, Azure, Discord or the private OpenClaw gateway.</p>
+    <p>WSLI is hosted on GitHub Pages. GitHub receives network information needed to serve requests, including IP addresses. GitHub explicitly states that Pages visitors’ IP addresses are logged for security purposes. WSLI does not operate or set the retention period for those hosting logs. See <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection" rel="noopener noreferrer">GitHub Pages data collection</a> and <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener noreferrer">GitHub’s privacy statement</a> for its processing, retention, international transfers and privacy-request channels.</p>
+
+    <h2>What we publish</h2>
+    <p>The dashboard shows selected simulated balances, positions, fills, recorded rule-based entry evidence, timestamps and process-health summaries for the WSLI experiment. This is operator-authorized paper-account reporting, not information collected from visitors.</p>
+    <p>The exporter is designed to exclude API keys, account numbers and IDs, broker order identifiers, private host paths, raw journals, prompts and full AI responses. Public snapshots and repository history can be copied or retained by other people; deleting a current page does not erase all prior copies.</p>
+
+    <h2>Credentials and security</h2>
+    <p>Broker and model credentials belong in the private host environment or GitHub Actions secrets, not in website JavaScript, URLs or public data. The public site is read-only: it cannot place orders or control Gem. Site tests check the public-data boundary and prohibited credential patterns, but no automated check or security measure guarantees that an incident is impossible.</p>
+    <p>Do not send API keys, passwords, account numbers or identity documents through public GitHub issues. A private reporting address still needs to be confirmed by the operator.</p>
+
+    <h2>External links and choices</h2>
+    <p>Following a link to research, GitHub or Alpaca takes you to a separate service with its own policies. Those links are not embedded trackers. You can block cross-site requests in your browser; the dashboard then falls back to its hosted snapshot, which may be older. The timestamps remain visible.</p>
+    <p>We do not sell visitor data, use it for targeted advertising or send browsing activity to an AI model through this site. We do not deliberately collect children’s personal information.</p>
+
+    <h2>Requests and changes</h2>
+    <p>A dedicated private privacy contact has not yet been published. Operator details and a suitable request channel must be confirmed before adding forms, user accounts, mailing lists or other direct personal-data collection. For data processed by GitHub itself, use the privacy-request channels in its statement. Rights to access, correct, delete or object to processing depend on the applicable law and the relevant data controller.</p>
+    <p>We will update this notice if the site’s data practices change. Optional tracking must not be introduced silently or treated as consent merely because someone reads the site. See the <a href="cookies.html">cookie notice</a> for the current storage inventory.</p>
+  </main>
+  <footer class="footer"><span>WSLI</span><nav class="footer-links" aria-label="Policies"><a href="privacy.html" aria-current="page">Privacy</a><a href="cookies.html">Cookies</a><a href="terms.html">Terms</a><a href="risk.html">Risk &amp; performance</a></nav><span class="footer-note mono">Paper trading. Not financial advice.</span></footer>
+</body>
+</html>

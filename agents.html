@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self'; connect-src 'self' https://raw.githubusercontent.com; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
   <meta name="description" content="WSLI Agents — timestamped progress, Gem reviews, positions and actual order results.">
   <title>WSLI — Agents</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20261007-2">
+  <link rel="stylesheet" href="css/styles.css?v=20261014-privacy">
 </head>
 <body>
   <canvas id="stage" aria-hidden="true"></canvas>
@@ -184,6 +183,13 @@
       </div>
     </section>
 
+    <section class="panel" aria-labelledby="profitability-heading">
+      <div class="panel-head"><h2 id="profitability-heading">Is Gem profitable?</h2><p class="mono muted">Not established</p></div>
+      <p class="card-meta">A positive paper balance would not, by itself, demonstrate a repeatable edge. This experiment is still validating execution. Software faults, forced exits and losses remain part of the reported account result.</p>
+      <p class="card-meta">The October 20 trial endpoint is an operational review, not a promise of profitability. A credible performance assessment needs a separate, pre-planned test of fixed rules, realistic costs, drawdown and uncertainty across independent sessions. No date or number of trades guarantees proof.</p>
+      <p class="card-meta">Gem reviews recorded evidence; the deterministic executor chooses eligible entries and submits paper orders. We evaluate the whole system, not an AI personality. <a href="risk.html">Read the performance methodology and simulation limits.</a></p>
+    </section>
+
     <section class="panel" aria-labelledby="research-heading">
       <div class="panel-head"><h2 id="research-heading">Research priorities</h2><p class="mono muted">Weekdays · 4:30 p.m. Eastern</p></div>
       <ul class="research-list">
@@ -198,12 +204,13 @@
 
   <footer class="footer">
     <span>WSLI</span>
+    <nav class="footer-links" aria-label="Policies"><a href="privacy.html">Privacy</a><a href="cookies.html">Cookies</a><a href="terms.html">Terms</a><a href="risk.html">Risk &amp; performance</a></nav>
     <span class="footer-note mono">Paper trading. Not financial advice.</span>
   </footer>
 
   <script src="js/stage.js"></script>
   <script src="js/status.js?v=20261007-2"></script>
-  <script src="js/paper-feed.js?v=20261007-1"></script>
+  <script src="js/paper-feed.js?v=20261014-privacy"></script>
   <script src="js/trade-details.js?v=20261007-2"></script>
   <script src="js/paper.js?v=20261007-2"></script>
 </body>

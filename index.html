@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self'; connect-src 'self' https://raw.githubusercontent.com; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
   <meta name="description" content="Follow WSLI’s evidence-based paper trading pilot, fixed rules, risk checks and actual order results.">
   <meta name="theme-color" content="#04080a">
   <meta property="og:title" content="WSLI">
@@ -11,10 +13,7 @@
   <meta property="og:type" content="website">
   <title>WSLI</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20261007-1">
+  <link rel="stylesheet" href="css/styles.css?v=20261014-privacy">
 </head>
 <body class="home">
   <canvas id="stage" aria-hidden="true"></canvas>
@@ -121,7 +120,7 @@
             <span class="step-num mono">04</span>
             <div>
               <h3>Records real paper outcomes</h3>
-              <p>The execution journal and broker responses distinguish attempts, partial fills, stops and closed positions. Small paper results are not live returns or proof of long-term profitability.</p>
+              <p>The execution journal and broker responses distinguish attempts, partial fills, stops and closed positions. Small paper results are not live returns or proof of long-term profitability. <a href="risk.html">How we assess performance and risk.</a></p>
             </div>
           </li>
         </ol>
@@ -132,12 +131,13 @@
 
   <footer class="footer">
     <span>WSLI</span>
+    <nav class="footer-links" aria-label="Policies"><a href="privacy.html">Privacy</a><a href="cookies.html">Cookies</a><a href="terms.html">Terms</a><a href="risk.html">Risk &amp; performance</a></nav>
     <span class="footer-note mono">Paper trading. Not financial advice.</span>
   </footer>
 
   <script src="js/field.js"></script>
   <script src="js/status.js?v=20261007-1"></script>
-  <script src="js/paper-feed.js?v=20261007-1"></script>
+  <script src="js/paper-feed.js?v=20261014-privacy"></script>
   <script src="js/home.js?v=20261007-1"></script>
 </body>
 </html>

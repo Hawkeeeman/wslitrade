@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "scope": "wsli_paper_pilot",
-  "updatedAt": "2026-10-14T11:40:02.778113+00:00",
+  "updatedAt": "2026-10-14T21:44:25.391820+00:00",
   "publication": {
     "automatic": true,
     "intervalSeconds": 600
@@ -17,20 +17,20 @@
     "timezone": "America/New_York"
   },
   "account": {
-    "equity": "9995.07",
-    "cash": "9995.07",
-    "dayPl": "0.00",
-    "trialPl": "-4.93",
+    "equity": "9994.73",
+    "cash": "9994.73",
+    "dayPl": "-0.34",
+    "trialPl": "-5.27",
     "paper": true,
-    "checkedAt": "2026-10-14T11:40:02.778113+00:00"
+    "checkedAt": "2026-10-14T21:44:25.391820+00:00"
   },
   "market": {
     "open": false,
-    "checkedAt": "2026-10-14T07:40:03.201096-04:00",
-    "nextOpen": "2026-10-14T09:30:00-04:00",
-    "nextClose": "2026-10-14T16:00:00-04:00",
+    "checkedAt": "2026-10-14T17:44:25.521898-04:00",
+    "nextOpen": "2026-10-15T09:30:00-04:00",
+    "nextClose": "2026-10-15T16:00:00-04:00",
     "calendar": {
-      "checkedAt": "2026-10-14T11:40:01.724095+00:00",
+      "checkedAt": "2026-10-14T21:44:23.142565+00:00",
       "through": "2026-10-22T00:00:00-04:00",
       "sessions": [
         {
@@ -63,54 +63,215 @@
   },
   "progress": {
     "session": "2026-10-14",
-    "checkedAt": "2026-10-14T11:40:02.778113+00:00",
+    "checkedAt": "2026-10-14T21:44:25.391820+00:00",
     "armed": true,
-    "halted": false,
+    "halted": true,
     "executorState": "FLAT",
-    "supervisorAt": "2026-10-13T20:00:01.159294+00:00",
-    "supervisorSession": "2026-10-13",
+    "supervisorAt": "2026-10-14T20:00:02.188525+00:00",
+    "supervisorSession": "2026-10-14",
     "process": "inactive",
-    "entriesToday": 0,
+    "entriesToday": 1,
     "maxEntries": 3,
     "cooldownSeconds": 900,
     "nextEntryAfter": null,
     "noRepeatSymbols": true,
     "openOrderCount": 0,
-    "universeCount": null,
-    "preparedAt": null,
-    "candidateCount": null,
-    "candidates": [],
-    "scanAt": null,
-    "quoteBatches": 0,
-    "lastQuoteAt": null,
+    "universeCount": 77,
+    "preparedAt": "2026-10-14T11:45:24.293480+00:00",
+    "candidateCount": 7,
+    "candidates": [
+      "CIFR",
+      "BAC",
+      "CDE",
+      "RIVN",
+      "NFLX",
+      "AAPL",
+      "PFE"
+    ],
+    "scanAt": "2026-10-14T13:36:16.016099+00:00",
+    "quoteBatches": 1779,
+    "lastQuoteAt": "2026-10-14T14:59:58.594460+00:00",
     "refusals": []
   },
   "positions": [],
-  "trades": [],
-  "activity": [],
+  "trades": [
+    {
+      "at": "2026-10-14T13:36:42.987806+00:00",
+      "side": "sell",
+      "symbol": "PFE",
+      "qty": "34",
+      "filledQty": "34",
+      "price": "28.87",
+      "status": "filled",
+      "role": "exit"
+    },
+    {
+      "at": "2026-10-14T13:36:37.217878+00:00",
+      "side": "sell",
+      "symbol": "PFE",
+      "qty": "34",
+      "filledQty": "0",
+      "price": null,
+      "status": "canceled",
+      "role": "protective_stop"
+    },
+    {
+      "at": "2026-10-14T13:36:33.871201+00:00",
+      "side": "buy",
+      "symbol": "PFE",
+      "qty": "34",
+      "filledQty": "34",
+      "price": "28.88",
+      "status": "filled",
+      "role": "entry"
+    }
+  ],
+  "activity": [
+    {
+      "at": "2026-10-14T20:00:01.841136+00:00",
+      "kind": "session_finished",
+      "symbol": null,
+      "side": null,
+      "status": null,
+      "qty": null,
+      "price": null,
+      "reason": null
+    },
+    {
+      "at": "2026-10-14T13:36:42.245003+00:00",
+      "kind": "order_reconciled",
+      "symbol": "PFE",
+      "side": "sell",
+      "status": "filled",
+      "qty": "34",
+      "price": "28.87",
+      "reason": null
+    },
+    {
+      "at": "2026-10-14T13:36:39.628331+00:00",
+      "kind": "broker_response",
+      "symbol": "PFE",
+      "side": "sell",
+      "status": "pending_new",
+      "qty": "0",
+      "price": null,
+      "reason": null
+    },
+    {
+      "at": "2026-10-14T13:36:39.628331+00:00",
+      "kind": "intent_reserved",
+      "symbol": "PFE",
+      "side": null,
+      "status": null,
+      "qty": "34",
+      "price": null,
+      "reason": null
+    },
+    {
+      "at": "2026-10-14T13:36:39.305270+00:00",
+      "kind": "order_reconciled",
+      "symbol": "PFE",
+      "side": "buy",
+      "status": "filled",
+      "qty": "34",
+      "price": "28.88",
+      "reason": null
+    },
+    {
+      "at": "2026-10-14T13:36:36.414633+00:00",
+      "kind": "order_reconciled",
+      "symbol": "PFE",
+      "side": "buy",
+      "status": "filled",
+      "qty": "34",
+      "price": "28.88",
+      "reason": null
+    },
+    {
+      "at": "2026-10-14T13:36:33.826168+00:00",
+      "kind": "order_reconciled",
+      "symbol": "PFE",
+      "side": "buy",
+      "status": "filled",
+      "qty": "34",
+      "price": "28.88",
+      "reason": null
+    },
+    {
+      "at": "2026-10-14T13:36:31.649149+00:00",
+      "kind": "halt",
+      "symbol": null,
+      "side": null,
+      "status": null,
+      "qty": null,
+      "price": null,
+      "reason": "partial_or_unfilled_entry"
+    },
+    {
+      "at": "2026-10-14T13:36:29.161261+00:00",
+      "kind": "broker_response",
+      "symbol": "PFE",
+      "side": "buy",
+      "status": "pending_new",
+      "qty": "0",
+      "price": null,
+      "reason": null
+    },
+    {
+      "at": "2026-10-14T13:36:29.161261+00:00",
+      "kind": "intent_reserved",
+      "symbol": "PFE",
+      "side": null,
+      "status": null,
+      "qty": "34",
+      "price": null,
+      "reason": null
+    }
+  ],
   "reviews": [
     {
       "slot": "morning",
       "scheduledAt": "2026-10-14T14:05:00+00:00",
-      "enabled": true,
-      "lastRunAt": null,
-      "lastOutcome": null,
-      "reportAvailable": false,
-      "checkedAt": null,
+      "enabled": false,
+      "lastRunAt": "2026-10-14T14:05:01.798000+00:00",
+      "lastOutcome": "ok",
+      "reportAvailable": true,
+      "checkedAt": "2026-10-14T14:05:21.669664+00:00",
       "operatorActionNeeded": null
     },
     {
       "slot": "close",
       "scheduledAt": "2026-10-14T20:05:00+00:00",
-      "enabled": true,
-      "lastRunAt": null,
-      "lastOutcome": null,
-      "reportAvailable": false,
-      "checkedAt": null,
-      "operatorActionNeeded": null
+      "enabled": false,
+      "lastRunAt": "2026-10-14T20:05:01.907000+00:00",
+      "lastOutcome": "ok",
+      "reportAvailable": true,
+      "checkedAt": "2026-10-14T20:05:12.312181+00:00",
+      "operatorActionNeeded": false
     }
   ],
-  "decisions": [],
+  "decisions": [
+    {
+      "symbol": "PFE",
+      "at": "2026-10-14T13:36:29.161261+00:00",
+      "authority": "deterministic_rules",
+      "qty": "34",
+      "limitPrice": "28.91",
+      "stopPrice": "28.85",
+      "nominalRisk": "2.04",
+      "maxNotional": "982.94",
+      "candidateRank": 7,
+      "relativeVolume": "1.044371733721283",
+      "openingRangeHigh": "28.865",
+      "atr": "0.5364285714285708",
+      "quoteAt": "2026-10-14T13:36:28.865636+00:00",
+      "bid": "28.9",
+      "ask": "28.91",
+      "spreadFraction": "0.0003459010722933241093047388447",
+      "quoteRecorded": true,
+      "stopAtrMultiple": "0.1"
+    }
+  ],
   "policyChange": {
     "state": "installed",
     "effectiveSession": "2026-10-08",

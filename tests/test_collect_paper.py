@@ -11,6 +11,9 @@ sys.path.insert(0,str(Path(__file__).parents[1]/'scripts'))
 from collect_paper import amount,stamp,build_snapshot,ledger_summary,snapshot_packet,public_orders,public_decisions,public_policy_change
 from install_publisher import HOST_KEY,HOST_FINGERPRINT,units
 import base64,hashlib,sqlite3
+from unittest.mock import patch
+import collect_paper
+from readonly_sqlite import SnapshotUnavailable
 
 
 class PaperExportTests(unittest.TestCase):
@@ -78,6 +81,35 @@ class PaperExportTests(unittest.TestCase):
             self.assertIsNone(snapshot_packet(Path(d),'2026-10-07','scan'))
             self.assertIsNone(ledger_summary(Path(d),'2026-10-07')['entryCount'])
             self.assertIsNone(ledger_summary(Path(d),'2026-10-07')['quoteBatches'])
+
+    def test_closed_wal_ledger_export_preserves_source_and_drops_private_fields(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory); path=root/'execution.sqlite'
+            db=sqlite3.connect(path); db.execute('PRAGMA journal_mode=WAL')
+            db.executescript('CREATE TABLE intents(cid TEXT,day TEXT,role TEXT,created TEXT,payload TEXT); CREATE TABLE events(id INTEGER PRIMARY KEY,at TEXT,kind TEXT,payload TEXT);')
+            db.execute('INSERT INTO intents VALUES (?,?,?,?,?)',('PRIVATE_CID','2026-10-15','entry','2026-10-15T13:36:00+00:00',json.dumps({'symbol':'TEST','qty':1})))
+            db.execute('INSERT INTO events(at,kind,payload) VALUES (?,?,?)',('2026-10-15T13:36:01+00:00','broker_response',json.dumps({'symbol':'TEST','side':'buy','status':'filled','filled_qty':'1','filled_avg_price':'10','account':'PRIVATE_ACCOUNT','secret':'PRIVATE_KEY'})))
+            db.commit(); db.close()
+            wal=Path(str(path)+'-wal')
+            if wal.exists() and wal.stat().st_size==0:
+                wal.unlink(); Path(str(path)+'-shm').unlink(missing_ok=True)
+            before=hashlib.sha256(path.read_bytes()).hexdigest()
+            root.chmod(0o500)
+            try:
+                summary=ledger_summary(root,'2026-10-15')
+                self.assertEqual(summary['entryCount'],1)
+                self.assertNotIn('PRIVATE',json.dumps(summary['activity']))
+                self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(),before)
+                self.assertFalse(wal.exists())
+            finally:root.chmod(0o700)
+
+    def test_failed_snapshot_keeps_previous_publication_bytes_and_timestamp(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output=Path(directory)/'paper.json'; old=b'{"updatedAt":"2026-10-14T21:50:04Z"}\n'
+            output.write_bytes(old)
+            with patch.object(sys,'argv',['collect_paper.py','--code',directory,'--runtime',directory,'--output',str(output)]), patch.object(collect_paper,'collect',side_effect=SnapshotUnavailable('test failure')):
+                with self.assertRaises(SnapshotUnavailable):collect_paper.main()
+            self.assertEqual(output.read_bytes(),old)
 
     def test_github_host_pin_matches_official_fingerprint(self):
         actual='SHA256:'+base64.b64encode(hashlib.sha256(base64.b64decode(HOST_KEY.split()[2])).digest()).decode().rstrip('=')

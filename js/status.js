@@ -84,6 +84,12 @@
       return {kind:'unknown',label:'Monitor unverified',detail:'A running process alone does not verify today’s execution checkpoint.'};
     if (p.process!=='active') {
       if (session.kind==='open' && p.armed) return {kind:'asleep',label:'Monitor not running',detail:'The market is open but the paper supervisor was not active at the last check.'};
+      const cal=data.market?.calendar, calAge=now-parse(cal?.checkedAt);
+      const completed=calAge>=0 && calAge<7*86400000 && now>=parse(cal?.from) && now<parse(cal?.through) &&
+        Array.isArray(cal?.sessions) && cal.sessions.some(s=>typeof s?.open==='string' &&
+          s.open.slice(0,10)===p.session && parse(s.close)>parse(s.open) && parse(s.close)<=now);
+      if (completed && p.session>=data.trial?.firstSession && p.session<=data.trial?.lastSession && p.supervisorSession!==p.session)
+        return {kind:'asleep',label:'Session not recorded',detail:'No execution checkpoint was published for today’s completed exchange session. This is missing evidence—not a successful no-trade day. Check host uptime and the scheduled jobs.'};
       return {kind:'unknown',label:p.armed ? 'Scheduled / idle' : 'Not armed',detail:'No running supervisor was observed. Outside the session this is expected; the next timer must still run.'};
     }
     if (Number.isInteger(p.entriesToday) && Number.isInteger(p.maxEntries) &&

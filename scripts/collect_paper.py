@@ -9,7 +9,6 @@ import hashlib
 import json
 import os
 import re
-import sqlite3
 import subprocess
 import sys
 import tempfile
@@ -17,6 +16,7 @@ from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from pathlib import Path
 from zoneinfo import ZoneInfo
+from readonly_sqlite import readonly_snapshot
 
 ET = ZoneInfo('America/New_York')
 STATES = {'FLAT','ARMED_SCHEDULED','TRIAL_FINISHED','EXCHANGE_CLOSED',
@@ -64,7 +64,7 @@ def snapshot_packet(root,day,kind):
     research=root/'research'/day
     path=research/'journal.sqlite'
     if not path.exists(): return None
-    with sqlite3.connect(path.as_uri()+'?mode=ro',uri=True) as db:
+    with readonly_snapshot(path) as db:
         row=db.execute('SELECT payload FROM events WHERE id=?',(kind+':'+day,)).fetchone()
     if not row: return None
     sid=json.loads(row[0])['snapshot_id']
@@ -78,7 +78,7 @@ def snapshot_packet(root,day,kind):
 def ledger_summary(root,day):
     path=root/'execution.sqlite'
     if not path.exists(): return dict(entryCount=None,quoteBatches=None,lastQuoteAt=None,activity=[],intentRoles={},entryPlans=[])
-    with sqlite3.connect(path.as_uri()+'?mode=ro',uri=True) as db:
+    with readonly_snapshot(path) as db:
         intents=db.execute('SELECT cid,role FROM intents WHERE day=?',(day,)).fetchall()
         plans=db.execute("SELECT created,payload FROM intents WHERE day=? AND role='entry' ORDER BY created",(day,)).fetchall()
         count,last=db.execute("SELECT count(*),max(at) FROM events WHERE kind='quotes' AND substr(at,1,10)=?",(day,)).fetchone()

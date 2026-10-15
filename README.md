@@ -72,6 +72,31 @@ signal/execution mismatch to investigate before claiming a market edge.
 Website tests: `node --test tests/*.test.js` and
 `python3 -m unittest discover -s tests -v`.
 
+### Read-only publication after a cold start
+
+`scripts/readonly_sqlite.py` supplies private, consistent database snapshots to
+the public exporter. Warm/active databases use SQLite's online backup API with
+a read-only source connection, so committed WAL frames are included and
+uncommitted writes excluded. A closed WAL database without a WAL file uses a
+guarded copy only when its inode, size, nanosecond mtime/ctime and absence of WAL
+or rollback journal stay unchanged throughout capture. Races retry briefly,
+then fail closed. A live WAL without its shared-memory index is never ignored.
+
+Copies live in 0700 temporary directories (the host service already uses
+PrivateTmp); only the detached copy is normalized/opened for query. They are
+deleted on success or error and never enter the public repository. The live
+database is never marked immutable, checkpointed, edited or granted broader
+permissions. The publisher's existing read-only home protection stays intact.
+An unavailable/corrupt snapshot preserves the last successful public bytes and
+timestamps. Source modes, data hashes and missing sidecars must remain unchanged
+in cold-start and actual-service-sandbox tests.
+
+A fresh publication is not proof that the trading session ran. The dashboard
+now says “Session not recorded” when a verified completed exchange session in
+the approved trial has no matching supervisor checkpoint; pre-open idle and
+completed sessions are not mislabelled. Windows/WSL must still be running for
+the finite timers; the publisher cannot wake the host or replay a missed day.
+
 ## Privacy, public credentials and performance disclosures
 
 Every site page links to `privacy.html`, `cookies.html`, `terms.html` and

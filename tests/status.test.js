@@ -139,3 +139,25 @@ test('three-entry policy distinguishes remaining slots, cooldown, and consumed c
   assert.equal(paper({...base,progress:{...base.progress,executorState:'EXIT_COOLDOWN'}},paperNow).label,'Exit cooldown');
   assert.equal(paper({...base,progress:{...base.progress,entriesToday:3}},paperNow).label,'Daily entry limit used');
 });
+
+const missedDay={...pilot,updatedAt:'2026-10-15T22:00:00Z',trial:{firstSession:'2026-10-07',lastSession:'2026-10-20'},
+  market:{open:false,checkedAt:'2026-10-15T22:00:00Z',nextOpen:'2026-10-16T13:30:00Z',calendar:{
+    checkedAt:'2026-10-15T22:00:00Z',from:'2026-10-15T00:00:00-04:00',through:'2026-10-17T00:00:00-04:00',
+    sessions:[{open:'2026-10-15T09:30:00-04:00',close:'2026-10-15T16:00:00-04:00'},
+      {open:'2026-10-16T09:30:00-04:00',close:'2026-10-16T16:00:00-04:00'}]}},
+  progress:{...pilot.progress,session:'2026-10-15',supervisorSession:'2026-10-14',process:'inactive',entriesToday:0}};
+test('fresh publication cannot disguise a missed completed session as normal idle',()=>{
+  assert.equal(paper(missedDay,at('2026-10-15T22:01:00Z')).label,'Session not recorded');
+});
+test('a completed checkpoint and a pre-open idle state are not missed sessions',()=>{
+  assert.equal(paper({...missedDay,progress:{...missedDay.progress,supervisorSession:'2026-10-15'}},at('2026-10-15T22:01:00Z')).label,'Scheduled / idle');
+  const morning={...missedDay,updatedAt:'2026-10-16T11:00:00Z',market:{...missedDay.market,checkedAt:'2026-10-16T11:00:00Z'},
+    progress:{...missedDay.progress,session:'2026-10-16'}};
+  assert.equal(paper(morning,at('2026-10-16T11:01:00Z')).label,'Scheduled / idle');
+});
+test('expired, malformed calendars and sessions outside trial cannot prove a missed run',()=>{
+  for(const calendar of [{...missedDay.market.calendar,checkedAt:'2026-10-01T12:00:00Z'},
+    {...missedDay.market.calendar,sessions:{}},{...missedDay.market.calendar,sessions:[null,{open:42}]}])
+    assert.notEqual(paper({...missedDay,market:{...missedDay.market,calendar}},at('2026-10-15T22:01:00Z')).label,'Session not recorded');
+  assert.notEqual(paper({...missedDay,trial:{firstSession:'2026-10-07',lastSession:'2026-10-14'}},at('2026-10-15T22:01:00Z')).label,'Session not recorded');
+});

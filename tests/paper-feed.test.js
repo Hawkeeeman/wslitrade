@@ -42,3 +42,31 @@ test('failed sources reject rather than manufacture an empty or healthy account'
   const feed=runtime('wslitrade.com',async()=>({ok:true,json:async()=>({})}));
   await assert.rejects(feed.load(),/unavailable/);
 });
+test('a cached GitHub response cannot hide a newer deployed snapshot',async()=>{
+  const older={...snapshot,updatedAt:'2026-10-14T20:00:00Z'};
+  const newer={...snapshot,updatedAt:'2026-10-15T20:00:00Z'};
+  const feed=runtime('wslitrade.com',async url=>({ok:true,json:async()=>
+    url.startsWith('https:') ? older : newer}));
+  assert.equal((await feed.load()).updatedAt,newer.updatedAt);
+});
+test('a newer repository snapshot wins while Pages deployment is pending',async()=>{
+  const newer={...snapshot,updatedAt:'2026-10-15T20:00:00Z'};
+  const older={...snapshot,updatedAt:'2026-10-14T20:00:00Z'};
+  const feed=runtime('wslitrade.com',async url=>({ok:true,json:async()=>
+    url.startsWith('https:') ? newer : older}));
+  assert.equal((await feed.load()).updatedAt,newer.updatedAt);
+});
+test('a failing deployed source cannot discard a valid repository response',async()=>{
+  const feed=runtime('wslitrade.com',async url=>{
+    if (!url.startsWith('https:')) throw new Error('network failure');
+    return {ok:true,json:async()=>snapshot};
+  });
+  assert.equal((await feed.load()).updatedAt,snapshot.updatedAt);
+});
+test('malformed and future-dated sources cannot outrank valid evidence',async()=>{
+  for(const updatedAt of ['not-a-timestamp',new Date(Date.now()+3600000).toISOString()]) {
+    const feed=runtime('wslitrade.com',async url=>({ok:true,json:async()=>
+      url.startsWith('https:') ? {...snapshot,updatedAt} : snapshot}));
+    assert.equal((await feed.load()).updatedAt,snapshot.updatedAt);
+  }
+});

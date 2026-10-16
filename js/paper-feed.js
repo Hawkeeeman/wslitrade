@@ -12,18 +12,24 @@
       Array.isArray(data.progress.candidates);
   }
   async function load() {
-    for (const path of paths) {
+    const candidates=await Promise.all(paths.map(async path=>{
       const controller=new AbortController();
       const timer=setTimeout(()=>controller.abort(),6000);
       try {
         const res=await fetch(`${path}?t=${Date.now()}`,{cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer',signal:controller.signal});
         if (!res.ok) throw new Error('unavailable');
         const data=await res.json();
-        if (!valid(data)) throw new Error('Wrong or incomplete feed');
+        const at=Date.parse(data?.updatedAt);
+        if (!valid(data) || !Number.isFinite(at) || at>Date.now()+300000)
+          throw new Error('Wrong, incomplete or future-dated feed');
         return data;
-      } catch { /* Try packaged snapshot, preserving its original timestamps. */ }
+      } catch { return null; /* Preserve timestamps; never fabricate evidence. */ }
       finally { clearTimeout(timer); }
-    }
+    }));
+    // Either CDN can lag. A valid-but-older first response is not authoritative.
+    const available=candidates.filter(Boolean);
+    if (available.length) return available.reduce((newest,data)=>
+      Date.parse(data.updatedAt)>Date.parse(newest.updatedAt) ? data : newest);
     throw new Error('Paper progress feed unavailable');
   }
   root.WSLIPaperFeed={load,valid};

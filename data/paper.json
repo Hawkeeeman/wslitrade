@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "scope": "wsli_paper_pilot",
-  "updatedAt": "2026-10-19T18:40:03.917762+00:00",
+  "updatedAt": "2026-10-19T18:50:04.167887+00:00",
   "publication": {
     "automatic": true,
     "intervalSeconds": 600
@@ -17,20 +17,20 @@
     "timezone": "America/New_York"
   },
   "account": {
-    "equity": "10006.21",
+    "equity": "10006.84",
     "cash": "9220.3",
-    "dayPl": "11.55",
-    "trialPl": "6.21",
+    "dayPl": "12.18",
+    "trialPl": "6.84",
     "paper": true,
-    "checkedAt": "2026-10-19T18:40:03.917762+00:00"
+    "checkedAt": "2026-10-19T18:50:04.167887+00:00"
   },
   "market": {
     "open": true,
-    "checkedAt": "2026-10-19T14:40:02.848503-04:00",
+    "checkedAt": "2026-10-19T14:50:02.609875-04:00",
     "nextOpen": "2026-10-20T09:30:00-04:00",
     "nextClose": "2026-10-19T16:00:00-04:00",
     "calendar": {
-      "checkedAt": "2026-10-19T18:40:02.113375+00:00",
+      "checkedAt": "2026-10-19T18:50:02.131433+00:00",
       "through": "2026-10-27T00:00:00-04:00",
       "sessions": [
         {
@@ -63,11 +63,11 @@
   },
   "progress": {
     "session": "2026-10-19",
-    "checkedAt": "2026-10-19T18:40:03.917762+00:00",
+    "checkedAt": "2026-10-19T18:50:04.167887+00:00",
     "armed": true,
     "halted": false,
     "executorState": "POSITION_PROTECTED",
-    "supervisorAt": "2026-10-19T18:40:01.075276+00:00",
+    "supervisorAt": "2026-10-19T18:50:01.695639+00:00",
     "supervisorSession": "2026-10-19",
     "process": "active",
     "entriesToday": 1,
@@ -97,9 +97,9 @@
       "qty": "3",
       "side": "long",
       "avgEntry": "258.12",
-      "price": "261.97",
-      "marketValue": "785.91",
-      "unrealizedPl": "11.55"
+      "price": "262.18",
+      "marketValue": "786.54",
+      "unrealizedPl": "12.18"
     }
   ],
   "trades": [

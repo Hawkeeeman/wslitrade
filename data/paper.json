@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "scope": "wsli_paper_pilot",
-  "updatedAt": "2026-10-19T21:50:04.521439+00:00",
+  "updatedAt": "2026-10-20T11:00:04.137075+00:00",
   "publication": {
     "automatic": true,
     "intervalSeconds": 600
@@ -17,26 +17,22 @@
     "timezone": "America/New_York"
   },
   "account": {
-    "equity": "10007.56",
-    "cash": "10007.56",
-    "dayPl": "12.90",
-    "trialPl": "7.56",
+    "equity": "10007.53",
+    "cash": "10007.53",
+    "dayPl": "0.00",
+    "trialPl": "7.53",
     "paper": true,
-    "checkedAt": "2026-10-19T21:50:04.521439+00:00"
+    "checkedAt": "2026-10-20T11:00:04.137075+00:00"
   },
   "market": {
     "open": false,
-    "checkedAt": "2026-10-19T17:50:03.443261-04:00",
+    "checkedAt": "2026-10-20T07:00:02.485094-04:00",
     "nextOpen": "2026-10-20T09:30:00-04:00",
     "nextClose": "2026-10-20T16:00:00-04:00",
     "calendar": {
-      "checkedAt": "2026-10-19T21:50:02.461335+00:00",
-      "through": "2026-10-27T00:00:00-04:00",
+      "checkedAt": "2026-10-20T11:00:02.401796+00:00",
+      "through": "2026-10-28T00:00:00-04:00",
       "sessions": [
-        {
-          "open": "2026-10-19T09:30:00-04:00",
-          "close": "2026-10-19T16:00:00-04:00"
-        },
         {
           "open": "2026-10-20T09:30:00-04:00",
           "close": "2026-10-20T16:00:00-04:00"
@@ -56,220 +52,65 @@
         {
           "open": "2026-10-26T09:30:00-04:00",
           "close": "2026-10-26T16:00:00-04:00"
+        },
+        {
+          "open": "2026-10-27T09:30:00-04:00",
+          "close": "2026-10-27T16:00:00-04:00"
         }
       ],
-      "from": "2026-10-19T00:00:00-04:00"
+      "from": "2026-10-20T00:00:00-04:00"
     }
   },
   "progress": {
-    "session": "2026-10-19",
-    "checkedAt": "2026-10-19T21:50:04.521439+00:00",
+    "session": "2026-10-20",
+    "checkedAt": "2026-10-20T11:00:04.137075+00:00",
     "armed": true,
     "halted": false,
     "executorState": "FLAT",
     "supervisorAt": "2026-10-19T20:00:01.569885+00:00",
     "supervisorSession": "2026-10-19",
     "process": "inactive",
-    "entriesToday": 1,
+    "entriesToday": 0,
     "maxEntries": 3,
     "cooldownSeconds": 900,
     "nextEntryAfter": null,
     "noRepeatSymbols": true,
     "openOrderCount": 0,
-    "universeCount": 79,
-    "preparedAt": "2026-10-19T11:45:44.089161+00:00",
-    "candidateCount": 5,
-    "candidates": [
-      "PATH",
-      "HPE",
-      "INTC",
-      "AMZN",
-      "SPCX"
-    ],
-    "scanAt": "2026-10-19T13:36:10.340082+00:00",
-    "quoteBatches": 1777,
-    "lastQuoteAt": "2026-10-19T14:59:58.770781+00:00",
+    "universeCount": null,
+    "preparedAt": null,
+    "candidateCount": null,
+    "candidates": [],
+    "scanAt": null,
+    "quoteBatches": 0,
+    "lastQuoteAt": null,
     "refusals": []
   },
   "positions": [],
-  "trades": [
-    {
-      "at": "2026-10-19T19:55:25.760158+00:00",
-      "side": "sell",
-      "symbol": "AMZN",
-      "qty": "3",
-      "filledQty": "3",
-      "price": "262.42",
-      "status": "filled",
-      "role": "exit"
-    },
-    {
-      "at": "2026-10-19T14:09:38.339489+00:00",
-      "side": "sell",
-      "symbol": "AMZN",
-      "qty": "3",
-      "filledQty": "0",
-      "price": null,
-      "status": "canceled",
-      "role": "protective_stop"
-    },
-    {
-      "at": "2026-10-19T14:09:38.320339+00:00",
-      "side": "buy",
-      "symbol": "AMZN",
-      "qty": "3",
-      "filledQty": "3",
-      "price": "258.12",
-      "status": "filled",
-      "role": "entry"
-    }
-  ],
-  "activity": [
-    {
-      "at": "2026-10-19T20:00:01.203205+00:00",
-      "kind": "session_finished",
-      "symbol": null,
-      "side": null,
-      "status": null,
-      "qty": null,
-      "price": null,
-      "reason": null
-    },
-    {
-      "at": "2026-10-19T19:55:26.513205+00:00",
-      "kind": "order_reconciled",
-      "symbol": "AMZN",
-      "side": "sell",
-      "status": "filled",
-      "qty": "3",
-      "price": "262.42",
-      "reason": null
-    },
-    {
-      "at": "2026-10-19T19:55:24.104859+00:00",
-      "kind": "order_reconciled",
-      "symbol": "AMZN",
-      "side": "sell",
-      "status": "new",
-      "qty": "0",
-      "price": null,
-      "reason": null
-    },
-    {
-      "at": "2026-10-19T19:55:12.458611+00:00",
-      "kind": "broker_response",
-      "symbol": "AMZN",
-      "side": "sell",
-      "status": "pending_new",
-      "qty": "0",
-      "price": null,
-      "reason": null
-    },
-    {
-      "at": "2026-10-19T19:55:12.384509+00:00",
-      "kind": "intent_reserved",
-      "symbol": "AMZN",
-      "side": null,
-      "status": null,
-      "qty": "3",
-      "price": null,
-      "reason": null
-    },
-    {
-      "at": "2026-10-19T19:55:12.182204+00:00",
-      "kind": "order_reconciled",
-      "symbol": "AMZN",
-      "side": "buy",
-      "status": "filled",
-      "qty": "3",
-      "price": "258.12",
-      "reason": null
-    },
-    {
-      "at": "2026-10-19T19:55:07.232509+00:00",
-      "kind": "order_reconciled",
-      "symbol": "AMZN",
-      "side": "buy",
-      "status": "filled",
-      "qty": "3",
-      "price": "258.12",
-      "reason": null
-    },
-    {
-      "at": "2026-10-19T14:09:38.190484+00:00",
-      "kind": "order_reconciled",
-      "symbol": "AMZN",
-      "side": "buy",
-      "status": "filled",
-      "qty": "3",
-      "price": "258.12",
-      "reason": null
-    },
-    {
-      "at": "2026-10-19T14:09:35.487377+00:00",
-      "kind": "broker_response",
-      "symbol": "AMZN",
-      "side": "buy",
-      "status": "pending_new",
-      "qty": "0",
-      "price": null,
-      "reason": null
-    },
-    {
-      "at": "2026-10-19T14:09:35.398688+00:00",
-      "kind": "intent_reserved",
-      "symbol": "AMZN",
-      "side": null,
-      "status": null,
-      "qty": "3",
-      "price": null,
-      "reason": null
-    }
-  ],
+  "trades": [],
+  "activity": [],
   "reviews": [
     {
       "slot": "morning",
-      "scheduledAt": "2026-10-19T14:05:00+00:00",
-      "enabled": false,
-      "lastRunAt": "2026-10-19T14:05:00.019000+00:00",
-      "lastOutcome": "ok",
-      "reportAvailable": true,
-      "checkedAt": "2026-10-19T10:05:09.053533-04:00",
+      "scheduledAt": "2026-10-20T14:05:00+00:00",
+      "enabled": true,
+      "lastRunAt": null,
+      "lastOutcome": null,
+      "reportAvailable": false,
+      "checkedAt": null,
       "operatorActionNeeded": null
     },
     {
       "slot": "close",
-      "scheduledAt": "2026-10-19T20:05:00+00:00",
-      "enabled": false,
-      "lastRunAt": "2026-10-19T20:05:01.535000+00:00",
-      "lastOutcome": "ok",
-      "reportAvailable": true,
-      "checkedAt": "2026-10-19T20:05:11.758795+00:00",
-      "operatorActionNeeded": false
+      "scheduledAt": "2026-10-20T20:05:00+00:00",
+      "enabled": true,
+      "lastRunAt": null,
+      "lastOutcome": null,
+      "reportAvailable": false,
+      "checkedAt": null,
+      "operatorActionNeeded": null
     }
   ],
-  "decisions": [
-    {
-      "symbol": "AMZN",
-      "at": "2026-10-19T14:09:35.398688+00:00",
-      "authority": "deterministic_rules",
-      "qty": "3",
-      "limitPrice": "258.12",
-      "stopPrice": "257.53",
-      "nominalRisk": "1.77",
-      "maxNotional": "774.36",
-      "candidateRank": 4,
-      "relativeVolume": "1.3239499144343347",
-      "openingRangeHigh": "257.66",
-      "atr": "5.846428571428575",
-      "quoteAt": "2026-10-19T14:09:35.357812+00:00",
-      "bid": "257.91",
-      "ask": "258.12",
-      "spreadFraction": "0.0008135750813575081357508135751",
-      "quoteRecorded": true,
-      "stopAtrMultiple": "0.1"
-    }
-  ],
+  "decisions": [],
   "policyChange": {
     "state": "installed",
     "effectiveSession": "2026-10-08",

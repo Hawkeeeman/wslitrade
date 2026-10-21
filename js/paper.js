@@ -22,6 +22,7 @@
     text('session-evidence-label',evidence.label);
     text('session-evidence-detail',`${evidence.detail} Evidence snapshot: ${stamp(data.updatedAt)}; this is not a current broker check.`);
     el('session-evidence-banner').dataset.state=evidence.kind;
+    el('session-evidence-banner').hidden=state.label===evidence.label;
     pill('status-dot','status-label',state.kind,state.label);
     window.stageState.bot=state.kind;
     text('bot-state',state.label); el('card-bot').dataset.state=state.kind;
@@ -40,9 +41,9 @@
     text('power-meta',`From ${money(t.seed)} seed · day P/L ${money(data.account.dayPl)}. Paper, including broker fills.`);
     text('heartbeat-publication',data.publication.automatic ? `10-minute publication schedule · ${t.firstSession}–${t.lastSession} · weekdays 7:00 a.m.–5:50 p.m. Eastern` : 'Manual snapshot · repo connection pending');
     text('heartbeat-checked',`Published host check ${stamp(p.checkedAt)} · session ${p.session}. Process: ${p.process || 'unverified'}. Browser refresh does not redate host evidence.`);
-    text('prepare-state',p.universeCount===null ? 'Awaiting preparation' : `${count(p.universeCount)} stocks audited`);
+    text('prepare-state',p.universeCount===null ? evidence.state==='incomplete' ? 'Preparation missing' : 'Awaiting preparation' : `${count(p.universeCount)} stocks audited`);
     text('prepare-detail',`Prepared ${stamp(p.preparedAt)}. Missing history is excluded, not invented.`);
-    text('scan-state',p.candidateCount===null ? 'Awaiting scan' : `${count(p.candidateCount)} candidates`);
+    text('scan-state',p.candidateCount===null ? evidence.state==='incomplete' ? 'Opening scan missing' : 'Awaiting scan' : `${count(p.candidateCount)} candidates`);
     text('scan-detail',p.candidateCount===null ? 'No verified scan published for this session.' :
       `Frozen ${stamp(p.scanAt)}. ${p.candidates.length ? p.candidates.join(', ')+'.' : 'No qualifying candidates.'} Candidates are not orders.`);
     text('entry-state',p.entriesToday===null ? 'Entry count unverified' : `${count(p.entriesToday)} / ${count(p.maxEntries)} entries used`);

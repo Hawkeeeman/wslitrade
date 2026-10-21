@@ -25,13 +25,13 @@ class Element {
   replaceChildren(...children){this.children=[...children];this.textContent='';}
   get childElementCount(){return this.children.length;}
 }
-async function render(page,script,data) {
+async function render(page,script,data,now='2026-10-21T02:00:00Z') {
   const html=fs.readFileSync(page,'utf8');
   const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
   assert.equal(ids.length,new Set(ids).size,'No duplicate DOM IDs');
   const elements=new Map(ids.map(id=>[id,new Element()]));
   const document={getElementById(id){assert.ok(elements.has(id),`Missing ${id}`);return elements.get(id);},createElement:()=>new Element()};
-  class Clock extends Date {constructor(...args){super(...(args.length?args:['2026-10-21T02:00:00Z']));} static now(){return Date.parse('2026-10-21T02:00:00Z');}}
+  class Clock extends Date {constructor(...args){super(...(args.length?args:[now]));} static now(){return Date.parse(now);}}
   const timedStatus={...status,paper:d=>status.paper(d,Clock.now()),recordedSession:d=>status.recordedSession(d,Clock.now()),market:d=>status.market(d,Clock.now())};
   const context={document,window:{stageState:{}},WSLIStatus:timedStatus,WSLITradeDetails:trades,
     WSLIPaperFeed:{load:async()=>data},setInterval:()=>{},startStage:()=>{},startField:()=>{},Date:Clock};
@@ -44,10 +44,18 @@ test('Agents renders stale publication and historical incomplete-session evidenc
   assert.equal(nodes.get('progress-label').textContent,'Updates delayed');
   assert.equal(nodes.get('session-evidence-label').textContent,'Session incomplete');
   assert.equal(nodes.get('session-evidence-banner').dataset.state,'asleep');
+  assert.equal(nodes.get('session-evidence-banner').hidden,false);
+  assert.equal(nodes.get('prepare-state').textContent,'Preparation missing');
+  assert.equal(nodes.get('scan-state').textContent,'Opening scan missing');
   assert.match(nodes.get('feed-list').textContent,/not a verified no-trade day/);
   assert.match(nodes.get('heartbeat-publication').textContent,/2026-10-20/);
   const html=fs.readFileSync('agents.html','utf8');
   assert.ok(html.indexOf('id="session-evidence-banner"')>html.indexOf('<main'));
+});
+test('fresh incomplete evidence has one warning rather than duplicate banners',async()=>{
+  const nodes=await render('agents.html','js/paper.js',snapshot(),'2026-10-20T21:51:00Z');
+  assert.equal(nodes.get('progress-label').textContent,'Session incomplete');
+  assert.equal(nodes.get('session-evidence-banner').hidden,true);
 });
 test('a completed empty scan is displayed without a missing-session warning',async()=>{
   const nodes=await render('agents.html','js/paper.js',snapshot(true));

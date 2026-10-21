@@ -14,11 +14,14 @@
     td.colSpan=6; td.className='empty'; td.textContent=message; tr.append(td); table.append(tr);
   }
   function render(data) {
-    const state=WSLIStatus.paper(data), p=data.progress, t=data.trial;
+    const state=WSLIStatus.paper(data), evidence=WSLIStatus.recordedSession(data), p=data.progress, t=data.trial;
     text('updated',`Host snapshot: ${stamp(data.updatedAt)}. The browser checks for updates every 20 seconds.`);
     text('trial-summary',`October 7–20 paper experiment · ${money(t.seed)} starting equity · IEX feed only. This is not the legacy NVDA account or live money.`);
     text('progress-label',state.label); text('progress-detail',state.detail);
     el('progress-banner').dataset.state=state.kind;
+    text('session-evidence-label',evidence.label);
+    text('session-evidence-detail',`${evidence.detail} Evidence snapshot: ${stamp(data.updatedAt)}; this is not a current broker check.`);
+    el('session-evidence-banner').dataset.state=evidence.kind;
     pill('status-dot','status-label',state.kind,state.label);
     window.stageState.bot=state.kind;
     text('bot-state',state.label); el('card-bot').dataset.state=state.kind;
@@ -35,7 +38,7 @@
     text('power-value',money(data.account.trialPl));
     el('power-value').className=number(data.account.trialPl)>0 ? 'up' : number(data.account.trialPl)<0 ? 'down' : '';
     text('power-meta',`From ${money(t.seed)} seed · day P/L ${money(data.account.dayPl)}. Paper, including broker fills.`);
-    text('heartbeat-publication',data.publication.automatic ? 'Automatic host publisher · every 10 minutes' : 'Manual snapshot · repo connection pending');
+    text('heartbeat-publication',data.publication.automatic ? `10-minute publication schedule · ${t.firstSession}–${t.lastSession} · weekdays 7:00 a.m.–5:50 p.m. Eastern` : 'Manual snapshot · repo connection pending');
     text('heartbeat-checked',`Published host check ${stamp(p.checkedAt)} · session ${p.session}. Process: ${p.process || 'unverified'}. Browser refresh does not redate host evidence.`);
     text('prepare-state',p.universeCount===null ? 'Awaiting preparation' : `${count(p.universeCount)} stocks audited`);
     text('prepare-detail',`Prepared ${stamp(p.preparedAt)}. Missing history is excluded, not invented.`);
@@ -48,7 +51,7 @@
     text('safety-state',p.halted ? 'Halt requested' : data.positions.length ? 'Position monitored' : p.openOrderCount ? 'Working orders' : 'Account flat');
     text('safety-detail',`${count(p.openOrderCount)} open orders at check. ${p.halted ? 'Verify actual liquidation; a halt marker alone is not a fill.' : 'Liquidation starts five minutes before the exchange close. hawkspc must remain awake.'}`);
     text('collector-detail',`${count(p.quoteBatches)} quote batches recorded today · last ${stamp(p.lastQuoteAt)}. Quote collection may stop at 11 a.m.; safety monitoring continues.`);
-    text('collector-schedule',`Trial ${t.firstSession}–${t.lastSession} · prepare 7:45 a.m. · monitor 9:30 a.m. · Gem 10:05 a.m. / 4:05 p.m. Eastern.`);
+    text('collector-schedule',`Trial ${t.firstSession}–${t.lastSession} only; no automatic extension · prepare 7:45 a.m. · monitor 9:30 a.m. · Gem 10:05 a.m. / 4:05 p.m. Eastern.`);
     text('risk-detail',`Up to ${count(p.maxEntries)} entry attempts/day · one position at a time · no repeat stock buys${p.cooldownSeconds===900 ? ' · 15-minute exit cooldown' : ''} · max ${money(t.maxPosition)} position · nominal ${money(t.nominalRisk)} stop risk · ${money(t.dailyLoss)} daily-loss entry cutoff. Gaps/outages can exceed nominal risk.`);
     const change=data.policyChange;
     text('policy-change',change ? `3-entry safeguards ${change.state==='installed' ? 'installed' : 'scheduled for installation'} · effective ${change.effectiveSession}. ${change.state==='installed' ? 'Existing losses and ledger preserved.' : 'Activation requires a closed market, flat account and stopped supervisor. Today’s limit stays unchanged.'}` : 'No verified entry-policy upgrade receipt published.');
@@ -99,7 +102,9 @@
         event.reason ? event.reason.replaceAll('_',' ') : null].filter(Boolean).join(' · ');
       li.append(at,detail); activity.append(li);
     }
-    if (!data.activity.length) activity.textContent='No execution events published for this session. A healthy no-trade day is valid.';
+    if (!data.activity.length) activity.textContent=evidence.state==='incomplete' ?
+      'No execution events published. This session has missing preparation or collection evidence; it is not a verified no-trade day.' :
+      'No execution events published for this session. Absence of orders alone does not establish a successful session.';
     const orders=el('trade-body'); orders.replaceChildren(); text('trade-count',`${data.trades.length} orders · filled, pending and canceled distinguished`);
     if (!data.trades.length) empty(orders,'No strategy orders at this check. Canceled setup plumbing tests are excluded.');
     for (const order of data.trades) {

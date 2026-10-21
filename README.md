@@ -20,9 +20,9 @@ account identifiers, client-order IDs, private paths, prompts and raw reports.
 Unrelated orders and the canceled setup test are excluded. Publication failures
 preserve previous timestamps. A missing source is never treated as completion.
 
-The browser checks the public repository's snapshot every 20 seconds, falling
-back to the packaged snapshot if unavailable. This avoids waiting for a complete
-site rebuild for each data update. **This is delayed monitoring, not a real-time
+The browser checks both the public repository and packaged snapshots every
+20 seconds and selects the newest valid timestamp; either CDN can lag. This
+avoids waiting for a complete site rebuild for each data update. **This is delayed monitoring, not a real-time
 trading console.** After 15 minutes the page says updates are delayed, not that
 the host is necessarily offline. Market status uses verified broker time or an
 explicitly labelled exchange calendar, not a guessed weekday clock.
@@ -96,6 +96,15 @@ now says “Session not recorded” when a verified completed exchange session i
 the approved trial has no matching supervisor checkpoint; pre-open idle and
 completed sessions are not mislabelled. Windows/WSL must still be running for
 the finite timers; the publisher cannot wake the host or replay a missed day.
+
+Recorded session quality is now separate from publication freshness. A matching
+flat checkpoint does not establish that preparation, a timely opening scan, or
+candidate quote collection succeeded. After the verified scan deadline, missing
+evidence is labelled **Session incomplete**, including in the historical banner
+after publication becomes stale. A completed scan with zero candidates is valid
+and does not require quote batches. Old pre-open snapshots never become invented
+session failures merely because the browser clock advances. The finite publisher
+window and trial end date are displayed explicitly; no automatic extension is implied.
 
 ## Privacy, public credentials and performance disclosures
 

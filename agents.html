@@ -8,7 +8,7 @@
   <meta name="description" content="WSLI Agents — timestamped progress, Gem reviews, positions and actual order results.">
   <title>WSLI — Agents</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/styles.css?v=20261014-privacy">
+  <link rel="stylesheet" href="css/styles.css?v=20261020-session">
 </head>
 <body>
   <canvas id="stage" aria-hidden="true"></canvas>
@@ -49,6 +49,10 @@
       <div class="progress-banner" id="progress-banner" role="status" aria-live="polite">
         <strong id="progress-label">Loading agent progress…</strong>
         <span id="progress-detail">Reading the latest host-published snapshot.</span>
+      </div>
+      <div class="progress-banner" id="session-evidence-banner" role="status" aria-live="polite">
+        <strong id="session-evidence-label">Checking recorded session evidence…</strong>
+        <span id="session-evidence-detail">Session completeness is separate from website freshness and account flatness.</span>
       </div>
     </header>
 
@@ -209,9 +213,9 @@
   </footer>
 
   <script src="js/stage.js"></script>
-  <script src="js/status.js?v=20261015-publisher"></script>
+  <script src="js/status.js?v=20261020-session"></script>
   <script src="js/paper-feed.js?v=20261015-freshest"></script>
   <script src="js/trade-details.js?v=20261007-2"></script>
-  <script src="js/paper.js?v=20261007-2"></script>
+  <script src="js/paper.js?v=20261020-session"></script>
 </body>
 </html>

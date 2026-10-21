@@ -63,6 +63,38 @@
     if (Number.isFinite(parse(review?.scheduledAt))) return "Scheduled";
     return "Unverified";
   }
+  function recordedSession(data, now = Date.now()) {
+    const unknown={state:'unverified',kind:'unknown',label:'Session evidence unverified',
+      detail:'Published preparation and scan evidence cannot be verified. No successful no-trade session is implied.'};
+    if (data?.schemaVersion!==2 || data.scope!=='wsli_paper_pilot' || data.account?.paper!==true) return unknown;
+    const p=data.progress||{}, t=data.trial||{}, cal=data.market?.calendar, asof=parse(data.updatedAt);
+    if (!Number.isFinite(asof) || asof>now || !/^\d{4}-\d{2}-\d{2}$/.test(p.session||'') ||
+        !/^\d{4}-\d{2}-\d{2}$/.test(t.firstSession||'') || !/^\d{4}-\d{2}-\d{2}$/.test(t.lastSession||'')) return unknown;
+    if (p.session<t.firstSession || p.session>t.lastSession)
+      return {state:'outside',kind:'unknown',label:'Outside approved trial',detail:'No new paper entries are authorized outside the published trial dates.'};
+    // Evaluate the recorded session at its ORIGINAL publication time. A stale
+    // pre-open snapshot must not turn into a fabricated missed session later.
+    const calAge=asof-parse(cal?.checkedAt);
+    if (!(calAge>=0 && calAge<7*86400000 && asof>=parse(cal?.from) && asof<parse(cal?.through)) || !Array.isArray(cal?.sessions)) return unknown;
+    const hours=cal.sessions.find(s=>typeof s?.open==='string' && s.open.slice(0,10)===p.session &&
+      Number.isFinite(parse(s.open)) && parse(s.close)>parse(s.open));
+    if (!hours) return unknown;
+    const opened=parse(hours.open), deadline=opened+15*60000;
+    const integer=n=>Number.isInteger(n) && n>=0;
+    const prepared=integer(p.universeCount) && Number.isFinite(parse(p.preparedAt)) && parse(p.preparedAt)<=asof;
+    const scanned=integer(p.candidateCount) && parse(p.scanAt)>=opened+5*60000 && parse(p.scanAt)<=Math.min(asof,deadline);
+    const missing=[];
+    if (!prepared) missing.push('preparation');
+    if (!scanned) missing.push('opening scan');
+    if (scanned && p.candidateCount>0 && !(integer(p.quoteBatches) && p.quoteBatches>0 &&
+        parse(p.lastQuoteAt)>=parse(p.scanAt) && parse(p.lastQuoteAt)<=asof)) missing.push('candidate quotes');
+    if (missing.length && asof<deadline)
+      return {state:'pending',kind:'unknown',label:'Preparation / scan pending',detail:'The published check precedes the scan deadline. It does not establish a completed session.'};
+    if (missing.length) return {state:'incomplete',kind:'asleep',label:'Session incomplete',
+      detail:`Session ${p.session}: missing verified ${missing.join(', ')} evidence at publication. This is not a successful no-trade day. Review preparation and collection before another trial.`};
+    return {state:'recorded',kind:'unknown',label:p.candidateCount===0 ? 'Scan recorded · no candidates' : 'Preparation and scan recorded',
+      detail:`Session ${p.session}: preparation and opening scan are recorded${p.candidateCount===0 ? '; zero candidates is a valid scan result' : ', with candidate quotes'}. This alone does not prove full-session safety, complete fills or profitability.`};
+  }
   function paper(data, now = Date.now()) {
     if (data?.schemaVersion !== 2 || data.scope !== 'wsli_paper_pilot' || data.account?.paper !== true)
       return {kind:'unknown',label:'Progress unavailable',detail:'No verified paper-pilot feed loaded.'};
@@ -90,8 +122,12 @@
           s.open.slice(0,10)===p.session && parse(s.close)>parse(s.open) && parse(s.close)<=now);
       if (completed && p.session>=data.trial?.firstSession && p.session<=data.trial?.lastSession && p.supervisorSession!==p.session)
         return {kind:'asleep',label:'Session not recorded',detail:'No execution checkpoint was published for today’s completed exchange session. This is missing evidence—not a successful no-trade day. Check host uptime and the scheduled jobs.'};
-      return {kind:'unknown',label:p.armed ? 'Scheduled / idle' : 'Not armed',detail:'No running supervisor was observed. Outside the session this is expected; the next timer must still run.'};
+      const evidence=recordedSession(data,now);
+      if (evidence.state==='incomplete') return evidence;
+      return {kind:'unknown',label:p.armed ? 'Scheduled / idle' : 'Not armed',detail:'No running supervisor was observed. Outside the session this can be expected; verify the bounded trial dates before expecting another timer.'};
     }
+    const evidence=recordedSession(data,now);
+    if (evidence.state==='incomplete') return evidence;
     if (Number.isInteger(p.entriesToday) && Number.isInteger(p.maxEntries) &&
         p.entriesToday>=p.maxEntries && !(data.positions||[]).length && p.openOrderCount===0)
       return {kind:'awake',label:p.maxEntries===1 ? 'Daily entry used' : 'Daily entry limit used',detail:'Today’s entry attempt limit is consumed and the account is flat. No further buys; safety monitoring continues.'};
@@ -107,7 +143,7 @@
     if (parse(r?.scheduledAt)<=now) return 'Awaiting published result';
     return Number.isFinite(parse(r?.scheduledAt)) ? 'Scheduled' : 'Unverified';
   }
-  const api = {fresh, bot, market, heartbeat, review, paper, paperReview};
+  const api = {fresh, bot, market, heartbeat, review, paper, paperReview, recordedSession};
   root.WSLIStatus = api;
   if (typeof module !== "undefined") module.exports = api;
 })(typeof window !== "undefined" ? window : globalThis);

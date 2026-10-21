@@ -150,7 +150,9 @@ test('fresh publication cannot disguise a missed completed session as normal idl
   assert.equal(paper(missedDay,at('2026-10-15T22:01:00Z')).label,'Session not recorded');
 });
 test('a completed checkpoint and a pre-open idle state are not missed sessions',()=>{
-  assert.equal(paper({...missedDay,progress:{...missedDay.progress,supervisorSession:'2026-10-15'}},at('2026-10-15T22:01:00Z')).label,'Scheduled / idle');
+  const complete={...missedDay,progress:{...missedDay.progress,supervisorSession:'2026-10-15',
+    universeCount:79,preparedAt:'2026-10-15T11:46:00Z',candidateCount:0,scanAt:'2026-10-15T13:36:00Z'}};
+  assert.equal(paper(complete,at('2026-10-15T22:01:00Z')).label,'Scheduled / idle');
   const morning={...missedDay,updatedAt:'2026-10-16T11:00:00Z',market:{...missedDay.market,checkedAt:'2026-10-16T11:00:00Z'},
     progress:{...missedDay.progress,session:'2026-10-16'}};
   assert.equal(paper(morning,at('2026-10-16T11:01:00Z')).label,'Scheduled / idle');
@@ -160,4 +162,63 @@ test('expired, malformed calendars and sessions outside trial cannot prove a mis
     {...missedDay.market.calendar,sessions:{}},{...missedDay.market.calendar,sessions:[null,{open:42}]}])
     assert.notEqual(paper({...missedDay,market:{...missedDay.market,calendar}},at('2026-10-15T22:01:00Z')).label,'Session not recorded');
   assert.notEqual(paper({...missedDay,trial:{firstSession:'2026-10-07',lastSession:'2026-10-14'}},at('2026-10-15T22:01:00Z')).label,'Session not recorded');
+});
+
+const {recordedSession}=require('../js/status.js');
+const incomplete={...missedDay,progress:{...missedDay.progress,supervisorSession:'2026-10-15',
+  executorState:'FLAT',universeCount:null,preparedAt:null,candidateCount:null,scanAt:null,
+  quoteBatches:0,lastQuoteAt:null}};
+const preparedScan={...incomplete,progress:{...incomplete.progress,universeCount:79,
+  preparedAt:'2026-10-15T11:46:00Z',candidateCount:0,scanAt:'2026-10-15T13:36:00Z'}};
+test('flat after close with a matching checkpoint cannot hide missing preparation',()=>{
+  assert.equal(recordedSession(incomplete,at('2026-10-15T22:01:00Z')).state,'incomplete');
+  assert.equal(paper(incomplete,at('2026-10-15T22:01:00Z')).label,'Session incomplete');
+});
+test('historical session failure remains visible when publication is stale',()=>{
+  assert.equal(paper(incomplete,at('2026-10-16T02:00:00Z')).label,'Updates delayed');
+  assert.equal(recordedSession(incomplete,at('2026-10-16T02:00:00Z')).label,'Session incomplete');
+  assert.match(recordedSession(incomplete,at('2026-10-16T02:00:00Z')).detail,/at publication/);
+});
+test('zero candidates and zero quotes is valid when preparation and scan are recorded',()=>{
+  const result=recordedSession(preparedScan,at('2026-10-15T22:01:00Z'));
+  assert.equal(result.state,'recorded');
+  assert.equal(result.label,'Scan recorded · no candidates');
+});
+test('candidate scans require recorded quotes, unlike a zero-candidate scan',()=>{
+  const d={...preparedScan,progress:{...preparedScan.progress,candidateCount:1}};
+  assert.equal(recordedSession(d,at('2026-10-15T22:01:00Z')).state,'incomplete');
+  const quotes={...d,progress:{...d.progress,quoteBatches:1,lastQuoteAt:'2026-10-15T13:37:00Z'}};
+  assert.equal(recordedSession(quotes,at('2026-10-15T22:01:00Z')).state,'recorded');
+});
+test('newly scanned candidates have until the real deadline to publish their first quotes',()=>{
+  const d={...preparedScan,updatedAt:'2026-10-15T13:36:02Z',market:{...preparedScan.market,
+    calendar:{...preparedScan.market.calendar,checkedAt:'2026-10-15T13:36:01Z'}},
+    progress:{...preparedScan.progress,candidateCount:1}};
+  assert.equal(recordedSession(d,at('2026-10-15T13:36:03Z')).state,'pending');
+});
+test('stale pre-open data never fabricates a missing scan when viewed after close',()=>{
+  const early={...incomplete,updatedAt:'2026-10-15T11:00:00Z',market:{...incomplete.market,
+    calendar:{...incomplete.market.calendar,checkedAt:'2026-10-15T11:00:00Z'}}};
+  assert.equal(recordedSession(early,at('2026-10-15T22:01:00Z')).state,'pending');
+});
+test('an active supervisor waiting past the scan deadline requires attention',()=>{
+  const d={...incomplete,updatedAt:'2026-10-15T14:00:00Z',market:{...incomplete.market,
+    open:true,checkedAt:'2026-10-15T14:00:00Z',nextClose:'2026-10-15T20:00:00Z',
+    calendar:{...incomplete.market.calendar,checkedAt:'2026-10-15T14:00:00Z'}},progress:{...incomplete.progress,
+    checkedAt:'2026-10-15T14:00:00Z',supervisorAt:'2026-10-15T13:59:59Z',process:'active',executorState:'WAITING_FOR_PREPARE_OR_SCAN'}};
+  assert.equal(paper(d,at('2026-10-15T14:00:01Z')).label,'Session incomplete');
+});
+test('malformed and out-of-scope evidence is unverified, not a successful session',()=>{
+  for(const d of [null,{...incomplete,account:{paper:false}},
+    {...incomplete,updatedAt:'2026-10-16T22:00:00Z'},
+    {...incomplete,market:{calendar:{}}}])
+    assert.equal(recordedSession(d,at('2026-10-15T22:01:00Z')).state,'unverified');
+  const d={...incomplete,trial:{firstSession:'2026-10-07',lastSession:'2026-10-14'}};
+  assert.equal(recordedSession(d,at('2026-10-15T22:01:00Z')).state,'outside');
+});
+test('future or prior-session scan timestamps and invalid counts fail closed',()=>{
+  for(const scanAt of ['2026-10-14T13:36:00Z','2026-10-15T13:46:00Z','2026-10-16T13:36:00Z',null])
+    assert.equal(recordedSession({...preparedScan,progress:{...preparedScan.progress,scanAt}},at('2026-10-15T22:01:00Z')).state,'incomplete');
+  for(const candidateCount of [null,-1,'0',true])
+    assert.equal(recordedSession({...preparedScan,progress:{...preparedScan.progress,candidateCount}},at('2026-10-15T22:01:00Z')).state,'incomplete');
 });

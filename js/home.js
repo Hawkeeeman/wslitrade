@@ -11,6 +11,9 @@ function renderHome(data) {
   document.getElementById('home-paper-state').textContent=paper.label;
   const stamp=new Date(data.updatedAt).toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'});
   document.getElementById('home-paper-detail').textContent=`${paper.detail} Host checked ${stamp}. Open the dashboard for account figures and actual order history.`;
+  const evidence=WSLIStatus.recordedSession(data);
+  document.getElementById('home-session-evidence').textContent=`${evidence.label}: ${evidence.detail} Evidence snapshot ${stamp}.`;
+  document.getElementById('home-session-evidence').dataset.state=evidence.kind;
 
   const market = WSLIStatus.market(data);
   const marketKind = market.kind;

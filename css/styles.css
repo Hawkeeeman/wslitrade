@@ -171,6 +171,8 @@ body {
 .progress-banner span { color: var(--text-muted); font-size: .94rem; }
 .progress-banner[data-state="stale"] { border-left-color: var(--warn); }
 .progress-banner[data-state="asleep"] { border-left-color: var(--red); }
+.progress-banner[data-state="unknown"] { border-left-color: var(--warn); }
+#home-session-evidence[data-state="asleep"] { color: var(--red); }
 .pilot-progress-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 1.4rem; margin: 1.5rem 0; }
 .pilot-progress-grid h3 { font-size: 1.2rem; letter-spacing: -.03em; }
 .pilot-progress-grid article { min-width: 0; }

@@ -95,6 +95,29 @@
     return {state:'recorded',kind:'unknown',label:p.candidateCount===0 ? 'Scan recorded · no candidates' : 'Preparation and scan recorded',
       detail:`Session ${p.session}: preparation and opening scan are recorded${p.candidateCount===0 ? '; zero candidates is a valid scan result' : ', with candidate quotes'}. This alone does not prove full-session safety, complete fills or profitability.`};
   }
+  function trialWindow(data, now = Date.now()) {
+    const first=data?.trial?.firstSession,last=data?.trial?.lastSession;
+    const valid=s=>typeof s==='string' && /^\d{4}-\d{2}-\d{2}$/.test(s) &&
+      Number.isFinite(Date.parse(s+'T00:00:00Z')) && new Date(s+'T00:00:00Z').toISOString().slice(0,10)===s;
+    if (!valid(first) || !valid(last) || first>last || !Number.isFinite(now)) return {phase:'unknown'};
+    const parts=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date(now));
+    const part=type=>parts.find(p=>p.type===type).value;
+    const day=`${part('year')}-${part('month')}-${part('day')}`;
+    return {phase:day<first ? 'upcoming' : day>last ? 'ended' : 'within',day,first,last};
+  }
+  function continuation(data,now=Date.now()) {
+    const c=data?.continuation;
+    if (!c || !['scheduled','installed'].includes(c.state)) return null;
+    const window=trialWindow({trial:{firstSession:c.firstSession,lastSession:c.lastSession}},now);
+    if(window.phase==='unknown') return null;
+    if(c.state==='installed' && data.trial?.firstSession===c.firstSession && data.trial?.lastSession===c.lastSession &&
+        Number.isFinite(parse(c.installedAt)) && parse(c.installedAt)<=now)
+      return {label:'Continuation configuration published',detail:`Approved paper window ${c.firstSession}–${c.lastSession}. The host published matching installed configuration; this is not proof that a future session ran. Balance and history are retained.`};
+    if(c.state==='scheduled' && Number.isFinite(parse(c.scheduledAt)))
+      return {label:parse(c.scheduledAt)>now ? 'Continuation activation queued' : 'Activation verification pending',
+        detail:`Approved paper window ${c.firstSession}–${c.lastSession}. After-close installation must pass fresh safety checks. A timer is not proof of activation; hawkspc must stay awake.`};
+    return null;
+  }
   function paper(data, now = Date.now()) {
     if (data?.schemaVersion !== 2 || data.scope !== 'wsli_paper_pilot' || data.account?.paper !== true)
       return {kind:'unknown',label:'Progress unavailable',detail:'No verified paper-pilot feed loaded.'};
@@ -107,6 +130,15 @@
       return {kind:'asleep',label:'Needs attention',detail:'New entries are halted or execution needs operator review. A halt does not prove liquidation.'};
     const session=market(data,now);
     if (p.process === 'failed') return {kind:'asleep',label:'Monitor failed',detail:'The supervisor service failed. Check broker exposure before restarting.'};
+    const window=trialWindow(data,now);
+    // Display-only dates never hide exposure, halts or an unverified host check.
+    if (p.process==='inactive' && p.armed && p.session===window.day &&
+        Array.isArray(data.positions) && data.positions.length===0 && p.openOrderCount===0) {
+      if (window.phase==='upcoming') return {kind:'unknown',label:'Paper run scheduled',
+        detail:`Approved paper window ${window.first}–${window.last}. No entries before ${window.first}; a future schedule is not a running supervisor or a guaranteed trade.`};
+      if (window.phase==='ended') return {kind:'unknown',label:'Paper run ended',
+        detail:`The approved paper window ended ${window.last}. No automatic extension. The published flat account check is historical once its timestamp ages.`};
+    }
     // GitHub Pages deployment has latency. Judge process freshness when the
     // host actually exported it, not against a newer browser fetch timestamp.
     const age=parse(p.checkedAt)-parse(p.supervisorAt);
@@ -143,7 +175,7 @@
     if (parse(r?.scheduledAt)<=now) return 'Awaiting published result';
     return Number.isFinite(parse(r?.scheduledAt)) ? 'Scheduled' : 'Unverified';
   }
-  const api = {fresh, bot, market, heartbeat, review, paper, paperReview, recordedSession};
+  const api = {fresh, bot, market, heartbeat, review, paper, paperReview, recordedSession, trialWindow, continuation};
   root.WSLIStatus = api;
   if (typeof module !== "undefined") module.exports = api;
 })(typeof window !== "undefined" ? window : globalThis);

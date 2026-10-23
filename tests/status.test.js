@@ -164,7 +164,48 @@ test('expired, malformed calendars and sessions outside trial cannot prove a mis
   assert.notEqual(paper({...missedDay,trial:{firstSession:'2026-10-07',lastSession:'2026-10-14'}},at('2026-10-15T22:01:00Z')).label,'Session not recorded');
 });
 
-const {recordedSession}=require('../js/status.js');
+const {recordedSession,trialWindow}=require('../js/status.js');
+const {continuation}=require('../js/status.js');
+test('a passed rollout timer is pending verification, not a successful install',()=>{
+  const d={continuation:{state:'scheduled',firstSession:'2026-10-26',lastSession:'2026-10-30',scheduledAt:'2026-10-23T20:15:00Z'}};
+  assert.equal(continuation(d,at('2026-10-23T19:00:00Z')).label,'Continuation activation queued');
+  assert.equal(continuation(d,at('2026-10-23T21:00:00Z')).label,'Activation verification pending');
+  d.continuation.state='installed';d.continuation.installedAt='2026-10-23T20:16:00Z';
+  assert.equal(continuation(d,at('2026-10-23T21:00:00Z')),null);
+  d.trial={firstSession:'2026-10-26',lastSession:'2026-10-30'};
+  assert.equal(continuation(d,at('2026-10-23T21:00:00Z')).label,'Continuation configuration published');
+});
+const upcoming={...pilot,trial:{firstSession:'2026-10-26',lastSession:'2026-10-30'},
+  updatedAt:'2026-10-23T14:00:00Z',market:{open:true,checkedAt:'2026-10-23T14:00:00Z',nextClose:'2026-10-23T20:00:00Z'},
+  progress:{...pilot.progress,checkedAt:'2026-10-23T14:00:00Z',session:'2026-10-23',process:'inactive',executorState:'ARMED_SCHEDULED'}};
+test('approved future run is scheduled, not a stopped monitor during today’s open market',()=>{
+  assert.equal(paper(upcoming,at('2026-10-23T14:01:00Z')).label,'Paper run scheduled');
+  assert.match(paper(upcoming,at('2026-10-23T14:01:00Z')).detail,/2026-10-26.*2026-10-30/);
+});
+test('window dates never hide a halt, uncertain execution, exposure or stale publication',()=>{
+  const t=at('2026-10-23T14:01:00Z');
+  assert.equal(paper({...upcoming,progress:{...upcoming.progress,halted:true}},t).label,'Needs attention');
+  assert.equal(paper({...upcoming,progress:{...upcoming.progress,executorState:'ORDER_OUTCOME_UNKNOWN'}},t).label,'Needs attention');
+  for(const change of [{positions:[{}]},{progress:{...upcoming.progress,openOrderCount:1}},
+      {progress:{...upcoming.progress,openOrderCount:null}},{progress:{...upcoming.progress,session:'2026-10-22'}}])
+    assert.notEqual(paper({...upcoming,...change},t).label,'Paper run scheduled');
+  assert.equal(paper(upcoming,at('2026-10-23T14:20:00Z')).label,'Updates delayed');
+});
+test('window date boundaries use Eastern dates, not UTC midnight',()=>{
+  assert.equal(trialWindow(upcoming,at('2026-10-26T03:59:00Z')).phase,'upcoming');
+  assert.equal(trialWindow(upcoming,at('2026-10-26T04:00:00Z')).phase,'within');
+  assert.equal(trialWindow(upcoming,at('2026-10-31T03:59:00Z')).phase,'within');
+  assert.equal(trialWindow(upcoming,at('2026-10-31T04:00:00Z')).phase,'ended');
+});
+test('malformed or reversed windows cannot suppress monitoring warnings',()=>{
+  for(const dates of [{firstSession:'2026-10-32',lastSession:'2026-11-02'},
+      {firstSession:'2026-10-30',lastSession:'2026-10-26'},{}])
+    assert.equal(trialWindow({...upcoming,trial:dates},at('2026-10-23T14:01:00Z')).phase,'unknown');
+});
+test('a fresh same-day flat check after the window says ended, not active',()=>{
+  const d={...upcoming,updatedAt:'2026-10-31T15:00:00Z',progress:{...upcoming.progress,session:'2026-10-31'}};
+  assert.equal(paper(d,at('2026-10-31T15:01:00Z')).label,'Paper run ended');
+});
 const incomplete={...missedDay,progress:{...missedDay.progress,supervisorSession:'2026-10-15',
   executorState:'FLAT',universeCount:null,preparedAt:null,candidateCount:null,scanAt:null,
   quoteBatches:0,lastQuoteAt:null}};

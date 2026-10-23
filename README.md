@@ -5,7 +5,25 @@ Site for the Alpaca paper bot.
 - **Home:** https://wslitrade.com
 - **Agents:** https://wslitrade.com/agents.html
 
-## Current paper pilot: October 7–20, 2026
+## Approved paper continuation: October 26–30, 2026
+
+Abed approved a five-session paper-only continuation for October 26–30, with
+the same three-attempt policy and dollar-risk limits. The October 7–20 run is
+historical. Existing account equity, losses, journals and broker history are
+preserved; no balance is reset and no entry is authorized October 21–25 or
+after October 30. Installation must be confirmed on hawkspc before calling
+these future timers or Gem's reviews active. Publication dates come from the
+verified host configuration, not hard-coded website copy.
+
+The checked continuation installer is queued on hawkspc for October 23 at
+16:15 Eastern because its safety guard requires a closed market and flat account.
+The earlier daytime attempt stopped before activation. Staging and a timer are
+not proof of installation: check `trial-renewal-20261026.json`, the matching
+installed config/arm and actual next timers. The post-install step invokes only
+the existing read-only publisher and records a separate publication receipt.
+The public continuation banner distinguishes queued, verification-pending and
+matching installed configuration. Keep hawkspc and WSL awake for this one-time
+job; it has no missed-run catch-up and cannot wake Windows.
 
 The Home and Agents pages read **`data/paper.json`**, not the legacy account's
 `data/live.json`. The new experiment starts with $10,000 paper equity. The page
@@ -31,8 +49,10 @@ The separate non-AI publisher is prepared on hawkspc. The repo owner must add it
 public deploy key with write access to **Hawkeeeman/wslitrade only**. The private
 key stays on hawkspc. Repo write access is not path-level isolation; the publisher
 itself stages only `data/paper.json`. No personal GitHub credential is copied.
-`scripts/install_publisher.py --apply` first verifies a real push, then installs
+The original `scripts/install_publisher.py --apply` verified a real push, then installed
 the finite ten-minute weekday timer, 07:00–17:50 Eastern, October 7–20 only.
+The approved continuation renews that same publisher for October 26–30 without
+changing its repository-only access. Do not rerun the old date-pinned installer.
 Until that succeeds, the snapshot is explicitly labelled manual. The timer is
 not an AI heartbeat and cannot wake Windows. Keep hawkspc and WSL awake.
 
@@ -148,8 +168,9 @@ secret blocker or a promise that a parallel Pages deployment is gated by it;
 the pre-publication local audit still matters.
 
 The dashboard explicitly states profitability is unestablished. The October 20
-trial endpoint is an operational review, not an alpha claim or authorization
-to extend the schedule. `risk.html` separates simulated P/L from cost-adjusted
+endpoint was an operational review, not an alpha claim. The separately approved
+October 26–30 continuation is also bounded, not authorization for further
+sessions or live money. `risk.html` separates simulated P/L from cost-adjusted
 estimates and describes the evaluation evidence still needed. No confidence
 interval, performance guarantee, or live return is fabricated.
 

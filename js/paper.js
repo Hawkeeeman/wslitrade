@@ -16,8 +16,12 @@
   function render(data) {
     const state=WSLIStatus.paper(data), evidence=WSLIStatus.recordedSession(data), p=data.progress, t=data.trial;
     text('updated',`Host snapshot: ${stamp(data.updatedAt)}. The browser checks for updates every 20 seconds.`);
-    text('trial-summary',`October 7–20 paper experiment · ${money(t.seed)} starting equity · IEX feed only. This is not the legacy NVDA account or live money.`);
+    text('trial-summary',`${t.firstSession}–${t.lastSession} approved paper window · ${money(t.seed)} original seed · existing balance and history retained · IEX feed only. No live money.`);
     text('progress-label',state.label); text('progress-detail',state.detail);
+    const continuation=WSLIStatus.continuation(data);
+    el('continuation-banner').hidden=!continuation;
+    text('continuation-label',continuation?.label||'');
+    text('continuation-detail',continuation ? `${continuation.detail}${data.continuation.state==='scheduled' ? ' Scheduled '+stamp(data.continuation.scheduledAt)+'.' : ''}` : '');
     el('progress-banner').dataset.state=state.kind;
     text('session-evidence-label',evidence.label);
     text('session-evidence-detail',`${evidence.detail} Evidence snapshot: ${stamp(data.updatedAt)}; this is not a current broker check.`);
@@ -38,7 +42,7 @@
     text('account-meta',`${money(data.account.cash)} cash · ${data.positions.length} open position${data.positions.length===1 ? '' : 's'} · snapshot values.`);
     text('power-value',money(data.account.trialPl));
     el('power-value').className=number(data.account.trialPl)>0 ? 'up' : number(data.account.trialPl)<0 ? 'down' : '';
-    text('power-meta',`From ${money(t.seed)} seed · day P/L ${money(data.account.dayPl)}. Paper, including broker fills.`);
+    text('power-meta',`Cumulative from the original ${money(t.seed)} seed, including prior runs · day P/L ${money(data.account.dayPl)}. No balance reset.`);
     text('heartbeat-publication',data.publication.automatic ? `10-minute publication schedule · ${t.firstSession}–${t.lastSession} · weekdays 7:00 a.m.–5:50 p.m. Eastern` : 'Manual snapshot · repo connection pending');
     text('heartbeat-checked',`Published host check ${stamp(p.checkedAt)} · session ${p.session}. Process: ${p.process || 'unverified'}. Browser refresh does not redate host evidence.`);
     text('prepare-state',p.universeCount===null ? evidence.state==='incomplete' ? 'Preparation missing' : 'Awaiting preparation' : `${count(p.universeCount)} stocks audited`);

@@ -129,6 +129,23 @@ def public_policy_change(value):
         scheduledAt=stamp(value.get('scheduled_at')))
 
 
+def public_continuation(pending,receipt,config):
+    """Allowlist approved rollout metadata; pending is never proof of activation."""
+    first,last='2026-10-26','2026-10-30'
+    def matches(value):
+        return isinstance(value,dict) and value.get('first_session')==first and value.get('last_session')==last
+    config_hash=hashlib.sha256(json.dumps(config,sort_keys=True,allow_nan=False,separators=(',',':')).encode()).hexdigest()
+    scheduled=stamp(pending.get('scheduled_at')) if matches(pending) else None
+    if (matches(receipt) and receipt.get('state')=='verified_installed' and stamp(receipt.get('checked_at'))
+            and receipt.get('config_hash')==config_hash and
+            (config.get('first_session'),config.get('last_session'))==(first,last)):
+        return dict(state='installed',firstSession=first,lastSession=last,
+                    installedAt=stamp(receipt['checked_at']),scheduledAt=scheduled)
+    if scheduled:
+        return dict(state='scheduled',firstSession=first,lastSession=last,installedAt=None,scheduledAt=scheduled)
+    return None
+
+
 def public_orders(orders,intent_roles):
     result=[]
     def add(order,role):
@@ -171,7 +188,7 @@ def read_reviews(root,day,jobs,account_number):
 
 
 def build_snapshot(*,now,account,positions,orders,clock,calendar,status,service,ledger,
-                   prepared,scan,reviews,config,halted,automatic=False,policy_change=None):
+                   prepared,scan,reviews,config,halted,automatic=False,policy_change=None,continuation=None):
     checked=stamp(now)
     if not checked: raise ValueError('timezone_required')
     day=now.astimezone(ET).date().isoformat()
@@ -213,7 +230,7 @@ def build_snapshot(*,now,account,positions,orders,clock,calendar,status,service,
         progress=progress,positions=safe_positions,trades=safe_orders,
         activity=ledger['activity'],reviews=reviews,
         decisions=public_decisions(ledger.get('entryPlans',[]),scan),
-        policyChange=public_policy_change(policy_change))
+        policyChange=public_policy_change(policy_change),continuation=continuation)
 
 
 def collect(code,root,automatic=False):
@@ -245,12 +262,16 @@ def collect(code,root,automatic=False):
     for name in ('entry-policy-upgrade.json','entry-policy-pending.json'):
         if (root/name).is_file():
             policy_change=json.loads((root/name).read_text()); break
+    pending_path=root/'trial-renewal-pending-20261026.json'
+    receipt_path=root/'trial-renewal-20261026.json'
+    continuation=public_continuation(json.loads(pending_path.read_text()) if pending_path.is_file() else None,
+        json.loads(receipt_path.read_text()) if receipt_path.is_file() else None,c)
     return build_snapshot(now=datetime.now(timezone.utc),account=account,positions=positions,orders=orders,clock=clock,
         calendar=calendar,status=status,service=service,ledger=ledger_summary(root,day),
         prepared=snapshot_packet(root,day,'prepared'),scan=snapshot_packet(root,day,'scan'),
         reviews=read_reviews(root,day,jobs,account.account_number),config=c,
         halted=(root/'HALT').exists() or (root/('HALT-'+day)).exists(),automatic=automatic,
-        policy_change=policy_change)
+        policy_change=policy_change,continuation=continuation)
 
 
 def main():

@@ -9,6 +9,9 @@ function renderHome(data) {
   window.stageState.bot = botKind;
   setPill("status-dot", "status-label", botKind, paper.label);
   document.getElementById('home-paper-state').textContent=paper.label;
+  const continuation=WSLIStatus.continuation(data);
+  document.getElementById('home-continuation').hidden=!continuation;
+  document.getElementById('home-continuation').textContent=continuation ? `${continuation.label}: ${continuation.detail}` : '';
   const stamp=new Date(data.updatedAt).toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'});
   document.getElementById('home-paper-detail').textContent=`${paper.detail} Host checked ${stamp}. Open the dashboard for account figures and actual order history.`;
   const evidence=WSLIStatus.recordedSession(data);

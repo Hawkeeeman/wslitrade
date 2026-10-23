@@ -50,6 +50,10 @@
         <strong id="progress-label">Loading agent progress…</strong>
         <span id="progress-detail">Reading the latest host-published snapshot.</span>
       </div>
+      <div class="progress-banner" id="continuation-banner" role="status" aria-live="polite" hidden>
+        <strong id="continuation-label"></strong>
+        <span id="continuation-detail"></span>
+      </div>
       <div class="progress-banner" id="session-evidence-banner" role="status" aria-live="polite">
         <strong id="session-evidence-label">Checking recorded session evidence…</strong>
         <span id="session-evidence-detail">Session completeness is separate from website freshness and account flatness.</span>
@@ -73,7 +77,7 @@
         <p class="card-meta" id="account-meta">Alpaca paper</p>
       </article>
       <article class="card" id="card-power">
-        <p class="card-kicker mono">Trial P/L</p>
+        <p class="card-kicker mono">Cumulative paper P/L</p>
         <h2 id="power-value">—</h2>
         <p class="card-meta" id="power-meta">Compared with the $10,000 starting balance.</p>
       </article>
@@ -190,7 +194,7 @@
     <section class="panel" aria-labelledby="profitability-heading">
       <div class="panel-head"><h2 id="profitability-heading">Is Gem profitable?</h2><p class="mono muted">Not established</p></div>
       <p class="card-meta">A positive paper balance would not, by itself, demonstrate a repeatable edge. This experiment is still validating execution. Software faults, forced exits and losses remain part of the reported account result.</p>
-      <p class="card-meta">The October 20 trial endpoint is an operational review, not a promise of profitability. A credible performance assessment needs a separate, pre-planned test of fixed rules, realistic costs, drawdown and uncertainty across independent sessions. No date or number of trades guarantees proof.</p>
+      <p class="card-meta">An approved run's endpoint is an operational review, not a promise of profitability. Further sessions need a separately approved, bounded schedule. A credible performance assessment needs a pre-planned test of fixed rules, realistic costs, drawdown and uncertainty across independent sessions. No date or number of trades guarantees proof.</p>
       <p class="card-meta">Gem reviews recorded evidence; the deterministic executor chooses eligible entries and submits paper orders. We evaluate the whole system, not an AI personality. <a href="risk.html">Read the performance methodology and simulation limits.</a></p>
     </section>
 
@@ -213,9 +217,9 @@
   </footer>
 
   <script src="js/stage.js"></script>
-  <script src="js/status.js?v=20261020-session"></script>
+  <script src="js/status.js?v=20261023-renewal"></script>
   <script src="js/paper-feed.js?v=20261015-freshest"></script>
   <script src="js/trade-details.js?v=20261007-2"></script>
-  <script src="js/paper.js?v=20261020-session-2"></script>
+  <script src="js/paper.js?v=20261023-renewal"></script>
 </body>
 </html>

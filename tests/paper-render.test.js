@@ -32,7 +32,7 @@ async function render(page,script,data,now='2026-10-21T02:00:00Z') {
   const elements=new Map(ids.map(id=>[id,new Element()]));
   const document={getElementById(id){assert.ok(elements.has(id),`Missing ${id}`);return elements.get(id);},createElement:()=>new Element()};
   class Clock extends Date {constructor(...args){super(...(args.length?args:[now]));} static now(){return Date.parse(now);}}
-  const timedStatus={...status,paper:d=>status.paper(d,Clock.now()),recordedSession:d=>status.recordedSession(d,Clock.now()),market:d=>status.market(d,Clock.now())};
+  const timedStatus={...status,paper:d=>status.paper(d,Clock.now()),continuation:d=>status.continuation(d,Clock.now()),recordedSession:d=>status.recordedSession(d,Clock.now()),market:d=>status.market(d,Clock.now())};
   const context={document,window:{stageState:{}},WSLIStatus:timedStatus,WSLITradeDetails:trades,
     WSLIPaperFeed:{load:async()=>data},setInterval:()=>{},startStage:()=>{},startField:()=>{},Date:Clock};
   vm.runInNewContext(fs.readFileSync(script,'utf8'),context);
@@ -68,4 +68,21 @@ test('Home also preserves the incomplete-session warning after the last schedule
   assert.equal(nodes.get('home-paper-state').textContent,'Updates delayed');
   assert.match(nodes.get('home-session-evidence').textContent,/Session incomplete/);
   assert.equal(nodes.get('home-session-evidence').dataset.state,'asleep');
+});
+test('renewed dates and cumulative accounting come from the host feed, not the old hard-coded window',async()=>{
+  const d=snapshot(); d.trial.firstSession='2026-10-26';d.trial.lastSession='2026-10-30';
+  d.updatedAt='2026-10-23T04:45:00Z';d.progress.session='2026-10-23';
+  const nodes=await render('agents.html','js/paper.js',d,'2026-10-23T04:46:00Z');
+  assert.match(nodes.get('trial-summary').textContent,/2026-10-26–2026-10-30/);
+  assert.match(nodes.get('trial-summary').textContent,/original seed/);
+  assert.match(nodes.get('power-meta').textContent,/including prior runs/);
+  assert.equal(nodes.get('progress-label').textContent,'Paper run scheduled');
+});
+test('queued installation is visible but cannot masquerade as an activated run',async()=>{
+  const d=snapshot();d.continuation={state:'scheduled',firstSession:'2026-10-26',lastSession:'2026-10-30',scheduledAt:'2026-10-23T20:15:00Z'};
+  const nodes=await render('agents.html','js/paper.js',d,'2026-10-23T15:00:00Z');
+  assert.equal(nodes.get('continuation-label').textContent,'Continuation activation queued');
+  assert.equal(nodes.get('continuation-banner').hidden,false);
+  assert.match(nodes.get('continuation-detail').textContent,/not proof of activation/);
+  assert.equal(nodes.get('progress-label').textContent,'Updates delayed');
 });

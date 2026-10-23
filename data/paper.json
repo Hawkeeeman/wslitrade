@@ -1,14 +1,14 @@
 {
   "schemaVersion": 2,
   "scope": "wsli_paper_pilot",
-  "updatedAt": "2026-10-23T16:21:02.459307+00:00",
+  "updatedAt": "2026-10-23T20:15:21.076235+00:00",
   "publication": {
     "automatic": true,
     "intervalSeconds": 600
   },
   "trial": {
-    "firstSession": "2026-10-07",
-    "lastSession": "2026-10-20",
+    "firstSession": "2026-10-26",
+    "lastSession": "2026-10-30",
     "seed": "10000",
     "maxPosition": "1000",
     "nominalRisk": "10",
@@ -22,15 +22,15 @@
     "dayPl": "0.00",
     "trialPl": "7.53",
     "paper": true,
-    "checkedAt": "2026-10-23T16:21:02.459307+00:00"
+    "checkedAt": "2026-10-23T20:15:21.076235+00:00"
   },
   "market": {
-    "open": true,
-    "checkedAt": "2026-10-23T12:21:00.588265-04:00",
+    "open": false,
+    "checkedAt": "2026-10-23T16:15:19.982494-04:00",
     "nextOpen": "2026-10-26T09:30:00-04:00",
-    "nextClose": "2026-10-23T16:00:00-04:00",
+    "nextClose": "2026-10-26T16:00:00-04:00",
     "calendar": {
-      "checkedAt": "2026-10-23T16:21:00.326431+00:00",
+      "checkedAt": "2026-10-23T20:15:19.856340+00:00",
       "through": "2026-10-31T00:00:00-04:00",
       "sessions": [
         {
@@ -63,12 +63,12 @@
   },
   "progress": {
     "session": "2026-10-23",
-    "checkedAt": "2026-10-23T16:21:02.459307+00:00",
+    "checkedAt": "2026-10-23T20:15:21.076235+00:00",
     "armed": true,
     "halted": false,
-    "executorState": "FLAT",
-    "supervisorAt": "2026-10-20T20:00:00.887591+00:00",
-    "supervisorSession": "2026-10-20",
+    "executorState": "ARMED_SCHEDULED",
+    "supervisorAt": "2026-10-23T20:15:17.960128+00:00",
+    "supervisorSession": "2026-10-23",
     "process": "inactive",
     "entriesToday": 0,
     "maxEntries": 3,
@@ -121,10 +121,10 @@
     "scheduledAt": null
   },
   "continuation": {
-    "state": "scheduled",
+    "state": "installed",
     "firstSession": "2026-10-26",
     "lastSession": "2026-10-30",
-    "installedAt": null,
+    "installedAt": "2026-10-23T20:15:18.329247+00:00",
     "scheduledAt": "2026-10-23T20:15:00+00:00"
   }
 }

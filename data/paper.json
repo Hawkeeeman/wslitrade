@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "scope": "wsli_paper_pilot",
-  "updatedAt": "2026-10-23T20:15:21.076235+00:00",
+  "updatedAt": "2026-10-26T11:00:03.795444+00:00",
   "publication": {
     "automatic": true,
     "intervalSeconds": 600
@@ -22,21 +22,17 @@
     "dayPl": "0.00",
     "trialPl": "7.53",
     "paper": true,
-    "checkedAt": "2026-10-23T20:15:21.076235+00:00"
+    "checkedAt": "2026-10-26T11:00:03.795444+00:00"
   },
   "market": {
     "open": false,
-    "checkedAt": "2026-10-23T16:15:19.982494-04:00",
+    "checkedAt": "2026-10-26T07:00:03.348190-04:00",
     "nextOpen": "2026-10-26T09:30:00-04:00",
     "nextClose": "2026-10-26T16:00:00-04:00",
     "calendar": {
-      "checkedAt": "2026-10-23T20:15:19.856340+00:00",
-      "through": "2026-10-31T00:00:00-04:00",
+      "checkedAt": "2026-10-26T11:00:02.419309+00:00",
+      "through": "2026-11-03T00:00:00-05:00",
       "sessions": [
-        {
-          "open": "2026-10-23T09:30:00-04:00",
-          "close": "2026-10-23T16:00:00-04:00"
-        },
         {
           "open": "2026-10-26T09:30:00-04:00",
           "close": "2026-10-26T16:00:00-04:00"
@@ -56,14 +52,18 @@
         {
           "open": "2026-10-30T09:30:00-04:00",
           "close": "2026-10-30T16:00:00-04:00"
+        },
+        {
+          "open": "2026-11-02T09:30:00-05:00",
+          "close": "2026-11-02T16:00:00-05:00"
         }
       ],
-      "from": "2026-10-23T00:00:00-04:00"
+      "from": "2026-10-26T00:00:00-04:00"
     }
   },
   "progress": {
-    "session": "2026-10-23",
-    "checkedAt": "2026-10-23T20:15:21.076235+00:00",
+    "session": "2026-10-26",
+    "checkedAt": "2026-10-26T11:00:03.795444+00:00",
     "armed": true,
     "halted": false,
     "executorState": "ARMED_SCHEDULED",
@@ -91,8 +91,8 @@
   "reviews": [
     {
       "slot": "morning",
-      "scheduledAt": null,
-      "enabled": false,
+      "scheduledAt": "2026-10-26T14:05:00+00:00",
+      "enabled": true,
       "lastRunAt": null,
       "lastOutcome": null,
       "reportAvailable": false,
@@ -101,8 +101,8 @@
     },
     {
       "slot": "close",
-      "scheduledAt": null,
-      "enabled": false,
+      "scheduledAt": "2026-10-26T20:05:00+00:00",
+      "enabled": true,
       "lastRunAt": null,
       "lastOutcome": null,
       "reportAvailable": false,

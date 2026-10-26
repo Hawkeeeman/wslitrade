@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "scope": "wsli_paper_pilot",
-  "updatedAt": "2026-10-26T12:50:03.894181+00:00",
+  "updatedAt": "2026-10-26T13:00:03.907476+00:00",
   "publication": {
     "automatic": true,
     "intervalSeconds": 600
@@ -22,15 +22,15 @@
     "dayPl": "0.00",
     "trialPl": "7.53",
     "paper": true,
-    "checkedAt": "2026-10-26T12:50:03.894181+00:00"
+    "checkedAt": "2026-10-26T13:00:03.907476+00:00"
   },
   "market": {
     "open": false,
-    "checkedAt": "2026-10-26T08:50:02.411060-04:00",
+    "checkedAt": "2026-10-26T09:00:02.478360-04:00",
     "nextOpen": "2026-10-26T09:30:00-04:00",
     "nextClose": "2026-10-26T16:00:00-04:00",
     "calendar": {
-      "checkedAt": "2026-10-26T12:50:02.253731+00:00",
+      "checkedAt": "2026-10-26T13:00:02.280189+00:00",
       "through": "2026-11-03T00:00:00-05:00",
       "sessions": [
         {
@@ -63,7 +63,7 @@
   },
   "progress": {
     "session": "2026-10-26",
-    "checkedAt": "2026-10-26T12:50:03.894181+00:00",
+    "checkedAt": "2026-10-26T13:00:03.907476+00:00",
     "armed": true,
     "halted": false,
     "executorState": "ARMED_SCHEDULED",

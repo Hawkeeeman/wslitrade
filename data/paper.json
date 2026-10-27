@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "scope": "wsli_paper_pilot",
-  "updatedAt": "2026-10-26T21:50:04.403436+00:00",
+  "updatedAt": "2026-10-27T11:00:03.828186+00:00",
   "publication": {
     "automatic": true,
     "intervalSeconds": 600
@@ -17,26 +17,22 @@
     "timezone": "America/New_York"
   },
   "account": {
-    "equity": "10006.73",
-    "cash": "10006.73",
-    "dayPl": "-0.80",
-    "trialPl": "6.73",
+    "equity": "10006.69",
+    "cash": "10006.69",
+    "dayPl": "0.00",
+    "trialPl": "6.69",
     "paper": true,
-    "checkedAt": "2026-10-26T21:50:04.403436+00:00"
+    "checkedAt": "2026-10-27T11:00:03.828186+00:00"
   },
   "market": {
     "open": false,
-    "checkedAt": "2026-10-26T17:50:03.186504-04:00",
+    "checkedAt": "2026-10-27T07:00:02.756854-04:00",
     "nextOpen": "2026-10-27T09:30:00-04:00",
     "nextClose": "2026-10-27T16:00:00-04:00",
     "calendar": {
-      "checkedAt": "2026-10-26T21:50:02.752479+00:00",
-      "through": "2026-11-03T00:00:00-05:00",
+      "checkedAt": "2026-10-27T11:00:02.257165+00:00",
+      "through": "2026-11-04T00:00:00-05:00",
       "sessions": [
-        {
-          "open": "2026-10-26T09:30:00-04:00",
-          "close": "2026-10-26T16:00:00-04:00"
-        },
         {
           "open": "2026-10-27T09:30:00-04:00",
           "close": "2026-10-27T16:00:00-04:00"
@@ -56,208 +52,65 @@
         {
           "open": "2026-11-02T09:30:00-05:00",
           "close": "2026-11-02T16:00:00-05:00"
+        },
+        {
+          "open": "2026-11-03T09:30:00-05:00",
+          "close": "2026-11-03T16:00:00-05:00"
         }
       ],
-      "from": "2026-10-26T00:00:00-04:00"
+      "from": "2026-10-27T00:00:00-04:00"
     }
   },
   "progress": {
-    "session": "2026-10-26",
-    "checkedAt": "2026-10-26T21:50:04.403436+00:00",
+    "session": "2026-10-27",
+    "checkedAt": "2026-10-27T11:00:03.828186+00:00",
     "armed": true,
-    "halted": true,
+    "halted": false,
     "executorState": "FLAT",
     "supervisorAt": "2026-10-26T20:00:02.597149+00:00",
     "supervisorSession": "2026-10-26",
     "process": "inactive",
-    "entriesToday": 1,
+    "entriesToday": 0,
     "maxEntries": 3,
     "cooldownSeconds": 900,
     "nextEntryAfter": null,
     "noRepeatSymbols": true,
     "openOrderCount": 0,
-    "universeCount": 68,
-    "preparedAt": "2026-10-26T11:45:58.730093+00:00",
-    "candidateCount": 3,
-    "candidates": [
-      "VZ",
-      "AAL",
-      "CRWV"
-    ],
-    "scanAt": "2026-10-26T13:36:11.886379+00:00",
-    "quoteBatches": 2160,
-    "lastQuoteAt": "2026-10-26T14:59:58.404365+00:00",
+    "universeCount": null,
+    "preparedAt": null,
+    "candidateCount": null,
+    "candidates": [],
+    "scanAt": null,
+    "quoteBatches": 0,
+    "lastQuoteAt": null,
     "refusals": []
   },
   "positions": [],
-  "trades": [
-    {
-      "at": "2026-10-26T13:38:24.971990+00:00",
-      "side": "sell",
-      "symbol": "AAL",
-      "qty": "80",
-      "filledQty": "80",
-      "price": "12.26",
-      "status": "filled",
-      "role": "exit"
-    },
-    {
-      "at": "2026-10-26T13:38:20.629309+00:00",
-      "side": "buy",
-      "symbol": "AAL",
-      "qty": "81",
-      "filledQty": "80",
-      "price": "12.27",
-      "status": "canceled",
-      "role": "entry"
-    },
-    {
-      "at": "2026-10-26T13:38:18.228874+00:00",
-      "side": "sell",
-      "symbol": "AAL",
-      "qty": "81",
-      "filledQty": "0",
-      "price": null,
-      "status": "canceled",
-      "role": "protective_stop"
-    }
-  ],
-  "activity": [
-    {
-      "at": "2026-10-26T20:00:02.068307+00:00",
-      "kind": "session_finished",
-      "symbol": null,
-      "side": null,
-      "status": null,
-      "qty": null,
-      "price": null,
-      "reason": null
-    },
-    {
-      "at": "2026-10-26T13:38:25.518011+00:00",
-      "kind": "order_reconciled",
-      "symbol": "AAL",
-      "side": "sell",
-      "status": "filled",
-      "qty": "80",
-      "price": "12.26",
-      "reason": null
-    },
-    {
-      "at": "2026-10-26T13:38:23.301141+00:00",
-      "kind": "broker_response",
-      "symbol": "AAL",
-      "side": "sell",
-      "status": "pending_new",
-      "qty": "0",
-      "price": null,
-      "reason": null
-    },
-    {
-      "at": "2026-10-26T13:38:23.224453+00:00",
-      "kind": "intent_reserved",
-      "symbol": "AAL",
-      "side": null,
-      "status": null,
-      "qty": "80",
-      "price": null,
-      "reason": null
-    },
-    {
-      "at": "2026-10-26T13:38:23.023275+00:00",
-      "kind": "order_reconciled",
-      "symbol": "AAL",
-      "side": "buy",
-      "status": "canceled",
-      "qty": "80",
-      "price": "12.27",
-      "reason": null
-    },
-    {
-      "at": "2026-10-26T13:38:20.655798+00:00",
-      "kind": "halt",
-      "symbol": null,
-      "side": null,
-      "status": null,
-      "qty": null,
-      "price": null,
-      "reason": "partial_or_unfilled_entry"
-    },
-    {
-      "at": "2026-10-26T13:38:20.445672+00:00",
-      "kind": "order_reconciled",
-      "symbol": "AAL",
-      "side": "buy",
-      "status": "partially_filled",
-      "qty": "77",
-      "price": "12.27",
-      "reason": null
-    },
-    {
-      "at": "2026-10-26T13:38:18.233239+00:00",
-      "kind": "broker_response",
-      "symbol": "AAL",
-      "side": "buy",
-      "status": "pending_new",
-      "qty": "0",
-      "price": null,
-      "reason": null
-    },
-    {
-      "at": "2026-10-26T13:38:18.132173+00:00",
-      "kind": "intent_reserved",
-      "symbol": "AAL",
-      "side": null,
-      "status": null,
-      "qty": "81",
-      "price": null,
-      "reason": null
-    }
-  ],
+  "trades": [],
+  "activity": [],
   "reviews": [
     {
       "slot": "morning",
-      "scheduledAt": "2026-10-26T14:05:00+00:00",
-      "enabled": false,
-      "lastRunAt": "2026-10-26T14:05:00.024000+00:00",
-      "lastOutcome": "ok",
-      "reportAvailable": true,
-      "checkedAt": "2026-10-26T10:05:01.464641-04:00",
+      "scheduledAt": "2026-10-27T14:05:00+00:00",
+      "enabled": true,
+      "lastRunAt": null,
+      "lastOutcome": null,
+      "reportAvailable": false,
+      "checkedAt": null,
       "operatorActionNeeded": null
     },
     {
       "slot": "close",
-      "scheduledAt": "2026-10-26T20:05:00+00:00",
-      "enabled": false,
-      "lastRunAt": "2026-10-26T20:05:00.020000+00:00",
-      "lastOutcome": "ok",
-      "reportAvailable": true,
-      "checkedAt": "2026-10-26T20:05:08.523356+00:00",
+      "scheduledAt": "2026-10-27T20:05:00+00:00",
+      "enabled": true,
+      "lastRunAt": null,
+      "lastOutcome": null,
+      "reportAvailable": false,
+      "checkedAt": null,
       "operatorActionNeeded": null
     }
   ],
-  "decisions": [
-    {
-      "symbol": "AAL",
-      "at": "2026-10-26T13:38:18.132173+00:00",
-      "authority": "deterministic_rules",
-      "qty": "81",
-      "limitPrice": "12.27",
-      "stopPrice": "12.21",
-      "nominalRisk": "4.86",
-      "maxNotional": "993.87",
-      "candidateRank": 2,
-      "relativeVolume": "1.4997204484901616",
-      "openingRangeHigh": "12.245",
-      "atr": "0.5757142857142857",
-      "quoteAt": "2026-10-26T13:38:17.773374+00:00",
-      "bid": "12.26",
-      "ask": "12.27",
-      "spreadFraction": "0.0008149959250203748981255093725",
-      "quoteRecorded": true,
-      "stopAtrMultiple": "0.1"
-    }
-  ],
+  "decisions": [],
   "policyChange": {
     "state": "installed",
     "effectiveSession": "2026-10-08",

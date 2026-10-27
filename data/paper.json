@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "scope": "wsli_paper_pilot",
-  "updatedAt": "2026-10-27T13:50:04.113404+00:00",
+  "updatedAt": "2026-10-27T14:00:06.254235+00:00",
   "publication": {
     "automatic": true,
     "intervalSeconds": 600
@@ -17,20 +17,20 @@
     "timezone": "America/New_York"
   },
   "account": {
-    "equity": "10003.83",
-    "cash": "10003.83",
-    "dayPl": "-2.86",
-    "trialPl": "3.83",
+    "equity": "10006.95",
+    "cash": "9028.05",
+    "dayPl": "0.26",
+    "trialPl": "6.95",
     "paper": true,
-    "checkedAt": "2026-10-27T13:50:04.113404+00:00"
+    "checkedAt": "2026-10-27T14:00:06.254235+00:00"
   },
   "market": {
     "open": true,
-    "checkedAt": "2026-10-27T09:50:03.044115-04:00",
+    "checkedAt": "2026-10-27T10:00:05.126786-04:00",
     "nextOpen": "2026-10-28T09:30:00-04:00",
     "nextClose": "2026-10-27T16:00:00-04:00",
     "calendar": {
-      "checkedAt": "2026-10-27T13:50:02.165227+00:00",
+      "checkedAt": "2026-10-27T14:00:02.506175+00:00",
       "through": "2026-11-04T00:00:00-05:00",
       "sessions": [
         {
@@ -63,19 +63,19 @@
   },
   "progress": {
     "session": "2026-10-27",
-    "checkedAt": "2026-10-27T13:50:04.113404+00:00",
+    "checkedAt": "2026-10-27T14:00:06.254235+00:00",
     "armed": true,
     "halted": false,
-    "executorState": "EXIT_COOLDOWN",
-    "supervisorAt": "2026-10-27T13:50:01.329653+00:00",
+    "executorState": "POSITION_PROTECTED",
+    "supervisorAt": "2026-10-27T14:00:03.109606+00:00",
     "supervisorSession": "2026-10-27",
     "process": "active",
-    "entriesToday": 1,
+    "entriesToday": 2,
     "maxEntries": 3,
     "cooldownSeconds": 900,
-    "nextEntryAfter": "2026-10-27T13:52:28.435922+00:00",
+    "nextEntryAfter": null,
     "noRepeatSymbols": true,
-    "openOrderCount": 0,
+    "openOrderCount": 1,
     "universeCount": 70,
     "preparedAt": "2026-10-27T11:45:51.829173+00:00",
     "candidateCount": 5,
@@ -87,12 +87,52 @@
       "NKE"
     ],
     "scanAt": "2026-10-27T13:36:15.205876+00:00",
-    "quoteBatches": 299,
-    "lastQuoteAt": "2026-10-27T13:50:00.996398+00:00",
+    "quoteBatches": 509,
+    "lastQuoteAt": "2026-10-27T14:00:00.600735+00:00",
     "refusals": []
   },
-  "positions": [],
+  "positions": [
+    {
+      "symbol": "WULF",
+      "qty": "78",
+      "side": "long",
+      "avgEntry": "12.51",
+      "price": "12.54",
+      "marketValue": "978.12",
+      "unrealizedPl": "2.34"
+    }
+  ],
   "trades": [
+    {
+      "at": "2026-10-27T13:52:43.991724+00:00",
+      "side": "sell",
+      "symbol": "WULF",
+      "qty": "78",
+      "filledQty": "0",
+      "price": null,
+      "status": "new",
+      "role": "protective_stop"
+    },
+    {
+      "at": "2026-10-27T13:52:40.664849+00:00",
+      "side": "buy",
+      "symbol": "WULF",
+      "qty": "79",
+      "filledQty": "78",
+      "price": "12.51",
+      "status": "canceled",
+      "role": "entry"
+    },
+    {
+      "at": "2026-10-27T13:52:38.232791+00:00",
+      "side": "sell",
+      "symbol": "WULF",
+      "qty": "79",
+      "filledQty": "0",
+      "price": null,
+      "status": "canceled",
+      "role": "protective_stop"
+    },
     {
       "at": "2026-10-27T13:37:27.453202+00:00",
       "side": "sell",
@@ -115,6 +155,76 @@
     }
   ],
   "activity": [
+    {
+      "at": "2026-10-27T13:52:46.198984+00:00",
+      "kind": "order_reconciled",
+      "symbol": "WULF",
+      "side": "sell",
+      "status": "new",
+      "qty": "0",
+      "price": null,
+      "reason": null
+    },
+    {
+      "at": "2026-10-27T13:52:43.734824+00:00",
+      "kind": "broker_response",
+      "symbol": "WULF",
+      "side": "sell",
+      "status": "pending_new",
+      "qty": "0",
+      "price": null,
+      "reason": null
+    },
+    {
+      "at": "2026-10-27T13:52:43.657241+00:00",
+      "kind": "intent_reserved",
+      "symbol": "WULF",
+      "side": null,
+      "status": null,
+      "qty": "78",
+      "price": null,
+      "reason": null
+    },
+    {
+      "at": "2026-10-27T13:52:43.242623+00:00",
+      "kind": "order_reconciled",
+      "symbol": "WULF",
+      "side": "buy",
+      "status": "canceled",
+      "qty": "78",
+      "price": "12.51",
+      "reason": null
+    },
+    {
+      "at": "2026-10-27T13:52:40.495012+00:00",
+      "kind": "order_reconciled",
+      "symbol": "WULF",
+      "side": "buy",
+      "status": "partially_filled",
+      "qty": "73",
+      "price": "12.51",
+      "reason": null
+    },
+    {
+      "at": "2026-10-27T13:52:38.197766+00:00",
+      "kind": "broker_response",
+      "symbol": "WULF",
+      "side": "buy",
+      "status": "pending_new",
+      "qty": "0",
+      "price": null,
+      "reason": null
+    },
+    {
+      "at": "2026-10-27T13:52:38.123062+00:00",
+      "kind": "intent_reserved",
+      "symbol": "WULF",
+      "side": null,
+      "status": null,
+      "qty": "79",
+      "price": null,
+      "reason": null
+    },
     {
       "at": "2026-10-27T13:37:28.237793+00:00",
       "kind": "order_reconciled",
@@ -206,6 +316,26 @@
       "bid": "37.89",
       "ask": "37.91",
       "spreadFraction": "0.0005275652862041677657610129253",
+      "quoteRecorded": true,
+      "stopAtrMultiple": "0.1"
+    },
+    {
+      "symbol": "WULF",
+      "at": "2026-10-27T13:52:38.123062+00:00",
+      "authority": "deterministic_rules",
+      "qty": "79",
+      "limitPrice": "12.51",
+      "stopPrice": "12.39",
+      "nominalRisk": "9.48",
+      "maxNotional": "988.29",
+      "candidateRank": 4,
+      "relativeVolume": "1.2667885606965439",
+      "openingRangeHigh": "12.415",
+      "atr": "1.162857142857143",
+      "quoteAt": "2026-10-27T13:52:37.866813+00:00",
+      "bid": "12.5",
+      "ask": "12.51",
+      "spreadFraction": "0.0007993605115907274180655475620",
       "quoteRecorded": true,
       "stopAtrMultiple": "0.1"
     }

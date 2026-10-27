@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "scope": "wsli_paper_pilot",
-  "updatedAt": "2026-10-27T14:00:06.254235+00:00",
+  "updatedAt": "2026-10-27T14:10:02.774752+00:00",
   "publication": {
     "automatic": true,
     "intervalSeconds": 600
@@ -17,20 +17,20 @@
     "timezone": "America/New_York"
   },
   "account": {
-    "equity": "10006.95",
+    "equity": "10003.83",
     "cash": "9028.05",
-    "dayPl": "0.26",
-    "trialPl": "6.95",
+    "dayPl": "-2.86",
+    "trialPl": "3.83",
     "paper": true,
-    "checkedAt": "2026-10-27T14:00:06.254235+00:00"
+    "checkedAt": "2026-10-27T14:10:02.774752+00:00"
   },
   "market": {
     "open": true,
-    "checkedAt": "2026-10-27T10:00:05.126786-04:00",
+    "checkedAt": "2026-10-27T10:10:02.083443-04:00",
     "nextOpen": "2026-10-28T09:30:00-04:00",
     "nextClose": "2026-10-27T16:00:00-04:00",
     "calendar": {
-      "checkedAt": "2026-10-27T14:00:02.506175+00:00",
+      "checkedAt": "2026-10-27T14:10:01.667755+00:00",
       "through": "2026-11-04T00:00:00-05:00",
       "sessions": [
         {
@@ -63,11 +63,11 @@
   },
   "progress": {
     "session": "2026-10-27",
-    "checkedAt": "2026-10-27T14:00:06.254235+00:00",
+    "checkedAt": "2026-10-27T14:10:02.774752+00:00",
     "armed": true,
     "halted": false,
     "executorState": "POSITION_PROTECTED",
-    "supervisorAt": "2026-10-27T14:00:03.109606+00:00",
+    "supervisorAt": "2026-10-27T14:09:59.346014+00:00",
     "supervisorSession": "2026-10-27",
     "process": "active",
     "entriesToday": 2,
@@ -87,8 +87,8 @@
       "NKE"
     ],
     "scanAt": "2026-10-27T13:36:15.205876+00:00",
-    "quoteBatches": 509,
-    "lastQuoteAt": "2026-10-27T14:00:00.600735+00:00",
+    "quoteBatches": 717,
+    "lastQuoteAt": "2026-10-27T14:10:01.552148+00:00",
     "refusals": []
   },
   "positions": [
@@ -97,9 +97,9 @@
       "qty": "78",
       "side": "long",
       "avgEntry": "12.51",
-      "price": "12.54",
-      "marketValue": "978.12",
-      "unrealizedPl": "2.34"
+      "price": "12.515",
+      "marketValue": "976.17",
+      "unrealizedPl": "0.39"
     }
   ],
   "trades": [
@@ -280,11 +280,11 @@
     {
       "slot": "morning",
       "scheduledAt": "2026-10-27T14:05:00+00:00",
-      "enabled": true,
-      "lastRunAt": null,
-      "lastOutcome": null,
-      "reportAvailable": false,
-      "checkedAt": null,
+      "enabled": false,
+      "lastRunAt": "2026-10-27T14:05:01.191000+00:00",
+      "lastOutcome": "ok",
+      "reportAvailable": true,
+      "checkedAt": "2026-10-27T14:05:30.251538+00:00",
       "operatorActionNeeded": null
     },
     {

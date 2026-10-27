@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "scope": "wsli_paper_pilot",
-  "updatedAt": "2026-10-27T14:20:03.141606+00:00",
+  "updatedAt": "2026-10-27T14:30:07.081827+00:00",
   "publication": {
     "automatic": true,
     "intervalSeconds": 600
@@ -17,20 +17,20 @@
     "timezone": "America/New_York"
   },
   "account": {
-    "equity": "10003.83",
+    "equity": "10006.56",
     "cash": "9028.05",
-    "dayPl": "-2.86",
-    "trialPl": "3.83",
+    "dayPl": "-0.13",
+    "trialPl": "6.56",
     "paper": true,
-    "checkedAt": "2026-10-27T14:20:03.141606+00:00"
+    "checkedAt": "2026-10-27T14:30:07.081827+00:00"
   },
   "market": {
     "open": true,
-    "checkedAt": "2026-10-27T10:20:02.280503-04:00",
+    "checkedAt": "2026-10-27T10:30:05.396095-04:00",
     "nextOpen": "2026-10-28T09:30:00-04:00",
     "nextClose": "2026-10-27T16:00:00-04:00",
     "calendar": {
-      "checkedAt": "2026-10-27T14:20:01.728553+00:00",
+      "checkedAt": "2026-10-27T14:30:03.873502+00:00",
       "through": "2026-11-04T00:00:00-05:00",
       "sessions": [
         {
@@ -63,11 +63,11 @@
   },
   "progress": {
     "session": "2026-10-27",
-    "checkedAt": "2026-10-27T14:20:03.141606+00:00",
+    "checkedAt": "2026-10-27T14:30:07.081827+00:00",
     "armed": true,
     "halted": false,
     "executorState": "POSITION_PROTECTED",
-    "supervisorAt": "2026-10-27T14:19:59.940708+00:00",
+    "supervisorAt": "2026-10-27T14:30:02.653783+00:00",
     "supervisorSession": "2026-10-27",
     "process": "active",
     "entriesToday": 2,
@@ -87,8 +87,8 @@
       "NKE"
     ],
     "scanAt": "2026-10-27T13:36:15.205876+00:00",
-    "quoteBatches": 924,
-    "lastQuoteAt": "2026-10-27T14:20:02.110336+00:00",
+    "quoteBatches": 1132,
+    "lastQuoteAt": "2026-10-27T14:30:04.718184+00:00",
     "refusals": []
   },
   "positions": [
@@ -97,9 +97,9 @@
       "qty": "78",
       "side": "long",
       "avgEntry": "12.51",
-      "price": "12.51",
-      "marketValue": "975.78",
-      "unrealizedPl": "0"
+      "price": "12.545",
+      "marketValue": "978.51",
+      "unrealizedPl": "2.73"
     }
   ],
   "trades": [

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "scope": "wsli_paper_pilot",
-  "updatedAt": "2026-10-27T13:30:05.634656+00:00",
+  "updatedAt": "2026-10-27T13:40:04.369095+00:00",
   "publication": {
     "automatic": true,
     "intervalSeconds": 600
@@ -17,20 +17,20 @@
     "timezone": "America/New_York"
   },
   "account": {
-    "equity": "10006.69",
-    "cash": "10006.69",
-    "dayPl": "0.00",
-    "trialPl": "6.69",
+    "equity": "10003.83",
+    "cash": "10003.83",
+    "dayPl": "-2.86",
+    "trialPl": "3.83",
     "paper": true,
-    "checkedAt": "2026-10-27T13:30:05.634656+00:00"
+    "checkedAt": "2026-10-27T13:40:04.369095+00:00"
   },
   "market": {
     "open": true,
-    "checkedAt": "2026-10-27T09:30:04.846759-04:00",
+    "checkedAt": "2026-10-27T09:40:03.703243-04:00",
     "nextOpen": "2026-10-28T09:30:00-04:00",
     "nextClose": "2026-10-27T16:00:00-04:00",
     "calendar": {
-      "checkedAt": "2026-10-27T13:30:02.641264+00:00",
+      "checkedAt": "2026-10-27T13:40:02.162347+00:00",
       "through": "2026-11-04T00:00:00-05:00",
       "sessions": [
         {
@@ -63,31 +63,109 @@
   },
   "progress": {
     "session": "2026-10-27",
-    "checkedAt": "2026-10-27T13:30:05.634656+00:00",
+    "checkedAt": "2026-10-27T13:40:04.369095+00:00",
     "armed": true,
     "halted": false,
-    "executorState": "FLAT",
-    "supervisorAt": "2026-10-26T20:00:02.597149+00:00",
-    "supervisorSession": "2026-10-26",
+    "executorState": "EXIT_COOLDOWN",
+    "supervisorAt": "2026-10-27T13:40:02.764879+00:00",
+    "supervisorSession": "2026-10-27",
     "process": "active",
-    "entriesToday": 0,
+    "entriesToday": 1,
     "maxEntries": 3,
     "cooldownSeconds": 900,
-    "nextEntryAfter": null,
+    "nextEntryAfter": "2026-10-27T13:52:28.435922+00:00",
     "noRepeatSymbols": true,
     "openOrderCount": 0,
     "universeCount": 70,
     "preparedAt": "2026-10-27T11:45:51.829173+00:00",
-    "candidateCount": null,
-    "candidates": [],
-    "scanAt": null,
-    "quoteBatches": 0,
-    "lastQuoteAt": null,
+    "candidateCount": 5,
+    "candidates": [
+      "BMNR",
+      "NU",
+      "INTC",
+      "WULF",
+      "NKE"
+    ],
+    "scanAt": "2026-10-27T13:36:15.205876+00:00",
+    "quoteBatches": 82,
+    "lastQuoteAt": "2026-10-27T13:40:02.094164+00:00",
     "refusals": []
   },
   "positions": [],
-  "trades": [],
-  "activity": [],
+  "trades": [
+    {
+      "at": "2026-10-27T13:37:27.453202+00:00",
+      "side": "sell",
+      "symbol": "NKE",
+      "qty": "26",
+      "filledQty": "26",
+      "price": "37.79",
+      "status": "filled",
+      "role": "protective_stop"
+    },
+    {
+      "at": "2026-10-27T13:36:32.871602+00:00",
+      "side": "buy",
+      "symbol": "NKE",
+      "qty": "26",
+      "filledQty": "26",
+      "price": "37.9",
+      "status": "filled",
+      "role": "entry"
+    }
+  ],
+  "activity": [
+    {
+      "at": "2026-10-27T13:37:28.237793+00:00",
+      "kind": "order_reconciled",
+      "symbol": "NKE",
+      "side": "buy",
+      "status": "filled",
+      "qty": "26",
+      "price": "37.9",
+      "reason": null
+    },
+    {
+      "at": "2026-10-27T13:37:25.319946+00:00",
+      "kind": "order_reconciled",
+      "symbol": "NKE",
+      "side": "buy",
+      "status": "filled",
+      "qty": "26",
+      "price": "37.9",
+      "reason": null
+    },
+    {
+      "at": "2026-10-27T13:36:33.370111+00:00",
+      "kind": "order_reconciled",
+      "symbol": "NKE",
+      "side": "buy",
+      "status": "filled",
+      "qty": "26",
+      "price": "37.9",
+      "reason": null
+    },
+    {
+      "at": "2026-10-27T13:36:31.149807+00:00",
+      "kind": "broker_response",
+      "symbol": "NKE",
+      "side": "buy",
+      "status": "pending_new",
+      "qty": "0",
+      "price": null,
+      "reason": null
+    },
+    {
+      "at": "2026-10-27T13:36:31.067823+00:00",
+      "kind": "intent_reserved",
+      "symbol": "NKE",
+      "side": null,
+      "status": null,
+      "qty": "26",
+      "price": null,
+      "reason": null
+    }
+  ],
   "reviews": [
     {
       "slot": "morning",
@@ -110,7 +188,28 @@
       "operatorActionNeeded": null
     }
   ],
-  "decisions": [],
+  "decisions": [
+    {
+      "symbol": "NKE",
+      "at": "2026-10-27T13:36:31.067823+00:00",
+      "authority": "deterministic_rules",
+      "qty": "26",
+      "limitPrice": "37.91",
+      "stopPrice": "37.80",
+      "nominalRisk": "2.86",
+      "maxNotional": "985.66",
+      "candidateRank": 5,
+      "relativeVolume": "1.1527946291353233",
+      "openingRangeHigh": "37.86",
+      "atr": "1.0267857142857153",
+      "quoteAt": "2026-10-27T13:36:30.354570+00:00",
+      "bid": "37.89",
+      "ask": "37.91",
+      "spreadFraction": "0.0005275652862041677657610129253",
+      "quoteRecorded": true,
+      "stopAtrMultiple": "0.1"
+    }
+  ],
   "policyChange": {
     "state": "installed",
     "effectiveSession": "2026-10-08",

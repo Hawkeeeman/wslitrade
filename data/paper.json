@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "scope": "wsli_paper_pilot",
-  "updatedAt": "2026-10-28T14:10:04.703295+00:00",
+  "updatedAt": "2026-10-28T14:20:04.295501+00:00",
   "publication": {
     "automatic": true,
     "intervalSeconds": 600
@@ -22,15 +22,15 @@
     "dayPl": "0.00",
     "trialPl": "-6.37",
     "paper": true,
-    "checkedAt": "2026-10-28T14:10:04.703295+00:00"
+    "checkedAt": "2026-10-28T14:20:04.295501+00:00"
   },
   "market": {
     "open": true,
-    "checkedAt": "2026-10-28T10:10:03.660325-04:00",
+    "checkedAt": "2026-10-28T10:20:03.898954-04:00",
     "nextOpen": "2026-10-29T09:30:00-04:00",
     "nextClose": "2026-10-28T16:00:00-04:00",
     "calendar": {
-      "checkedAt": "2026-10-28T14:10:02.428897+00:00",
+      "checkedAt": "2026-10-28T14:20:02.499263+00:00",
       "through": "2026-11-05T00:00:00-05:00",
       "sessions": [
         {
@@ -63,11 +63,11 @@
   },
   "progress": {
     "session": "2026-10-28",
-    "checkedAt": "2026-10-28T14:10:04.703295+00:00",
+    "checkedAt": "2026-10-28T14:20:04.295501+00:00",
     "armed": true,
     "halted": true,
     "executorState": "FLAT",
-    "supervisorAt": "2026-10-28T14:10:02.749800+00:00",
+    "supervisorAt": "2026-10-28T14:20:01.561806+00:00",
     "supervisorSession": "2026-10-28",
     "process": "active",
     "entriesToday": 0,
@@ -85,8 +85,8 @@
       "PFE"
     ],
     "scanAt": "2026-10-28T13:36:04.462687+00:00",
-    "quoteBatches": 704,
-    "lastQuoteAt": "2026-10-28T14:10:01.919022+00:00",
+    "quoteBatches": 910,
+    "lastQuoteAt": "2026-10-28T14:20:01.225902+00:00",
     "refusals": []
   },
   "positions": [],

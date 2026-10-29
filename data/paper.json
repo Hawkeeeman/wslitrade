@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "scope": "wsli_paper_pilot",
-  "updatedAt": "2026-10-29T14:00:06.277285+00:00",
+  "updatedAt": "2026-10-29T14:10:04.019697+00:00",
   "publication": {
     "automatic": true,
     "intervalSeconds": 600
@@ -22,15 +22,15 @@
     "dayPl": "0.00",
     "trialPl": "-6.37",
     "paper": true,
-    "checkedAt": "2026-10-29T14:00:06.277285+00:00"
+    "checkedAt": "2026-10-29T14:10:04.019697+00:00"
   },
   "market": {
     "open": true,
-    "checkedAt": "2026-10-29T10:00:04.841329-04:00",
+    "checkedAt": "2026-10-29T10:10:03.736865-04:00",
     "nextOpen": "2026-10-30T09:30:00-04:00",
     "nextClose": "2026-10-29T16:00:00-04:00",
     "calendar": {
-      "checkedAt": "2026-10-29T14:00:03.335441+00:00",
+      "checkedAt": "2026-10-29T14:10:02.264353+00:00",
       "through": "2026-11-06T00:00:00-05:00",
       "sessions": [
         {
@@ -63,11 +63,11 @@
   },
   "progress": {
     "session": "2026-10-29",
-    "checkedAt": "2026-10-29T14:00:06.277285+00:00",
+    "checkedAt": "2026-10-29T14:10:04.019697+00:00",
     "armed": true,
     "halted": true,
     "executorState": "FLAT",
-    "supervisorAt": "2026-10-29T14:00:01.824808+00:00",
+    "supervisorAt": "2026-10-29T14:10:00.889834+00:00",
     "supervisorSession": "2026-10-29",
     "process": "active",
     "entriesToday": 0,
@@ -87,8 +87,8 @@
       "BAC"
     ],
     "scanAt": "2026-10-29T13:36:16.900142+00:00",
-    "quoteBatches": 513,
-    "lastQuoteAt": "2026-10-29T14:00:04.171363+00:00",
+    "quoteBatches": 728,
+    "lastQuoteAt": "2026-10-29T14:10:03.434637+00:00",
     "refusals": []
   },
   "positions": [],
@@ -98,11 +98,11 @@
     {
       "slot": "morning",
       "scheduledAt": "2026-10-29T14:05:00+00:00",
-      "enabled": true,
-      "lastRunAt": null,
-      "lastOutcome": null,
-      "reportAvailable": false,
-      "checkedAt": null,
+      "enabled": false,
+      "lastRunAt": "2026-10-29T14:05:01.480000+00:00",
+      "lastOutcome": "ok",
+      "reportAvailable": true,
+      "checkedAt": "2026-10-29T10:05:10.585135-04:00",
       "operatorActionNeeded": null
     },
     {

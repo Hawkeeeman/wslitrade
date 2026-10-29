@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "scope": "wsli_paper_pilot",
-  "updatedAt": "2026-10-29T13:30:04.774856+00:00",
+  "updatedAt": "2026-10-29T13:40:03.677484+00:00",
   "publication": {
     "automatic": true,
     "intervalSeconds": 600
@@ -22,15 +22,15 @@
     "dayPl": "0.00",
     "trialPl": "-6.37",
     "paper": true,
-    "checkedAt": "2026-10-29T13:30:04.774856+00:00"
+    "checkedAt": "2026-10-29T13:40:03.677484+00:00"
   },
   "market": {
     "open": true,
-    "checkedAt": "2026-10-29T09:30:03.832360-04:00",
+    "checkedAt": "2026-10-29T09:40:02.515510-04:00",
     "nextOpen": "2026-10-30T09:30:00-04:00",
     "nextClose": "2026-10-29T16:00:00-04:00",
     "calendar": {
-      "checkedAt": "2026-10-29T13:30:02.098313+00:00",
+      "checkedAt": "2026-10-29T13:40:02.146982+00:00",
       "through": "2026-11-06T00:00:00-05:00",
       "sessions": [
         {
@@ -63,12 +63,12 @@
   },
   "progress": {
     "session": "2026-10-29",
-    "checkedAt": "2026-10-29T13:30:04.774856+00:00",
+    "checkedAt": "2026-10-29T13:40:03.677484+00:00",
     "armed": true,
     "halted": true,
     "executorState": "FLAT",
-    "supervisorAt": "2026-10-28T20:00:01.954382+00:00",
-    "supervisorSession": "2026-10-28",
+    "supervisorAt": "2026-10-29T13:40:01.814144+00:00",
+    "supervisorSession": "2026-10-29",
     "process": "active",
     "entriesToday": 0,
     "maxEntries": 3,
@@ -78,11 +78,17 @@
     "openOrderCount": 0,
     "universeCount": 72,
     "preparedAt": "2026-10-29T11:45:48.599537+00:00",
-    "candidateCount": null,
-    "candidates": [],
-    "scanAt": null,
-    "quoteBatches": 0,
-    "lastQuoteAt": null,
+    "candidateCount": 5,
+    "candidates": [
+      "NKE",
+      "SOFI",
+      "RKT",
+      "BSX",
+      "BAC"
+    ],
+    "scanAt": "2026-10-29T13:36:16.900142+00:00",
+    "quoteBatches": 83,
+    "lastQuoteAt": "2026-10-29T13:40:01.572221+00:00",
     "refusals": []
   },
   "positions": [],

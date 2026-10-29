@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "scope": "wsli_paper_pilot",
-  "updatedAt": "2026-10-28T21:50:04.965500+00:00",
+  "updatedAt": "2026-10-29T11:00:03.858890+00:00",
   "publication": {
     "automatic": true,
     "intervalSeconds": 600
@@ -22,21 +22,17 @@
     "dayPl": "0.00",
     "trialPl": "-6.37",
     "paper": true,
-    "checkedAt": "2026-10-28T21:50:04.965500+00:00"
+    "checkedAt": "2026-10-29T11:00:03.858890+00:00"
   },
   "market": {
     "open": false,
-    "checkedAt": "2026-10-28T17:50:03.059837-04:00",
+    "checkedAt": "2026-10-29T07:00:03.342312-04:00",
     "nextOpen": "2026-10-29T09:30:00-04:00",
     "nextClose": "2026-10-29T16:00:00-04:00",
     "calendar": {
-      "checkedAt": "2026-10-28T21:50:02.707198+00:00",
-      "through": "2026-11-05T00:00:00-05:00",
+      "checkedAt": "2026-10-29T11:00:02.305258+00:00",
+      "through": "2026-11-06T00:00:00-05:00",
       "sessions": [
-        {
-          "open": "2026-10-28T09:30:00-04:00",
-          "close": "2026-10-28T16:00:00-04:00"
-        },
         {
           "open": "2026-10-29T09:30:00-04:00",
           "close": "2026-10-29T16:00:00-04:00"
@@ -56,14 +52,18 @@
         {
           "open": "2026-11-04T09:30:00-05:00",
           "close": "2026-11-04T16:00:00-05:00"
+        },
+        {
+          "open": "2026-11-05T09:30:00-05:00",
+          "close": "2026-11-05T16:00:00-05:00"
         }
       ],
-      "from": "2026-10-28T00:00:00-04:00"
+      "from": "2026-10-29T00:00:00-04:00"
     }
   },
   "progress": {
-    "session": "2026-10-28",
-    "checkedAt": "2026-10-28T21:50:04.965500+00:00",
+    "session": "2026-10-29",
+    "checkedAt": "2026-10-29T11:00:03.858890+00:00",
     "armed": true,
     "halted": true,
     "executorState": "FLAT",
@@ -76,52 +76,37 @@
     "nextEntryAfter": null,
     "noRepeatSymbols": true,
     "openOrderCount": 0,
-    "universeCount": 71,
-    "preparedAt": "2026-10-28T11:45:32.132661+00:00",
-    "candidateCount": 3,
-    "candidates": [
-      "SOFI",
-      "AMZN",
-      "PFE"
-    ],
-    "scanAt": "2026-10-28T13:36:04.462687+00:00",
-    "quoteBatches": 1916,
-    "lastQuoteAt": "2026-10-28T14:59:59.891361+00:00",
+    "universeCount": null,
+    "preparedAt": null,
+    "candidateCount": null,
+    "candidates": [],
+    "scanAt": null,
+    "quoteBatches": 0,
+    "lastQuoteAt": null,
     "refusals": []
   },
   "positions": [],
   "trades": [],
-  "activity": [
-    {
-      "at": "2026-10-28T20:00:01.626810+00:00",
-      "kind": "session_finished",
-      "symbol": null,
-      "side": null,
-      "status": null,
-      "qty": null,
-      "price": null,
-      "reason": null
-    }
-  ],
+  "activity": [],
   "reviews": [
     {
       "slot": "morning",
-      "scheduledAt": "2026-10-28T14:05:00+00:00",
-      "enabled": false,
-      "lastRunAt": "2026-10-28T14:05:01.025000+00:00",
-      "lastOutcome": "ok",
-      "reportAvailable": true,
-      "checkedAt": "2026-10-28T10:05:19.933865-04:00",
+      "scheduledAt": "2026-10-29T14:05:00+00:00",
+      "enabled": true,
+      "lastRunAt": null,
+      "lastOutcome": null,
+      "reportAvailable": false,
+      "checkedAt": null,
       "operatorActionNeeded": null
     },
     {
       "slot": "close",
-      "scheduledAt": "2026-10-28T20:05:00+00:00",
-      "enabled": false,
-      "lastRunAt": "2026-10-28T20:08:08.478000+00:00",
-      "lastOutcome": "ok",
-      "reportAvailable": true,
-      "checkedAt": "2026-10-28T20:08:17.288860+00:00",
+      "scheduledAt": "2026-10-29T20:05:00+00:00",
+      "enabled": true,
+      "lastRunAt": null,
+      "lastOutcome": null,
+      "reportAvailable": false,
+      "checkedAt": null,
       "operatorActionNeeded": null
     }
   ],

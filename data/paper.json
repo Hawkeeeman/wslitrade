@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "scope": "wsli_paper_pilot",
-  "updatedAt": "2026-10-29T21:50:05.859335+00:00",
+  "updatedAt": "2026-10-30T11:00:03.679182+00:00",
   "publication": {
     "automatic": true,
     "intervalSeconds": 600
@@ -22,21 +22,17 @@
     "dayPl": "0.00",
     "trialPl": "-6.37",
     "paper": true,
-    "checkedAt": "2026-10-29T21:50:05.859335+00:00"
+    "checkedAt": "2026-10-30T11:00:03.679182+00:00"
   },
   "market": {
     "open": false,
-    "checkedAt": "2026-10-29T17:50:04.186126-04:00",
+    "checkedAt": "2026-10-30T07:00:02.607884-04:00",
     "nextOpen": "2026-10-30T09:30:00-04:00",
     "nextClose": "2026-10-30T16:00:00-04:00",
     "calendar": {
-      "checkedAt": "2026-10-29T21:50:04.056349+00:00",
-      "through": "2026-11-06T00:00:00-05:00",
+      "checkedAt": "2026-10-30T11:00:02.259225+00:00",
+      "through": "2026-11-07T00:00:00-05:00",
       "sessions": [
-        {
-          "open": "2026-10-29T09:30:00-04:00",
-          "close": "2026-10-29T16:00:00-04:00"
-        },
         {
           "open": "2026-10-30T09:30:00-04:00",
           "close": "2026-10-30T16:00:00-04:00"
@@ -56,14 +52,18 @@
         {
           "open": "2026-11-05T09:30:00-05:00",
           "close": "2026-11-05T16:00:00-05:00"
+        },
+        {
+          "open": "2026-11-06T09:30:00-05:00",
+          "close": "2026-11-06T16:00:00-05:00"
         }
       ],
-      "from": "2026-10-29T00:00:00-04:00"
+      "from": "2026-10-30T00:00:00-04:00"
     }
   },
   "progress": {
-    "session": "2026-10-29",
-    "checkedAt": "2026-10-29T21:50:05.859335+00:00",
+    "session": "2026-10-30",
+    "checkedAt": "2026-10-30T11:00:03.679182+00:00",
     "armed": true,
     "halted": true,
     "executorState": "FLAT",
@@ -76,54 +76,37 @@
     "nextEntryAfter": null,
     "noRepeatSymbols": true,
     "openOrderCount": 0,
-    "universeCount": 72,
-    "preparedAt": "2026-10-29T11:45:48.599537+00:00",
-    "candidateCount": 5,
-    "candidates": [
-      "NKE",
-      "SOFI",
-      "RKT",
-      "BSX",
-      "BAC"
-    ],
-    "scanAt": "2026-10-29T13:36:16.900142+00:00",
-    "quoteBatches": 1810,
-    "lastQuoteAt": "2026-10-29T14:59:57.835607+00:00",
+    "universeCount": null,
+    "preparedAt": null,
+    "candidateCount": null,
+    "candidates": [],
+    "scanAt": null,
+    "quoteBatches": 0,
+    "lastQuoteAt": null,
     "refusals": []
   },
   "positions": [],
   "trades": [],
-  "activity": [
-    {
-      "at": "2026-10-29T20:00:01.883503+00:00",
-      "kind": "session_finished",
-      "symbol": null,
-      "side": null,
-      "status": null,
-      "qty": null,
-      "price": null,
-      "reason": null
-    }
-  ],
+  "activity": [],
   "reviews": [
     {
       "slot": "morning",
-      "scheduledAt": "2026-10-29T14:05:00+00:00",
-      "enabled": false,
-      "lastRunAt": "2026-10-29T14:05:01.480000+00:00",
-      "lastOutcome": "ok",
-      "reportAvailable": true,
-      "checkedAt": "2026-10-29T10:05:10.585135-04:00",
+      "scheduledAt": "2026-10-30T14:05:00+00:00",
+      "enabled": true,
+      "lastRunAt": null,
+      "lastOutcome": null,
+      "reportAvailable": false,
+      "checkedAt": null,
       "operatorActionNeeded": null
     },
     {
       "slot": "close",
-      "scheduledAt": "2026-10-29T20:05:00+00:00",
-      "enabled": false,
-      "lastRunAt": "2026-10-29T20:05:00.029000+00:00",
-      "lastOutcome": "ok",
-      "reportAvailable": true,
-      "checkedAt": "2026-10-29T20:05:13.977517+00:00",
+      "scheduledAt": "2026-10-30T20:05:00+00:00",
+      "enabled": true,
+      "lastRunAt": null,
+      "lastOutcome": null,
+      "reportAvailable": false,
+      "checkedAt": null,
       "operatorActionNeeded": null
     }
   ],

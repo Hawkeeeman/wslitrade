@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "scope": "wsli_paper_pilot",
-  "updatedAt": "2026-10-30T13:30:05.489890+00:00",
+  "updatedAt": "2026-10-30T13:40:04.268728+00:00",
   "publication": {
     "automatic": true,
     "intervalSeconds": 600
@@ -22,15 +22,15 @@
     "dayPl": "0.00",
     "trialPl": "-6.37",
     "paper": true,
-    "checkedAt": "2026-10-30T13:30:05.489890+00:00"
+    "checkedAt": "2026-10-30T13:40:04.268728+00:00"
   },
   "market": {
     "open": true,
-    "checkedAt": "2026-10-30T09:30:04.054608-04:00",
+    "checkedAt": "2026-10-30T09:40:02.853586-04:00",
     "nextOpen": "2026-11-02T09:30:00-05:00",
     "nextClose": "2026-10-30T16:00:00-04:00",
     "calendar": {
-      "checkedAt": "2026-10-30T13:30:02.424421+00:00",
+      "checkedAt": "2026-10-30T13:40:02.457535+00:00",
       "through": "2026-11-07T00:00:00-05:00",
       "sessions": [
         {
@@ -63,11 +63,11 @@
   },
   "progress": {
     "session": "2026-10-30",
-    "checkedAt": "2026-10-30T13:30:05.489890+00:00",
+    "checkedAt": "2026-10-30T13:40:04.268728+00:00",
     "armed": true,
     "halted": true,
-    "executorState": "WAITING_FOR_PREPARE_OR_SCAN",
-    "supervisorAt": "2026-10-30T13:30:03.335315+00:00",
+    "executorState": "FLAT",
+    "supervisorAt": "2026-10-30T13:40:01.550524+00:00",
     "supervisorSession": "2026-10-30",
     "process": "active",
     "entriesToday": 0,
@@ -78,11 +78,17 @@
     "openOrderCount": 0,
     "universeCount": 71,
     "preparedAt": "2026-10-30T11:45:58.853201+00:00",
-    "candidateCount": null,
-    "candidates": [],
-    "scanAt": null,
-    "quoteBatches": 0,
-    "lastQuoteAt": null,
+    "candidateCount": 5,
+    "candidates": [
+      "RKT",
+      "NKE",
+      "AMZN",
+      "CMCSA",
+      "VZ"
+    ],
+    "scanAt": "2026-10-30T13:36:17.293607+00:00",
+    "quoteBatches": 96,
+    "lastQuoteAt": "2026-10-30T13:40:01.165316+00:00",
     "refusals": []
   },
   "positions": [],

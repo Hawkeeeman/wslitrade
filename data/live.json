@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-27T04:44:55+00:00",
+  "updatedAt": "2026-11-27T14:25:43+00:00",
   "source": "github-actions",
   "errors": {},
   "bot": {
@@ -15,17 +15,17 @@
     "status": "ACTIVE",
     "dayPl": 0.0,
     "paper": true,
-    "checkedAt": "2026-11-27T04:44:54+00:00"
+    "checkedAt": "2026-11-27T14:25:43+00:00"
   },
   "market": {
     "open": false,
     "nextOpen": "2026-11-27T09:30:00-05:00",
     "nextClose": "2026-11-27T13:00:00-05:00",
-    "checkedAt": "2026-11-27T04:44:54+00:00",
+    "checkedAt": "2026-11-27T14:25:43+00:00",
     "calendar": {
-      "checkedAt": "2026-11-27T04:44:55+00:00",
-      "from": "2026-11-26T00:00:00-05:00",
-      "through": "2026-12-04T00:00:00-05:00",
+      "checkedAt": "2026-11-27T14:25:43+00:00",
+      "from": "2026-11-27T00:00:00-05:00",
+      "through": "2026-12-05T00:00:00-05:00",
       "sessions": [
         {
           "open": "2026-11-27T09:30:00-05:00",
@@ -46,6 +46,10 @@
         {
           "open": "2026-12-03T09:30:00-05:00",
           "close": "2026-12-03T16:00:00-05:00"
+        },
+        {
+          "open": "2026-12-04T09:30:00-05:00",
+          "close": "2026-12-04T16:00:00-05:00"
         }
       ]
     }
@@ -75,7 +79,7 @@
       "text": "Bot awake: OpenClaw gateway reachable"
     },
     {
-      "at": "2026-11-27T04:44:54+00:00",
+      "at": "2026-11-27T14:25:43+00:00",
       "text": "Last broker check: market closed. Historical check, not current session status."
     }
   ]
